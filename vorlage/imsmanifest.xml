@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest identifier="LERN_UHR_SCORM12" version="1.0"
+ xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2"
+ xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2">
+ <metadata><schema>ADL SCORM</schema><schemaversion>1.2</schemaversion></metadata>
+ <organizations default="ORG_LERNUHR">
+  <organization identifier="ORG_LERNUHR">
+   <title>Meine Lernuhr</title>
+   <item identifier="ITEM_LERNUHR" identifierref="RES_LERNUHR">
+    <title>Meine Lernuhr – entdecken und einstellen</title>
+   </item>
+  </organization>
+ </organizations>
+ <resources>
+  <resource identifier="RES_LERNUHR" type="webcontent" adlcp:scormtype="sco" href="index.html">
+   <file href="index.html"/><file href="scorm.js"/>
+  </resource>
+ </resources>
+</manifest>

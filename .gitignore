@@ -1,0 +1,8 @@
+# Lizenzierte Dateien (Bayerndruck © schulschriften.de, METACOM © Annette Kitzinger):
+# nicht in ein öffentliches Repository. Das Bauskript liest sie lokal.
+vorlage/index.html
+src/assets/*.ttf
+src/assets/*.png
+# Erzeugte Pakete enthalten die eingebettete Schrift
+dist/
+node_modules/
