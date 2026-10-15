@@ -1,0 +1,50 @@
+/* Einstellungen: zwei Flügel neben der Uhr (quer) oder im Dock (hoch); nie über der Uhr */
+.blatt{z-index:5;background:var(--bg);display:flex;flex-direction:column;gap:var(--gap);
+  border-radius:calc(var(--r) + 6px);box-shadow:0 0 0 1px var(--linie),0 12px 40px rgba(20,40,35,.16);padding:var(--gap);animation:blatt-ein .22s ease-out}
+#blatt-links{animation-name:blatt-links}
+@keyframes blatt-ein{from{transform:translateX(24px);opacity:0}to{transform:none;opacity:1}}
+@keyframes blatt-links{from{transform:translateX(-24px);opacity:0}to{transform:none;opacity:1}}
+.blatt h2{font-size:var(--fs-kopf);margin:0;font-weight:400}
+.bl-reiter{display:flex;flex-direction:column;gap:var(--gap)}
+.bl-reiter [role=tab][aria-selected="true"]{background:var(--akzent-hell);border-color:var(--akzent);border-width:3px}
+.bl-reiter #blatt-fertig{margin-top:auto}
+#blatt-dock .bl-reiter{flex-direction:row}
+#blatt-dock .bl-reiter button{flex:1 1 0;min-width:0}
+#blatt-dock .bl-reiter #blatt-fertig{margin-top:0}
+.bl-inhalt{display:flex;flex-direction:column;gap:var(--gap);min-height:0}
+#blatt-dock .bl-inhalt{display:grid;grid-template-columns:1fr 1fr;align-content:start}
+#blatt-dock .bl-inhalt .voll{grid-column:1/-1}
+.ezeile{display:flex;align-items:center;gap:var(--gap);min-width:0}
+.ezeile>.name{flex:0 0 38%;font-size:var(--fs-txt);line-height:1.15;color:var(--tinte)}
+.ezeile>.seg{flex:1 1 0}
+.ezeile.oben{flex-direction:column;align-items:stretch;gap:calc(var(--gap)/2)}
+.ezeile.oben>.name{flex:none}
+.schmal .ezeile{flex-direction:column;align-items:stretch;gap:calc(var(--gap)/2)}
+.schmal .ezeile>.name{flex:none}
+.schmal .ezeile>.seg{flex:none}
+.schmal .ezeile.lange>.seg{flex-direction:column}
+.schmal .wahl{grid-template-columns:1fr 1fr}.schmal .wahl.zwei{grid-template-columns:1fr}
+.wahl{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+.wahl.zwei{grid-template-columns:1fr 1fr}
+.wahl button[aria-pressed="true"]{background:var(--akzent);border-color:var(--akzent);color:var(--auf-akzent)}
+#blatt-dock .wahl{grid-template-columns:repeat(6,1fr)}
+#blatt-dock .wahl.fuenf{grid-template-columns:repeat(5,1fr)}
+.koord{display:flex;gap:var(--gap)}
+.koord .feld{min-height:var(--h-ans)}
+#blatt-dock .koord .feld{flex-direction:row;gap:.5em;min-height:var(--h-btn)}
+.bl-zonen{display:flex;flex-direction:column;gap:var(--gap)}
+#blatt-dock .bl-zonen{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.schmal .koord{flex-direction:column}
+#blatt-dock .hinweis.leer{display:none}
+.bl-zonen button[aria-pressed="true"]{background:var(--akzent);border-color:var(--akzent);color:var(--auf-akzent)}
+.hinweis{font-size:var(--fs-txt);color:var(--leise);line-height:1.25}
+.schmal .info{display:none}
+
+/* Entsperren per Schieberegler */
+.entsperren{z-index:7;background:var(--flaeche);border-radius:calc(var(--r) + 6px);box-shadow:0 0 0 1px var(--linie),0 12px 40px rgba(20,40,35,.18);
+  padding:var(--gap) calc(var(--gap)*1.5);display:flex;flex-direction:column;gap:var(--gap);justify-content:center}
+.entsperren p{font-size:var(--fs-txt);color:var(--leise)}
+.schiene{position:relative;height:var(--h-btn);border-radius:var(--h-btn);background:var(--flaeche-2);touch-action:none;display:flex;align-items:center;justify-content:center}
+.schiene span{font-size:var(--fs-txt);color:var(--leise);pointer-events:none}
+.schiene .knopf{position:absolute;left:4px;top:4px;width:calc(var(--h-btn) - 8px);height:calc(var(--h-btn) - 8px);border-radius:50%;background:var(--akzent);touch-action:none;cursor:grab;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.schiene .knopf::after{content:"";position:absolute;left:38%;top:30%;width:28%;height:40%;border-right:3px solid #fff;border-top:3px solid #fff;transform:rotate(45deg);transform-origin:60% 50%;box-sizing:border-box}

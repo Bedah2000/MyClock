@@ -1,0 +1,144 @@
+/* Feste Geometrie: layout.js setzt left/top/width/height in px. Nichts hier verändert die Uhr. */
+#app{position:fixed;left:0;top:0;width:100%;height:100%;overflow:hidden}
+#kopf,#fenster,#band,#uhr,#lob,.spalte,#dock,.blatt,.entsperren{position:absolute}
+
+/* Kopfleiste: nur Lehrkraft */
+#kopf{display:flex;align-items:center;gap:var(--gap);z-index:3}
+#bereiche{flex:none}
+#bereiche button{padding:.15em .7em}
+.bereich-name{font-size:var(--fs-txt);color:var(--leise);padding:0 .4em}
+#digital{flex:1 1 auto;display:flex;justify-content:center;align-items:center;min-width:0}
+#digital-zeit{font-size:var(--fs-dig);line-height:1;letter-spacing:.02em;font-variant-numeric:tabular-nums}
+#kopf-satz{font-size:var(--fs-worte);min-height:calc(var(--h-btn) - 4px);padding:.1em .6em;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:clip}
+#digital.aus #digital-zeit{visibility:hidden}
+.kopf-rechts{flex:none;display:flex;gap:var(--gap)}
+
+/* Spalten links und rechts der Uhr */
+.spalte{display:flex;flex-direction:column;gap:var(--gap);z-index:2}
+.spalte>.oben,.spalte>.unten{display:flex;flex-direction:column;gap:var(--gap);min-height:0}
+.spalte>.unten{margin-top:auto}
+#dock{display:flex;flex-direction:column;gap:var(--gap);z-index:2}
+#dock .zeile{display:flex;gap:var(--gap);align-items:stretch;min-height:0}
+#dock .stapel{display:flex;flex-direction:column;gap:var(--gap);flex:1 1 0;min-width:0}
+#dock .zeile>.block{flex:1 1 0;min-width:0}
+#dock .zeile>.b-lauf,#dock .zeile>.b-jetzt,#dock .zeile>.b-vorlesen,#dock .zeile>.b-fortschritt,#dock .zeile>.b-nochmal{flex:0 0 auto}
+#dock .b-jetzt button,#dock .b-vorlesen button{padding:.2em .9em}
+#dock .zeile>.b-tempo{flex:1 1 auto}
+#app[data-lage="hoch"] .spalte{display:none}
+#app[data-lage="quer"] #dock{display:none}
+
+.block{min-width:0}
+.block>button{width:100%}
+.block.seg>button{width:auto}
+.titel{font-size:var(--fs-kopf);line-height:1.2}
+.titel.klein{font-size:var(--fs-txt);color:var(--leise)}
+#dock .nur-spalte{display:none}
+
+/* ---- Zeigen ---- */
+.b-worte{display:flex;flex-direction:column;gap:.35em;justify-content:center}
+.wort-zeile{display:flex;flex-direction:column;gap:.05em}
+.wort-tag{font-size:var(--fs-txt);color:var(--leise)}
+.wort-text{font-size:var(--fs-worte);line-height:1.15;overflow-wrap:break-word}
+.b-worte.einzeln .wort-tag{display:none}
+#dock .b-worte{flex-direction:column;justify-content:center;gap:2px}
+#dock .wort-zeile{flex-direction:row;align-items:baseline;gap:.5em}
+#dock .wort-tag{min-width:6.2em}
+.b-start{display:flex;flex-direction:column;gap:calc(var(--gap)/2)}
+.seit{font-size:var(--fs-txt);color:var(--leise);min-height:1.2em}
+.seit .h{color:var(--stunde)} .seit .m{color:var(--minute)}
+#dock .b-start{flex-direction:row;align-items:center;gap:var(--gap)}
+#dock .b-start button{width:auto;flex:none}
+.b-lauf{display:flex;flex-direction:column;gap:calc(var(--gap)/2)}
+.reihe3{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.85fr) minmax(0,1.2fr);gap:var(--gap)}
+.reihe3 button{padding:.1em .2em;gap:.25em}
+#app[data-profil="tafel"] .spalte .reihe3 button{flex-direction:column;gap:2px;line-height:1}
+#app[data-profil="tafel"] .spalte .reihe3 button .sym{order:-1;width:.75em;height:.75em}
+.spalte.schmal .reihe3 button .lbl{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.spalte.schmal .reihe3 button .sym{width:calc(var(--fs-txt)*1.1);height:calc(var(--fs-txt)*1.1)}
+#dock .reihe3{grid-template-columns:auto auto auto}
+.b-hilfen{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+.spalte.schmal .b-hilfen{grid-template-columns:1fr}
+.spalte.schmal .b-tempo{flex-direction:column}
+.spalte.schmal .b-schnell{display:grid;grid-template-columns:1fr 1fr}
+.spalte.schmal .b-fakten dl>div{flex-direction:column;align-items:flex-start;gap:0;padding:.15em 0}
+.spalte.schmal .b-fakten dd{text-align:left}
+.spalte.schmal .karte .mini{width:calc(var(--fs-txt)*2)}
+#dock .b-hilfen{grid-template-columns:repeat(4,1fr)}
+.b-hilfen .schalter{min-height:var(--h-btn)}
+
+/* ---- Quiz ---- */
+.b-fortschritt{display:flex;gap:calc(var(--fs-txt)*.55);align-items:center;justify-content:center;min-height:calc(var(--fs-txt)*1.6)}
+.b-fortschritt i{width:calc(var(--fs-txt)*1.05);height:calc(var(--fs-txt)*1.05);border-radius:50%;border:2px solid var(--linie);background:var(--flaeche);flex:none}
+.b-fortschritt i.fertig{background:var(--akzent);border-color:var(--akzent)}
+.b-fortschritt i.jetzt{border:3px solid var(--akzent)}
+#dock .b-fortschritt{flex:none;justify-content:flex-start}
+.b-kontext p{font-size:var(--fs-txt);color:var(--leise);text-align:center;line-height:1.25}
+.b-kontext p.hilfe{color:var(--akzent-text)}
+#dock .b-kontext p{text-align:left}
+.b-paar{display:flex;align-items:center;gap:var(--gap)}
+.zeitkarte{flex:1 1 0;text-align:center;font-size:var(--fs-ans);background:var(--flaeche);border:var(--rand) solid var(--linie);border-radius:var(--r);padding:.15em 0;font-variant-numeric:tabular-nums}
+.pfeil{width:calc(var(--fs-ans)*1.2);height:calc(var(--fs-ans)*.6);flex:none;fill:none;stroke:var(--tinte);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.frage{font-size:var(--fs-kopf);line-height:1.2;text-align:center}
+.rueckmeldung{font-size:var(--fs-txt);color:var(--leise);text-align:center;min-height:1.2em;margin-top:.2em}
+.rueckmeldung.gut{color:var(--akzent-text)}
+.frage.loesung{font-size:var(--fs-ans);color:var(--akzent-text)}
+#dock .frage,#dock .rueckmeldung{text-align:left}
+.b-antworten{display:flex;flex-direction:column;gap:var(--gap)}
+#dock .b-antworten{display:grid;grid-template-columns:1fr 1fr}
+.antwort{font-size:var(--fs-ans);min-height:var(--h-ans);line-height:1.1;font-variant-numeric:tabular-nums;overflow-wrap:break-word;padding:.1em .2em}
+.antwort.falsch{background:var(--falsch-bg);border-color:var(--falsch-bg);color:var(--falsch-text);text-decoration:line-through}
+.antwort.richtig{background:var(--akzent-hell);border-color:var(--akzent);border-width:3px}
+.b-eingabe{display:flex;align-items:stretch;gap:var(--gap)}
+.feld{flex:1 1 0;flex-direction:column;gap:0;min-height:var(--h-ans);padding:.1em .2em}
+.feld small{font-size:var(--fs-txt);color:var(--leise);line-height:1.1}
+.feld span{font-size:var(--fs-ans);min-height:1.1em;font-variant-numeric:tabular-nums;line-height:1.1}
+.feld.aktiv{border-color:var(--akzent);border-width:3px;background:var(--akzent-hell)}
+.feld-trenner{align-self:center;font-size:var(--fs-ans)}
+#dock .zeile>.b-eingabe{flex:0 0 30%}
+#dock .satz{font-size:var(--fs-worte);min-height:var(--h-btn);padding:0 .4em}
+#dock .zeile>.b-satz{flex:1.6 1 0}
+.b-ziffern{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+.b-ziffern button{font-size:calc(var(--fs-ans)*.9);padding:0;font-variant-numeric:tabular-nums}
+.b-ziffern button.wort{font-size:var(--fs-txt)}
+#dock .b-ziffern{grid-template-columns:repeat(6,minmax(0,1fr))}
+#dock .b-ziffern.breit,#blatt-dock .b-ziffern.breit{grid-template-columns:repeat(8,minmax(0,1fr))}
+#dock .b-ziffern button,.blatt#blatt-dock .b-ziffern button{order:var(--o)}
+.satz{text-align:center;background:var(--akzent-hell);border:3px solid var(--akzent);border-radius:var(--r);display:flex;align-items:center;justify-content:center;line-height:1.1;color:var(--tinte)}
+.b-kacheln,.b-stunden{display:grid;gap:var(--gap);grid-template-columns:1fr}
+.b-stunden{grid-template-columns:repeat(3,1fr)}
+#dock .b-kacheln{grid-template-columns:1fr 1fr}
+#dock .b-stunden{grid-template-columns:repeat(6,1fr)}
+.kachel{min-height:var(--h-btn);font-size:var(--fs-txt);line-height:1.1}
+.b-satzknoepfe{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+.b-weiter .primaer{min-height:var(--h-ans)}
+#dock .b-nochmal{flex:0 0 auto}
+#dock .b-nochmal button{width:auto}
+
+/* ---- Sonne ---- */
+.ort{font-size:var(--fs-txt);color:var(--leise)}
+.datum{font-size:var(--fs-kopf);line-height:1.2}
+#dock .b-ort{display:flex;flex-direction:column;justify-content:center}
+.b-tage{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+#dock .b-tage{grid-template-columns:repeat(4,1fr);flex:2 1 0}
+.b-fakten dl{margin:0;display:flex;flex-direction:column}
+.b-fakten dl>div{display:flex;justify-content:space-between;align-items:baseline;gap:.5em;padding:.28em 0;border-bottom:1px solid var(--linie)}
+.b-fakten dl>div:last-child{border-bottom:0}
+.b-fakten dt{font-size:var(--fs-txt);color:var(--leise)}
+.b-fakten dd{margin:0;font-size:calc(var(--fs-txt)*1.12);text-align:right;font-variant-numeric:tabular-nums}
+.b-fakten dd small{font-size:var(--fs-txt);color:var(--leise)}
+#dock .b-fakten dl{display:grid;grid-template-columns:1fr 1fr;column-gap:calc(var(--gap)*3)}
+#dock .b-fakten dl>div{border-bottom:0;padding:.08em 0}
+.b-mond{display:flex;align-items:center;gap:.5em;font-size:var(--fs-txt)}
+.b-mond img{height:1.6em}
+.b-mond p{white-space:pre-line;line-height:1.25}
+.b-vergleich{display:flex;flex-direction:column;gap:var(--gap)}
+#dock .b-vergleich{flex-direction:row}
+.karte{display:flex;gap:var(--gap);align-items:stretch;background:var(--flaeche);border:var(--rand) solid var(--linie);border-radius:var(--r);padding:var(--gap);flex:1 1 0;min-width:0}
+.karte .mini{flex:none;width:calc(var(--fs-txt)*3.2);border-radius:calc(var(--r) - 4px);position:relative;overflow:hidden}
+.karte .mini i{position:absolute;left:50%;width:36%;aspect-ratio:1;border-radius:50%;background:#FFD84A;border:2px solid #7A5A10;transform:translate(-50%,-50%)}
+.karte p{font-size:var(--fs-txt);line-height:1.25}
+.karte p.k{font-size:calc(var(--fs-txt)*1.05)}
+.karte p.l{color:var(--leise)}
+#jahr{display:block;width:100%;touch-action:none;margin-top:calc(var(--gap)/2)}
+.b-jahr{display:flex;flex-direction:column}
+#dock .b-jahr .titel{display:none}

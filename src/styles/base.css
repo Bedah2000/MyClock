@@ -1,0 +1,54 @@
+/* Grundlagen: Farben, Schrift, Bedienelemente. Größen kommen als Variablen aus layout.js. */
+:root{
+  --bg:#F2F5F4; --flaeche:#FFFFFF; --flaeche-2:#E4EAE8; --tinte:#1D2B28; --leise:#4E605A; --linie:#C3D0CC;
+  --akzent:#13756B; --akzent-hell:#DCEFEA; --akzent-text:#0E5F57; --auf-akzent:#FFFFFF;
+  --stunde:#B03A48; --minute:#1E5EA6; --stunde-hell:rgba(176,58,72,.18); --minute-hell:rgba(30,94,166,.20);
+  --falsch-bg:#E6EBE9; --falsch-text:#6B7874; --zifferblatt:#FFFFFF; --fenster-neutral:#E7EDEB;
+  --sektor:#F6E3B4; --sektor-rand:#D9AE52; --schatten:rgba(20,40,35,.13); --rand:1.5px;
+  --fs-ans:26px; --fs-txt:20px; --fs-kopf:22px; --fs-dig:38px; --fs-worte:24px; --h-ans:60px; --h-btn:48px; --gap:8px; --r:12px;
+}
+html[data-schema="kontrast"]{
+  --bg:#FFFFFF; --flaeche:#FFFFFF; --flaeche-2:#FFFFFF; --tinte:#000000; --leise:#1A1A1A; --linie:#000000;
+  --akzent:#00564D; --akzent-hell:#D7F0EA; --akzent-text:#00463F; --stunde:#9A0010; --minute:#00379A;
+  --falsch-bg:#EDEDED; --falsch-text:#4A4A4A; --fenster-neutral:#F2F2F2; --rand:2.5px; --schatten:rgba(0,0,0,.25);
+}
+*{box-sizing:border-box;font-weight:400;font-synthesis:none}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--tinte);
+  font-family:Bayerndruck,sans-serif;touch-action:manipulation;-webkit-text-size-adjust:100%;
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+[hidden]{display:none!important}
+p{margin:0}
+img.metacom{height:1.15em;width:auto;vertical-align:-.22em;margin-right:.3em;background:#fff;border-radius:.2em}
+.unsichtbar{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+button{font:inherit;font-size:var(--fs-txt);line-height:1.15;color:var(--tinte);background:var(--flaeche);
+  border:var(--rand) solid var(--linie);border-radius:var(--r);min-height:var(--h-btn);padding:.2em .55em;
+  display:flex;align-items:center;justify-content:center;gap:.35em;text-align:center;cursor:pointer;
+  transition:background-color .15s,border-color .15s,color .15s,transform .1s}
+button:active{transform:scale(.98)}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--akzent);outline-offset:2px}
+button.primaer{background:var(--akzent);border-color:var(--akzent);color:var(--auf-akzent)}
+button.leise{background:transparent}
+button.gross{font-size:var(--fs-ans);min-height:var(--h-ans)}
+button[aria-pressed="true"]:not(.schalter){background:var(--akzent);border-color:var(--akzent);color:var(--auf-akzent)}
+button:disabled{cursor:default;opacity:1}
+.sym{width:.9em;height:.9em;fill:currentColor;flex:none}
+
+/* Segmentierter Schalter */
+.seg{display:flex;gap:2px;padding:2px;background:var(--flaeche-2);border-radius:calc(var(--r) + 4px);min-width:0}
+html[data-schema="kontrast"] .seg{border:var(--rand) solid var(--linie)}
+.seg>button{flex:1 1 auto;min-width:0;background:transparent;border-color:transparent;min-height:var(--h-btn);padding:.1em .15em}
+.kurz{display:none}
+.schmal .lang{display:none}.schmal .kurz{display:inline}
+.seg>button[aria-pressed="true"]{background:var(--akzent);border-color:var(--akzent);color:var(--auf-akzent);box-shadow:0 1px 3px rgba(0,0,0,.18)}
+
+/* Schalter mit eindeutigem Zustand: Fläche, Rahmen und Knopf */
+.schalter{justify-content:space-between;text-align:left;padding:.25em .5em .25em .6em;gap:.4em;hyphens:manual}
+.schalter span{min-width:0;overflow-wrap:break-word}
+.schalter i{flex:none;width:1.7em;height:1em;border-radius:1em;background:var(--linie);position:relative;transition:background-color .15s}
+.schalter i::after{content:"";position:absolute;top:.12em;left:.12em;width:.76em;height:.76em;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:left .15s}
+.schalter[aria-pressed="true"]{background:var(--akzent-hell);border-color:var(--akzent);border-width:calc(var(--rand) + 1px)}
+.schalter[aria-pressed="true"] i{background:var(--akzent)}
+.schalter[aria-pressed="true"] i::after{left:.82em}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation-duration:.01ms!important}}

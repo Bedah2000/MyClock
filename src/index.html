@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="de" data-schema="hell">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<title>{{TITEL}}</title>
+<style>
+@font-face{font-family:Bayerndruck;src:url('data:font/ttf;base64,{{FONT_BAYERNDRUCK}}') format('truetype');font-weight:400;font-display:block}
+/*STYLE*/
+</style>
+</head>
+<body>
+<div id="app" data-bereich="zeigen" data-profil="tablet" data-lage="quer">
+
+<header id="kopf">
+  <div id="bereiche" class="seg" role="group" aria-label="Bereich wählen">
+    <button type="button" data-bereich="zeigen">Zeigen</button>
+    <button type="button" data-bereich="quiz">Quiz</button>
+    <button type="button" data-bereich="sonne"><img class="metacom" src="{{METACOM_SONNE}}" alt="">Sonne</button>
+  </div>
+  <div id="bereich-name" class="bereich-name" hidden></div>
+  <div id="digital" aria-label="Uhrzeit digital"><span id="digital-zeit">09:00</span><span id="kopf-satz" class="satz" hidden></span></div>
+  <div class="kopf-rechts">
+    <button type="button" id="vollbild" class="leise" hidden>Vollbild</button>
+    <button type="button" id="einstellungen" class="leise">Einstellungen</button>
+  </div>
+</header>
+
+<div id="fenster" aria-hidden="true"></div>
+<svg id="band" aria-hidden="true"></svg>
+
+<svg id="uhr" viewBox="-117 -117 234 234" role="group" aria-label="Analoge Uhr">
+  <circle class="schatten" cx="0" cy="1.6" r="101"/>
+  <circle class="blatt" cx="0" cy="0" r="100"/>
+  <path id="sektor" class="sektor" d=""/>
+  <path id="verg-h" class="verg-h" d=""/>
+  <path id="verg-m" class="verg-m" d=""/>
+  <g id="striche"></g>
+  <g id="minutenzahlen" class="minutenzahlen"></g>
+  <g id="alleminuten" class="minutenzahlen"></g>
+  <g id="start-marke" class="start-marke"><circle r="2.6"/></g>
+  <defs><mask id="zahlmaske" maskUnits="userSpaceOnUse" x="-117" y="-117" width="234" height="234"><rect x="-117" y="-117" width="234" height="234" fill="#fff"/></mask></defs>
+  <g id="zeiger-maske">
+  <g id="zeiger-h" class="zeiger" role="slider" tabindex="0" aria-label="Stundenzeiger" aria-valuemin="0" aria-valuemax="1439">
+    <line class="z-stunde" x1="0" y1="8" x2="0" y2="-52"/>
+  </g>
+  <g id="zeiger-m" class="zeiger" role="slider" tabindex="0" aria-label="Minutenzeiger" aria-valuemin="0" aria-valuemax="1439">
+    <line class="z-minute" x1="0" y1="8" x2="0" y2="-57"/>
+    <line class="z-nadel" x1="0" y1="-56" x2="0" y2="-86"/>
+  </g>
+  <g id="zeiger-s" class="zeiger-s"><line x1="0" y1="14" x2="0" y2="-90"/></g>
+  </g>
+  <g id="ringe"></g>
+  <g id="stundenzahlen" class="stundenzahlen"></g>
+  <circle class="mitte" r="4.6"/>
+</svg>
+<div id="lob" aria-hidden="true"><div class="lob-scheibe"><span id="lob-text">Richtig!</span></div></div>
+
+<section id="links" class="spalte" aria-label="Linke Spalte"><div class="oben"></div><div class="unten"></div></section>
+<section id="rechts" class="spalte" aria-label="Rechte Spalte"><div class="oben"></div><div class="unten"></div></section>
+<section id="dock" aria-label="Bedienung"></section>
+
+<div id="entsperren" class="entsperren" hidden>
+  <p>Für die Lehrkraft: Regler nach rechts schieben</p>
+  <div class="schiene" id="schiene"><div class="knopf" id="schiebeknopf" role="button" aria-label="Einstellungen öffnen" tabindex="0"></div><span>Einstellungen</span></div>
+</div>
+<section id="blatt-links" class="blatt" aria-label="Einstellungen" hidden></section>
+<section id="blatt-rechts" class="blatt" aria-label="Einstellungen" hidden></section>
+<section id="blatt-dock" class="blatt" aria-label="Einstellungen" hidden></section>
+
+<div id="ablage" hidden>
+  <!-- ===== Zeigen ===== -->
+  <div class="block b-worte" id="b-worte" data-teil="zeigen sonne">
+    <div class="wort-zeile" data-form="sued"><span class="wort-tag">süddeutsch</span><span class="wort-text"></span></div>
+    <div class="wort-zeile" data-form="hoch"><span class="wort-tag">hochdeutsch</span><span class="wort-text"></span></div>
+  </div>
+  <div class="block b-start" id="b-start" data-teil="zeigen">
+    <button type="button" id="start-fest" aria-pressed="false">Start festhalten</button>
+    <p id="seit" class="seit"></p>
+  </div>
+  <div class="block b-lauf" id="b-lauf" data-teil="zeigen">
+    <div class="reihe3">
+      <button type="button" data-lauf="-1" aria-pressed="false"><svg class="sym" viewBox="0 0 20 20" aria-hidden="true"><path d="M14 3 5 10l9 7z"/></svg><span class="lbl">Rückwärts</span></button>
+      <button type="button" data-lauf="0" aria-pressed="true"><svg class="sym" viewBox="0 0 20 20" aria-hidden="true"><rect x="5" y="5" width="10" height="10" rx="1.5"/></svg><span class="lbl">Stopp</span></button>
+      <button type="button" data-lauf="1" aria-pressed="false"><span class="lbl">Vorwärts</span><svg class="sym" viewBox="0 0 20 20" aria-hidden="true"><path d="M6 3l9 7-9 7z"/></svg></button>
+    </div>
+  </div>
+  <div class="block b-tempo seg" id="b-tempo" role="group" aria-label="Tempo" data-teil="zeigen">
+    <button type="button" data-tempo="langsam">Langsam</button><button type="button" data-tempo="mittel">Mittel</button><button type="button" data-tempo="schnell">Schnell</button>
+  </div>
+  <div class="block b-jetzt" id="b-jetzt" data-teil="zeigen"><button type="button" id="jetzt" aria-pressed="false">Jetzt</button></div>
+  <div class="block b-titel" id="b-hilfen-titel" data-teil="zeigen"><p class="titel">Lernhilfen</p></div>
+  <div class="block b-hilfen" id="b-hilfen" data-teil="zeigen" role="group" aria-label="Lernhilfen">
+    <button type="button" class="schalter" data-hilfe="stunden" aria-pressed="false"><span>Stunden&shy;zahlen</span><i></i></button>
+    <button type="button" class="schalter" data-hilfe="minuten" aria-pressed="false"><span>Minuten&shy;zahlen</span><i></i></button>
+    <button type="button" class="schalter" data-hilfe="alleMinuten" aria-pressed="false"><span>Alle Minuten</span><i></i></button>
+    <button type="button" class="schalter" data-hilfe="bereich" aria-pressed="false"><span>Stunden&shy;bereich</span><i></i></button>
+    <button type="button" class="schalter" data-hilfe="hervorheben" aria-pressed="false"><span>Hervor&shy;heben</span><i></i></button>
+    <button type="button" class="schalter" data-hilfe="digital" aria-pressed="false"><span>Digital 24&nbsp;h</span><i></i></button>
+    <button type="button" class="schalter" data-hilfe="worte" aria-pressed="false"><span>In Worten</span><i></i></button>
+    <button type="button" class="schalter" data-hilfe="vorlesen" aria-pressed="false"><span>Vorlesen</span><i></i></button>
+  </div>
+  <div class="block b-sprechweise seg" id="b-sprechweise" role="group" aria-label="Sprechweise" data-teil="zeigen">
+    <button type="button" data-form="sued" aria-label="Süddeutsch"><span class="lang">Süddeutsch</span><span class="kurz">Süd</span></button><button type="button" data-form="hoch" aria-label="Hochdeutsch"><span class="lang">Hochdeutsch</span><span class="kurz">Hoch</span></button><button type="button" data-form="beide">Beide</button>
+  </div>
+  <div class="block b-vorlesen" id="b-vorlesen" data-teil="zeigen"><button type="button" class="vorlesen">Vorlesen</button></div>
+
+  <!-- ===== Quiz ===== -->
+  <div class="block b-fortschritt" id="b-fortschritt" data-teil="quiz" aria-label="Fortschritt der Runde"></div>
+  <div class="block b-kontext" id="b-kontext" data-teil="quiz"><p id="kontext"></p></div>
+  <div class="block b-paar" id="b-paar" data-teil="quiz">
+    <span class="zeitkarte" id="paar-start"></span>
+    <svg class="pfeil" viewBox="0 0 40 20" aria-label="bis"><path d="M2 10h33M26 3l9 7-9 7"/></svg>
+    <span class="zeitkarte" id="paar-ziel"></span>
+  </div>
+  <div class="block b-frage" id="b-frage" data-teil="quiz" aria-live="polite">
+    <p id="frage" class="frage"></p><p id="rueckmeldung" class="rueckmeldung"></p>
+  </div>
+  <div class="block b-antworten" id="b-antworten" data-teil="quiz" role="group" aria-label="Antworten"></div>
+  <div class="block b-eingabe" id="b-eingabe" data-teil="quiz">
+    <button type="button" class="feld" data-feld="0"><small id="feld0-name">Stunde</small><span id="feld0"></span></button>
+    <span class="feld-trenner" id="feld-trenner">:</span>
+    <button type="button" class="feld" data-feld="1"><small id="feld1-name">Minuten</small><span id="feld1"></span></button>
+  </div>
+  <div class="block b-ziffern" id="b-ziffern" data-teil="quiz sonne" role="group" aria-label="Ziffernfeld"></div>
+  <div class="block b-satz" id="b-satz" data-teil="quiz"><p id="satz" class="satz"></p></div>
+  <div class="block b-kacheln" id="b-kacheln-nach" data-teil="quiz" role="group" aria-label="Minutenteil, erste Stundenhälfte"></div>
+  <div class="block b-kacheln" id="b-kacheln-vor" data-teil="quiz" role="group" aria-label="Minutenteil, zweite Stundenhälfte"></div>
+  <div class="block b-stunden" id="b-stunden" data-teil="quiz" role="group" aria-label="Stunde"></div>
+  <div class="block b-satzknoepfe" id="b-satzknoepfe" data-teil="quiz">
+    <button type="button" id="satz-zurueck">Zurück</button><button type="button" id="satz-pruefen" class="primaer">Prüfen</button>
+  </div>
+  <div class="block b-vorlesen" id="b-vorlesen2" data-teil="quiz"><button type="button" class="vorlesen">Vorlesen</button></div>
+  <div class="block b-nochmal" id="b-nochmal" data-teil="quiz"><button type="button" id="nochmal">Noch einmal ansehen</button></div>
+  <div class="block b-weiter" id="b-weiter" data-teil="quiz"><button type="button" id="weiter" class="primaer gross">Los geht’s</button></div>
+  <div class="block b-pause" id="b-pause" data-teil="quiz"><button type="button" id="pause" class="leise">Pause</button></div>
+
+  <!-- ===== Sonne ===== -->
+  <div class="block b-ort" id="b-ort" data-teil="sonne"><p class="ort" id="ort-name">Herrieden</p><p class="datum" id="datum"></p></div>
+  <div class="block b-tage" id="b-tage" data-teil="sonne">
+    <button type="button" data-tage="-1">Tag zurück</button><button type="button" data-tage="1">Tag vor</button>
+    <button type="button" data-monat="-1">Monat zurück</button><button type="button" data-monat="1">Monat vor</button>
+  </div>
+  <div class="block b-schnell seg" id="b-schnell" role="group" aria-label="Datum schnell wählen" data-teil="sonne">
+    <button type="button" data-schnell="heute">Heute</button><button type="button" data-schnell="sommer">Sommer</button><button type="button" data-schnell="winter">Winter</button><button type="button" data-schnell="beide">Beide</button>
+  </div>
+  <div class="block b-tagspiel" id="b-tagspiel" data-teil="sonne"><button type="button" id="tagspiel" aria-pressed="false">Tag abspielen</button></div>
+  <div class="block b-fakten" id="b-fakten" data-teil="sonne">
+    <dl>
+      <div><dt>Aufgang</dt><dd id="f-auf"></dd></div>
+      <div><dt>Untergang</dt><dd id="f-unter"></dd></div>
+      <div><dt>Tageslänge</dt><dd id="f-laenge"></dd></div>
+      <div><dt>Sonne</dt><dd id="f-hoehe"></dd></div>
+    </dl>
+  </div>
+  <div class="block b-mond" id="b-mond" data-teil="sonne"><img class="metacom" src="{{METACOM_MOND}}" alt=""><p id="mond-text"></p></div>
+  <div class="block b-vergleich" id="b-vergleich" data-teil="sonne"></div>
+  <div class="block b-jahr" id="b-jahr" data-teil="sonne">
+    <p class="titel klein">Durch das Jahr</p>
+    <svg id="jahr" role="slider" aria-label="Tag im Jahr wählen" tabindex="0"></svg>
+  </div>
+
+  <!-- ===== Einstellungen ===== -->
+  <div class="block bl-reiter" id="bl-reiter" role="tablist" aria-label="Einstellungen">
+    <button type="button" role="tab" data-reiter="quiz">Quiz</button>
+    <button type="button" role="tab" data-reiter="runde">Runde</button>
+    <button type="button" role="tab" data-reiter="anzeige">Anzeige</button>
+    <button type="button" role="tab" data-reiter="sonne">Sonne</button>
+    <button type="button" role="tab" data-reiter="geraet">Gerät</button>
+    <button type="button" id="blatt-fertig" class="primaer">Fertig</button>
+  </div>
+  <div class="block bl-zonen" id="bl-zonen" role="group" aria-label="Zeitzone"></div>
+  <div class="block bl-inhalt" id="bl-inhalt"></div>
+  <img id="metacom-mond" src="{{METACOM_MOND}}" alt="" hidden>
+</div>
+
+<p id="ansage" class="unsichtbar" aria-live="polite"></p>
+</div>
+<!--VOREINSTELLUNG-->
+<script>
+/*SCRIPT*/
+</script>
+<!--SCORM-->
+</body>
+</html>

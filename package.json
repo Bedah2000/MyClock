@@ -1,0 +1,12 @@
+{
+  "name": "lernuhr",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Meine Lernuhr: Uhrzeit zeigen, üben und mit der Sonne verbinden. SCORM 1.2 für mebis.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test scripts/test-logik.mjs",
+    "pruefen": "node scripts/pruefen.mjs"
+  },
+  "license": "UNLICENSED"
+}
