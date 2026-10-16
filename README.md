@@ -75,11 +75,11 @@ Der Knopf „Vollbild“ erscheint nur, wenn der Rahmen Vollbild erlaubt.
 ## Zifferblatt
 
 - Die Zeiger laufen über die Zahlen wie bei einer echten Uhr.
-- Die Minutenzahlen stehen in einem hellen Minutenring außen. Das Innenblatt ist dafür etwas kleiner (93 %), die Minutenzahlen im 5-Minuten-Raster sind etwa 25 % höher als vorher. Bei „alle Minuten“ begrenzen die 60 Zahlen am Umfang die Größe; sie sind etwa so groß wie vorher, aber kräftiger.
+- Die Minutenzahlen stehen mittig in einem hellen Minutenring außen, in natürlicher Breite (nicht gestaucht). Das Innenblatt ist dafür etwas kleiner (93 %), die Minutenzahlen im 5-Minuten-Raster sind etwa 25 % höher als vorher. Bei „alle Minuten“ begrenzen die 60 Zahlen am Umfang der Ringmitte die Größe; sie sind deshalb kleiner als die 5er-Zahlen. Mit „Hervorheben“ erscheint die aktuelle Minute in voller Größe mit Rahmen.
 - **Zahlen auf der Uhr:** voreingestellt „Klar“ (Atkinson Hyperlegible Next SemiBold, entwickelt vom Braille Institute für Menschen mit Sehbehinderung). Die Ziffernformen ähneln Bayerndruck (Eins mit Fahne ohne Fuß, offene Vier), stehen aber aufrecht und sind kräftiger. „Bayerndruck“ ist in den Einstellungen (Reiter Anzeige) wählbar; alle anderen Texte bleiben in Bayerndruck.
 - **Hervorheben:** Die aktuelle Stundenzahl wird größer und umrandet, die aktuelle Minutenzahl bekommt einen Rahmen (im 5-Minuten-Raster die zuletzt erreichte Zahl). Alle anderen Zahlen werden grau und blass.
 
-`npm run pruefen` rastert die Minutenzahlen pixelgenau und prüft in beiden Schriften, dass keine Zahl eine andere berührt und alle im Ring liegen.
+`npm run pruefen` rastert die Minutenzahlen pixelgenau und prüft in beiden Schriften, dass keine Zahl eine andere berührt, alle mittig im Ring liegen und keine gestaucht ist.
 
 ## Uhrzeit in Worten: süddeutsch und hochdeutsch
 

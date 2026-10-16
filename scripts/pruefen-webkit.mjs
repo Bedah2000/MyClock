@@ -68,7 +68,7 @@ async function geraet(name, breite, hoehe) {
   await schritt('zeigen');
   for (const zf of ['klar', 'bayerndruck']) {
     const ring = await app(z => { LU.einst.ziffern = z; LU.s.hilfen.minuten = true; LU.zeichne(); return __pruef.minutenring(); }, zf);
-    pruefe(gruppe, `Minutenring (${zf}): Zahlen überlappen nicht und liegen im Ring`, ring.length === 0, ring.slice(0, 3).join('; '));
+    pruefe(gruppe, `Minutenring (${zf}): Zahlen mittig, ungestaucht, ohne Berührung`, ring.length === 0, ring.slice(0, 3).join('; '));
   }
   const ueber = await app(() => {
     LU.einst.ziffern = 'klar'; LU.s.instant = Lernzeit.wallToInstant(LU.ymd(), 5 * 60, LU.zone()); LU.zeichne();

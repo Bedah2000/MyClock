@@ -187,7 +187,7 @@ async function geraetPruefen(browser, geraet) {
   // Minutenzahlen im Ring: keine Überlappung, in beiden Schriften
   for (const zf of ['klar', 'bayerndruck']) {
     const ring = await f.evaluate(z => { LU.einst.ziffern = z; LU.zeichne(); return __pruef.minutenring(); }, zf);
-    pruefe(geraet.name, `Minutenring (${zf}): Zahlen überlappen nicht und liegen im Ring`, ring.length === 0, ring.slice(0, 3).join('; '));
+    pruefe(geraet.name, `Minutenring (${zf}): Zahlen mittig, ungestaucht, ohne Berührung`, ring.length === 0, ring.slice(0, 3).join('; '));
   }
   await f.evaluate(() => { LU.einst.ziffern = 'klar'; LU.setzeStufe(window.__stufeVorher); LU.zeichne(); });
   await f.tap('#jetzt'); await pause(300);

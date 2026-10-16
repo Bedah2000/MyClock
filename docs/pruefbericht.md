@@ -1,6 +1,6 @@
 # Prüfbericht
 
-Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 06:54:05 mit Chromium 141.0.7390.37 und Touch-Emulation. Die App läuft jeweils in einem iframe unter einer 48 px hohen Leiste als Nachbildung des mebis-Rahmens.
+Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 07:37:46 mit Chromium 141.0.7390.37 und Touch-Emulation. Die App läuft jeweils in einem iframe unter einer 48 px hohen Leiste als Nachbildung des mebis-Rahmens.
 
 **325 von 325 Prüfungen bestanden.**
 
@@ -16,12 +16,12 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 06:54:05 mit Chromi
 | ✅ | zeigen: Schüler-Bedienung in den unteren zwei Dritteln |  |
 | ✅ | Zeiger liegen über den Zahlen (Minutenzeiger verdeckt um 5:00 die 12) | z-minute |
 | ✅ | Hervorheben: andere Zahlen grau und blass (4:23 → Stunde 4, Minute 20) | 11 / 4 / 11 / 20 / 0.5 |
-| ✅ | Minutenring (klar): Zahlen überlappen nicht und liegen im Ring |  |
-| ✅ | Minutenring (bayerndruck): Zahlen überlappen nicht und liegen im Ring |  |
+| ✅ | Minutenring (klar): Zahlen mittig, ungestaucht, ohne Berührung |  |
+| ✅ | Minutenring (bayerndruck): Zahlen mittig, ungestaucht, ohne Berührung |  |
 | ✅ | Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit |  |
-| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(342) rotate(342) rotate(348) |
-| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.1 min, ▶▶ 16.0 min, danach ◀ 15.4 |
-| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 23:45, 21:00, 07:15, 11:15 |
+| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(210) rotate(216) rotate(216) |
+| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.1 min, ▶▶ 15.8 min, danach ◀ 15.2 |
+| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 02:15, 15:45, 14:30, 07:45 |
 | ✅ | Stufe merkt sich geänderte Hilfen; Worte und Digital bleiben gleich | [[false,true],[true,true,"quarter"]] |
 | ✅ | Touch: Minutenzeiger von 9:00 um eine Viertelstunde gezogen | 09:15 |
 | ✅ | Touch: kein Scrollen oder Zoomen beim Ziehen |  |
@@ -124,7 +124,7 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 06:54:05 mit Chromi
 | ✅ | Sonne: Antippen im Jahresband wählt ein Datum | 2026-06-25 |
 | ✅ | Uhr in 22 Schritten an derselben Stelle (500,100,600,600) | 500,100,600,600 |
 | ✅ | Uhr 75 % der Höhe (Zifferblatt 60 %) |  |
-| ✅ | Ziffernhöhe: Stunden 35.3 px, Minuten 29.7 px (vorher 23.3 px), alle Minuten 19.7 px | alle Minuten sind durch 60 Zahlen am Umfang begrenzt |
+| ✅ | Ziffernhöhe: Stunden 35.3 px, Minuten 29.7 px (vorher 23.3 px), alle Minuten 13.8 px | alle Minuten sind durch 60 Zahlen am Umfang begrenzt |
 | ✅ | Fernlesetest: Bild auf 25 % gespeichert (Sichtprüfung im Bericht) | docs/screens/escreen-fernlesetest-25prozent.png |
 | ✅ | Keine Netzwerkanfragen außer Rahmen und App |  |
 | ✅ | Keine JavaScript-Fehler |  |
@@ -140,12 +140,12 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 06:54:05 mit Chromi
 | ✅ | zeigen: Mindestgrößen |  |
 | ✅ | Zeiger liegen über den Zahlen (Minutenzeiger verdeckt um 5:00 die 12) | z-minute |
 | ✅ | Hervorheben: andere Zahlen grau und blass (4:23 → Stunde 4, Minute 20) | 11 / 4 / 11 / 20 / 0.5 |
-| ✅ | Minutenring (klar): Zahlen überlappen nicht und liegen im Ring |  |
-| ✅ | Minutenring (bayerndruck): Zahlen überlappen nicht und liegen im Ring |  |
+| ✅ | Minutenring (klar): Zahlen mittig, ungestaucht, ohne Berührung |  |
+| ✅ | Minutenring (bayerndruck): Zahlen mittig, ungestaucht, ohne Berührung |  |
 | ✅ | Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit |  |
-| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(0) rotate(6) rotate(6) |
-| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.0 min, ▶▶ 15.5 min, danach ◀ 15.0 |
-| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 11:30, 18:15, 17:30, 08:30 |
+| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(240) rotate(240) rotate(246) |
+| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.1 min, ▶▶ 15.8 min, danach ◀ 15.2 |
+| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 22:45, 14:30, 13:00, 13:30 |
 | ✅ | Stufe merkt sich geänderte Hilfen; Worte und Digital bleiben gleich | [[false,true],[true,true,"quarter"]] |
 | ✅ | quiz-start: kein Scrollen, nichts ragt heraus |  |
 | ✅ | quiz-start: Mindestgrößen |  |
@@ -222,7 +222,7 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 06:54:05 mit Chromi
 | ✅ | Sonne: Uhrzeit und Sonnenstand gekoppelt (Mittag hoch, Nacht dunkel) | 64° hoch / untergegangen |
 | ✅ | Sonne: Antippen im Jahresband wählt ein Datum | 2026-06-25 |
 | ✅ | Uhr in 22 Schritten an derselben Stelle (259,79,482,482) | 259,79,482,482 |
-| ✅ | Ziffernhöhe: Stunden 28.4 px, Minuten 23.9 px (vorher 18.7 px), alle Minuten 15.9 px | alle Minuten sind durch 60 Zahlen am Umfang begrenzt |
+| ✅ | Ziffernhöhe: Stunden 28.4 px, Minuten 23.9 px (vorher 18.7 px), alle Minuten 11.1 px | alle Minuten sind durch 60 Zahlen am Umfang begrenzt |
 | ✅ | Keine Netzwerkanfragen außer Rahmen und App |  |
 | ✅ | Keine JavaScript-Fehler |  |
 
@@ -232,17 +232,17 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 06:54:05 mit Chromi
 |---|---|---|
 | ✅ | Vollbild-Knopf erscheint, wenn der Rahmen Vollbild erlaubt |  |
 | ✅ | Layout erkannt: tablet |  |
-| ✅ | Zeigen: vergangene Zeit als Fläche und in Std./Min. | 0 Std. 13 Min. |
+| ✅ | Zeigen: vergangene Zeit als Fläche und in Std./Min. | 0 Std. 14 Min. |
 | ✅ | zeigen: kein Scrollen, nichts ragt heraus |  |
 | ✅ | zeigen: Mindestgrößen |  |
 | ✅ | Zeiger liegen über den Zahlen (Minutenzeiger verdeckt um 5:00 die 12) | z-minute |
 | ✅ | Hervorheben: andere Zahlen grau und blass (4:23 → Stunde 4, Minute 20) | 11 / 4 / 11 / 20 / 0.5 |
-| ✅ | Minutenring (klar): Zahlen überlappen nicht und liegen im Ring |  |
-| ✅ | Minutenring (bayerndruck): Zahlen überlappen nicht und liegen im Ring |  |
+| ✅ | Minutenring (klar): Zahlen mittig, ungestaucht, ohne Berührung |  |
+| ✅ | Minutenring (bayerndruck): Zahlen mittig, ungestaucht, ohne Berührung |  |
 | ✅ | Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit |  |
-| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(0) rotate(6) rotate(6) |
-| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.1 min, ▶▶ 15.5 min, danach ◀ 15.0 |
-| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 18:15, 22:15, 18:30, 10:00 |
+| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(246) rotate(246) rotate(252) |
+| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.1 min, ▶▶ 16.0 min, danach ◀ 15.4 |
+| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 19:00, 12:15, 00:00, 13:30 |
 | ✅ | Stufe merkt sich geänderte Hilfen; Worte und Digital bleiben gleich | [[false,true],[true,true,"quarter"]] |
 | ✅ | Touch: Minutenzeiger von 9:00 um eine Viertelstunde gezogen | 09:15 |
 | ✅ | Touch: kein Scrollen oder Zoomen beim Ziehen |  |
@@ -323,7 +323,7 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 06:54:05 mit Chromi
 | ✅ | Sonne: Uhrzeit und Sonnenstand gekoppelt (Mittag hoch, Nacht dunkel) | 64° hoch / untergegangen |
 | ✅ | Sonne: Antippen im Jahresband wählt ein Datum | 2026-06-25 |
 | ✅ | Uhr in 22 Schritten an derselben Stelle (107.5,76,545,545) | 107.5,76,545,545 |
-| ✅ | Ziffernhöhe: Stunden 32.1 px, Minuten 27 px (vorher 21.1 px), alle Minuten 17.9 px | alle Minuten sind durch 60 Zahlen am Umfang begrenzt |
+| ✅ | Ziffernhöhe: Stunden 32.1 px, Minuten 27 px (vorher 21.1 px), alle Minuten 12.6 px | alle Minuten sind durch 60 Zahlen am Umfang begrenzt |
 | ✅ | Drehen ins Querformat: Zustand bleibt erhalten | quer |
 | ✅ | Nach dem Drehen: kein Scrollen, nichts ragt heraus |  |
 | ✅ | Zurück ins Hochformat: Zustand bleibt erhalten |  |

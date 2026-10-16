@@ -12,11 +12,14 @@ const f=n=>n.toFixed(2);
 const uhr={};LU.uhr=uhr;
 /* Innenblatt verkleinert, damit die Minutenzahlen im Ring größer werden können (ausgemessen mit den Umrissen der Ziffern). */
 const K=.93;uhr.K=K;
-const R_STUNDE=70,R_M5=104.6,X5=1.12,HV=1.12;
-/* Je Schrift: Ziffernhöhe und Breiten (Anteil am Geviert), Schriftgrößen für Stunden (innen), 5er-Minuten und alle Minuten (außen). */
+const R_STUNDE=70,HV=1.12;
+/* Minutenring: von der Außenkante des Innenblatts bis zur Innenkante des Rings; alle Minutenzahlen stehen mittig darin, ungestaucht. */
+const R_INNEN=100*K+.9*K,R_AUSSEN=116.4-.6,R_MITTE=(R_INNEN+R_AUSSEN)/2;uhr.RING={innen:R_INNEN,aussen:R_AUSSEN,mitte:R_MITTE};
+/* Je Schrift: Ziffernhöhe und Breiten (Anteil am Geviert), Schriftgrößen für Stunden (innen), 5er-Minuten und alle Minuten,
+   Faktor für die 5er bei allen Minuten. Größen pixelgenau ausgemessen (npm run pruefen prüft Abstand und Lage im Ring). */
 const SCHRIFT={
-  klar:{fam:'Ziffern',dh:.675,adv:[.656,.43,.569,.592,.621,.602,.617,.529,.621,.578],stunde:21.3,m5:16.8,alle:11.4,rAlle:109,stauch:.7},
-  bayerndruck:{fam:'Bayerndruck',dh:.789,adv:[.64,.64,.64,.64,.64,.64,.64,.64,.64,.64],stunde:18.3,m5:16.4,alle:8.9,rAlle:109,stauch:.78}
+  klar:{fam:'Ziffern',dh:.675,adv:[.656,.43,.569,.592,.621,.602,.617,.529,.621,.578],stunde:21.3,m5:16.8,alle:8,x5:1.06},
+  bayerndruck:{fam:'Bayerndruck',dh:.789,adv:[.64,.64,.64,.64,.64,.64,.64,.64,.64,.64],stunde:18.3,m5:16.4,alle:7,x5:1}
 };
 uhr.SCHRIFT=SCHRIFT;
 const breite=(n,S)=>String(n).split('').reduce((b,z)=>b+S.adv[+z],0);
@@ -30,9 +33,8 @@ uhr.aufbauen=function(){
   uhr.zahlenBauen();
 };
 /* Zahl mit Grundlinie aus der Ziffernhöhe: mittig auf (x|y), unabhängig von Browser-Grundlinien. */
-function zahl(n,x,y,fs,S,parent,stauch){
+function zahl(n,x,y,fs,S,parent){
   const a={x:f(x),y:f(y+fs*S.dh/2),'font-size':f(fs)};
-  if(stauch&&n>9){a.textLength=f(breite(n,S)*fs*stauch);a.lengthAdjust='spacingAndGlyphs';}
   const t=el('text',a,parent);t.textContent=n;return t;
 }
 uhr.zahlenBauen=function(){
@@ -41,8 +43,8 @@ uhr.zahlenBauen=function(){
   for(const id of ['stundenzahlen','minutenzahlen','alleminuten'])$(id).replaceChildren();
   stundenText=[];minText=[];alleText=[];
   for(let n=1;n<=12;n++){const [x,y]=P(n*30,R_STUNDE);stundenText.push(zahl(n,x,y,S.stunde,S,$('stundenzahlen')));}
-  for(let n=0;n<60;n+=5){const [x,y]=P(n*6,R_M5);minText.push(zahl(n,x,y,S.m5,S,$('minutenzahlen')));}
-  for(let n=0;n<60;n++){const [x,y]=P(n*6,S.rAlle),fs=S.alle*(n%5?1:X5);alleText.push(zahl(n,x,y,fs,S,$('alleminuten'),S.stauch));}
+  for(let n=0;n<60;n+=5){const [x,y]=P(n*6,R_MITTE);minText.push(zahl(n,x,y,S.m5,S,$('minutenzahlen')));}
+  for(let n=0;n<60;n++){const [x,y]=P(n*6,R_MITTE),fs=S.alle*(n%5?1:S.x5);alleText.push(zahl(n,x,y,fs,S,$('alleminuten')));}
 };
 
 function keil(a0,grad,r0,r1){
@@ -89,7 +91,7 @@ uhr.zeichne=function(sicht){
   minText.forEach((t,i)=>{t.classList.toggle('matt',hv&&i*5!==m5);t.classList.toggle('weg',hv&&i*5===zeigMin&&!sicht.alleMinuten);});
   alleText.forEach((t,i)=>{t.classList.toggle('matt',hv&&i!==mm);t.classList.toggle('weg',hv&&i===zeigMin&&!!sicht.alleMinuten);});
   if(hv&&zeigMin!=null){
-    const [x,y]=P(zeigMin*6,R_M5),h=S.m5*S.dh,w=breite(zeigMin,S)*S.m5;
+    const [x,y]=P(zeigMin*6,R_MITTE),h=S.m5*S.dh,w=breite(zeigMin,S)*S.m5;
     el('rect',{x:f(x-w/2-h*.38),y:f(y-h*.8),width:f(w+h*.76),height:f(h*1.6),rx:f(h*.8),class:'mring'},fokus);
     zahl(zeigMin,x,y,S.m5,S,fokus);
   }

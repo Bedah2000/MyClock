@@ -72,7 +72,8 @@ export const IM_APP = () => {
       const tl = t.getAttribute('textLength'), k = tl ? +tl / w : 1, x = +t.getAttribute('x'), y = +t.getAttribute('y'), start = x - w * k / 2;
       return { x0: start - m.actualBoundingBoxLeft / 10 * k, x1: start + m.actualBoundingBoxRight / 10 * k, y0: y - m.actualBoundingBoxAscent / 10, y1: y + m.actualBoundingBoxDescent / 10 };
     },
-    // Minutenzahlen: Glyphen pixelgenau gerastert (4 px je Einheit), mit Sicherheitsrand. Keine Zahl berührt eine andere, alle liegen im Minutenring.
+    // Minutenzahlen: Glyphen pixelgenau gerastert (4 px je Einheit), mit Sicherheitsrand. Keine Zahl berührt eine andere, alle liegen
+    // im Minutenring, mittig (Tintenmitte höchstens 0,8 Einheiten neben der Ringmitte) und ungestaucht.
     minutenring(rand = .25) {
       const p = [], K = LU.uhr.K, rin = 100 * K + .9 * K, rout = 116.4 - .6, S = 4, N = 234 * S;
       const cv = document.createElement('canvas'); cv.width = cv.height = N; const c = cv.getContext('2d', { willReadFrequently: true });
@@ -93,6 +94,8 @@ export const IM_APP = () => {
           }
           if (!ring) p.push(`${id}: ${t.textContent} ragt aus dem Ring`);
           if (wen >= 0) p.push(`${id}: ${t.textContent} berührt ${ts[wen].textContent}`);
+          if (Math.abs(Math.hypot((b.x0 + b.x1) / 2, (b.y0 + b.y1) / 2) - LU.uhr.RING.mitte) > .8) p.push(`${id}: ${t.textContent} nicht mittig im Ring`);
+          if (t.hasAttribute('textLength')) p.push(`${id}: ${t.textContent} gestaucht`);
         });
       }
       return p;
