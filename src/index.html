@@ -7,6 +7,10 @@
 <title>{{TITEL}}</title>
 <style>
 @font-face{font-family:Bayerndruck;src:url('data:font/ttf;base64,{{FONT_BAYERNDRUCK}}') format('truetype');font-weight:400;font-display:block}
+/* Ziffern der Uhr: Atkinson Hyperlegible Next SemiBold, nur 0-9, Null ohne Schrägstrich (abgeändert, scripts/ziffern-bauen.py).
+   Copyright 2020-2024 The Atkinson Hyperlegible Next Project Authors (https://github.com/googlefonts/atkinson-hyperlegible-next).
+   Lizenz: SIL Open Font License 1.1, https://openfontlicense.org */
+@font-face{font-family:Ziffern;src:url('data:font/woff2;base64,{{FONT_ZIFFERN}}') format('woff2');font-weight:400 700;font-display:block}
 /*STYLE*/
 </style>
 </head>
@@ -57,17 +61,20 @@
 <svg id="band" aria-hidden="true"></svg>
 
 <svg id="uhr" viewBox="-117 -117 234 234" role="group" aria-label="Analoge Uhr">
-  <circle class="schatten" cx="0" cy="1.6" r="101"/>
+  <circle class="schatten" cx="0" cy="1.6" r="116.6"/>
+  <circle class="minutenring" cx="0" cy="0" r="116.4"/>
+  <g id="minutenzahlen" class="minutenzahlen"></g>
+  <g id="alleminuten" class="minutenzahlen"></g>
+  <g id="innen">
   <circle class="blatt" cx="0" cy="0" r="100"/>
   <path id="sektor" class="sektor" d=""/>
   <path id="verg-h" class="verg-h" d=""/>
   <path id="verg-m" class="verg-m" d=""/>
   <g id="striche"></g>
-  <g id="minutenzahlen" class="minutenzahlen"></g>
-  <g id="alleminuten" class="minutenzahlen"></g>
   <g id="start-marke" class="start-marke"><circle r="2.6"/></g>
-  <defs><mask id="zahlmaske" maskUnits="userSpaceOnUse" x="-117" y="-117" width="234" height="234"><rect x="-117" y="-117" width="234" height="234" fill="#fff"/></mask></defs>
-  <g id="zeiger-maske">
+  <g id="ringe"></g>
+  <g id="stundenzahlen" class="stundenzahlen"></g>
+  <g id="zeiger-gruppe">
   <g id="zeiger-h" class="zeiger" role="slider" tabindex="0" aria-label="Stundenzeiger" aria-valuemin="0" aria-valuemax="1439">
     <path class="z-stunde" d="M-2.6 12.5 L-4.6 0 L-2.9 -46.5 Q0 -55.5 2.9 -46.5 L4.6 0 L2.6 12.5 Q0 14.2 -2.6 12.5Z"/>
   </g>
@@ -76,9 +83,9 @@
   </g>
   <g id="zeiger-s" class="zeiger-s"><line x1="0" y1="17" x2="0" y2="-91"/><circle cx="0" cy="11" r="2.6"/></g>
   </g>
-  <g id="ringe"></g>
-  <g id="stundenzahlen" class="stundenzahlen"></g>
   <circle class="mitte" r="4.4"/><circle class="mitte-punkt" r="1.5"/>
+  </g>
+  <g id="mfokus" class="minutenzahlen"></g>
 </svg>
 <div id="lob" aria-hidden="true"><div class="lob-scheibe"><span id="lob-text">Richtig!</span></div></div>
 

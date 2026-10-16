@@ -4,13 +4,13 @@
   --akzent:#13756B; --akzent-hell:#DCEFEA; --akzent-text:#0E5F57; --auf-akzent:#FFFFFF;
   --stunde:#B03A48; --minute:#1E5EA6; --sekunde:#3C4A46; --stunde-hell:rgba(176,58,72,.18); --minute-hell:rgba(30,94,166,.20);
   --falsch-bg:#E6EBE9; --falsch-text:#6B7874; --zifferblatt:#FFFFFF; --fenster-neutral:#E7EDEB;
-  --sektor:#F6E3B4; --sektor-rand:#D9AE52; --schatten:rgba(20,40,35,.13); --rand:1.5px;
+  --minutenring:#EAF1F9; --zahl-matt:#8A9692; --sektor:#F6E3B4; --sektor-rand:#D9AE52; --schatten:rgba(20,40,35,.13); --rand:1.5px;
   --fs-ans:22px; --fs-txt:18px; --fs-kopf:20px; --fs-dig:34px; --fs-worte:20px; --fs-klein:15px; --h-ans:52px; --h-btn:44px; --gap:8px; --r:12px;
 }
 html[data-schema="kontrast"]{
   --bg:#FFFFFF; --flaeche:#FFFFFF; --flaeche-2:#FFFFFF; --tinte:#000000; --leise:#1A1A1A; --linie:#000000;
   --akzent:#00564D; --akzent-hell:#D7F0EA; --akzent-text:#00463F; --stunde:#9A0010; --minute:#00379A;
-  --falsch-bg:#EDEDED; --falsch-text:#4A4A4A; --fenster-neutral:#F2F2F2; --rand:2.5px; --schatten:rgba(0,0,0,.25);
+  --falsch-bg:#EDEDED; --falsch-text:#4A4A4A; --fenster-neutral:#F2F2F2; --minutenring:#FFFFFF; --zahl-matt:#6E6E6E; --rand:2.5px; --schatten:rgba(0,0,0,.25);
 }
 *{box-sizing:border-box;font-weight:400;font-synthesis:none}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--tinte);

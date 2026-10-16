@@ -1,5 +1,6 @@
 /* Die Uhr: Zifferblatt, Lernhilfen, gekoppelte Zeiger, Ziehen mit dem ersten Finger.
-   Einheiten im viewBox: Zifferblatt-Radius 100, Minutenzahlen außen bis 117. */
+   Einheiten im viewBox: außen der Minutenring bis 117, innen das Zifferblatt (Radius 100, mit K verkleinert).
+   Zeiger liegen über den Zahlen wie bei einer echten Uhr. */
 (function(){
 'use strict';
 const LU=window.LU,$=LU.$,Z=LU.Z,A=LU.A;
@@ -9,18 +10,39 @@ function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const
 const f=n=>n.toFixed(2);
 
 const uhr={};LU.uhr=uhr;
-const stundenText=[],minText=[],alleText=[];
+/* Innenblatt verkleinert, damit die Minutenzahlen im Ring größer werden können (ausgemessen mit den Umrissen der Ziffern). */
+const K=.93;uhr.K=K;
+const R_STUNDE=70,R_M5=104.6,X5=1.12,HV=1.12;
+/* Je Schrift: Ziffernhöhe und Breiten (Anteil am Geviert), Schriftgrößen für Stunden (innen), 5er-Minuten und alle Minuten (außen). */
+const SCHRIFT={
+  klar:{fam:'Ziffern',dh:.675,adv:[.656,.43,.569,.592,.621,.602,.617,.529,.621,.578],stunde:21.3,m5:16.8,alle:11.4,rAlle:109,stauch:.7},
+  bayerndruck:{fam:'Bayerndruck',dh:.789,adv:[.64,.64,.64,.64,.64,.64,.64,.64,.64,.64],stunde:18.3,m5:16.4,alle:8.9,rAlle:109,stauch:.78}
+};
+uhr.SCHRIFT=SCHRIFT;
+const breite=(n,S)=>String(n).split('').reduce((b,z)=>b+S.adv[+z],0);
+let stundenText=[],minText=[],alleText=[],gebaut=null;
 
 uhr.aufbauen=function(){
+  $('innen').setAttribute('transform',`scale(${K})`);
   const st=$('striche');
   for(let i=0;i<60;i++){const gross=i%5===0,[x1,y1]=P(i*6,gross?86:91),[x2,y2]=P(i*6,97.5);
     el('line',{x1:f(x1),y1:f(y1),x2:f(x2),y2:f(y2),class:'strich'+(gross?' gross':'')},st);}
-  const maske=$('zahlmaske');for(let n=1;n<=12;n++){const [x,y]=P(n*30,72);el('circle',{cx:f(x),cy:f(y),r:n>9?12.5:10,fill:'#000'},maske);}
-  for(let n=1;n<=12;n++){const [x,y]=P(n*30,72);const t=el('text',{x:f(x),y:f(y),'font-size':17},$('stundenzahlen'));t.textContent=n;stundenText.push(t);}
-  for(let n=0;n<60;n+=5){const [x,y]=P(n*6,109.5);const t=el('text',{x:f(x),y:f(y),'font-size':11.5},$('minutenzahlen'));t.textContent=n;minText.push(t);}
-  for(let n=0;n<60;n++){const [x,y]=P(n*6,109.8),fs=n%5?9.6:10.8,a={x:f(x),y:f(y),'font-size':fs};
-    if(n>9){a.textLength=(fs*1.05).toFixed(2);a.lengthAdjust='spacingAndGlyphs';}
-    const t=el('text',a,$('alleminuten'));t.textContent=n;alleText.push(t);}
+  uhr.zahlenBauen();
+};
+/* Zahl mit Grundlinie aus der Ziffernhöhe: mittig auf (x|y), unabhängig von Browser-Grundlinien. */
+function zahl(n,x,y,fs,S,parent,stauch){
+  const a={x:f(x),y:f(y+fs*S.dh/2),'font-size':f(fs)};
+  if(stauch&&n>9){a.textLength=f(breite(n,S)*fs*stauch);a.lengthAdjust='spacingAndGlyphs';}
+  const t=el('text',a,parent);t.textContent=n;return t;
+}
+uhr.zahlenBauen=function(){
+  const S=SCHRIFT[LU.einst.ziffern]||SCHRIFT.klar;gebaut=LU.einst.ziffern;
+  $('uhr').classList.toggle('z-bayerndruck',LU.einst.ziffern==='bayerndruck');
+  for(const id of ['stundenzahlen','minutenzahlen','alleminuten'])$(id).replaceChildren();
+  stundenText=[];minText=[];alleText=[];
+  for(let n=1;n<=12;n++){const [x,y]=P(n*30,R_STUNDE);stundenText.push(zahl(n,x,y,S.stunde,S,$('stundenzahlen')));}
+  for(let n=0;n<60;n+=5){const [x,y]=P(n*6,R_M5);minText.push(zahl(n,x,y,S.m5,S,$('minutenzahlen')));}
+  for(let n=0;n<60;n++){const [x,y]=P(n*6,S.rAlle),fs=S.alle*(n%5?1:X5);alleText.push(zahl(n,x,y,fs,S,$('alleminuten'),S.stauch));}
 };
 
 function keil(a0,grad,r0,r1){
@@ -44,8 +66,9 @@ uhr.zeichne=function(sicht){
   $('zeiger-h').style.display=E.stundenzeiger?'':'none';
   $('zeiger-m').style.display=sicht.minutenzeiger!==false?'':'none';
   $('zeiger-s').style.display=E.sekundenzeiger&&LU.s.live?'':'none';
+  if(gebaut!==LU.einst.ziffern)uhr.zahlenBauen();
+  const S=SCHRIFT[gebaut]||SCHRIFT.klar;
   $('stundenzahlen').style.display=sicht.stunden?'':'none';
-  $('zeiger-maske').setAttribute('mask',sicht.stunden?'url(#zahlmaske)':'');
   $('minutenzahlen').style.display=sicht.minuten&&!sicht.alleMinuten?'':'none';
   $('alleminuten').style.display=sicht.alleMinuten?'':'none';
   const label=LU.label(ganz);
@@ -53,14 +76,23 @@ uhr.zeichne=function(sicht){
   // Stundenbereich
   const h12=Math.floor(ganz/60)%12;
   $('sektor').setAttribute('d',sicht.bereich?keil(h12*30,30,0,95):'');
-  // Hervorheben: aktuelle Zahl größer mit Ring
-  const ringe=$('ringe');ringe.replaceChildren();
-  const hv=sicht.hervorheben,cur=h12||12,mm=ganz%60;
-  stundenText.forEach((t,i)=>{const an=hv&&i+1===cur;t.setAttribute('font-size',an?21:17);
-    if(an){const [x,y]=P((i+1)*30,72);el('circle',{cx:f(x),cy:f(y),r:14,class:'ring'},ringe);}});
-  minText.forEach((t,i)=>t.setAttribute('font-size',hv&&i*5===mm?14:11.5));
-  alleText.forEach((t,i)=>{const fs=hv&&i===mm?12.5:(i%5?9.6:10.8);t.setAttribute('font-size',fs);if(i>9)t.setAttribute('textLength',(fs*1.05).toFixed(2));});
-  if(hv&&sicht.stunden===false){/* keine Ringe ohne Zahlen */ringe.replaceChildren();}
+  // Hervorheben: aktuelle Zahl größer mit Ring, alle anderen grau und blass
+  const ringe=$('ringe'),fokus=$('mfokus');ringe.replaceChildren();fokus.replaceChildren();
+  const hv=!!sicht.hervorheben,cur=h12||12,mm=ganz%60;
+  stundenText.forEach((t,i)=>{const an=hv&&i+1===cur;t.setAttribute('font-size',f(S.stunde*(an?HV:1)));
+    t.setAttribute('y',f(+P((i+1)*30,R_STUNDE)[1]+S.stunde*(an?HV:1)*S.dh/2));
+    t.classList.toggle('matt',hv&&!an);
+    if(an&&sicht.stunden){const [x,y]=P((i+1)*30,R_STUNDE);el('circle',{cx:f(x),cy:f(y),r:15,class:'ring'},ringe);}});
+  // Minuten: im 5er-Ring die zuletzt erreichte Zahl, bei allen Minuten die genaue
+  const m5=Math.floor(mm/5)*5;
+  const zeigMin=sicht.alleMinuten?mm:(sicht.minuten?m5:null);
+  minText.forEach((t,i)=>{t.classList.toggle('matt',hv&&i*5!==m5);t.classList.toggle('weg',hv&&i*5===zeigMin&&!sicht.alleMinuten);});
+  alleText.forEach((t,i)=>{t.classList.toggle('matt',hv&&i!==mm);t.classList.toggle('weg',hv&&i===zeigMin&&!!sicht.alleMinuten);});
+  if(hv&&zeigMin!=null){
+    const [x,y]=P(zeigMin*6,R_M5),h=S.m5*S.dh,w=breite(zeigMin,S)*S.m5;
+    el('rect',{x:f(x-w/2-h*.38),y:f(y-h*.8),width:f(w+h*.76),height:f(h*1.6),rx:f(h*.8),class:'mring'},fokus);
+    zahl(zeigMin,x,y,S.m5,S,fokus);
+  }
   // Vergangene Zeit
   const v=sicht.vergangen;
   if(v&&v.min>0){
@@ -92,7 +124,7 @@ function greife(e){
   const m=LU.wandMinuten(),E=LU.einst;
   const dm=LU.s.hilfen.minutenzeiger!==false?winkelAbstand(winkel,(m%60)*6):999,dh=E.stundenzeiger?winkelAbstand(winkel,(m%720)*.5):999;
   const TOL=26;let zeiger=null;
-  if(dm<=TOL&&dh<=TOL)zeiger=rho>62?'m':'h';
+  if(dm<=TOL&&dh<=TOL)zeiger=rho>62*K?'m':'h';
   else if(dm<=TOL)zeiger='m';else if(dh<=TOL)zeiger='h';
   if(!zeiger)return;
   e.preventDefault();

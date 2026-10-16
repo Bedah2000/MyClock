@@ -66,6 +66,16 @@ async function geraet(name, breite, hoehe) {
   }
   await app(() => { LU.s.hilfen.worte = true; LU.s.form = 'beide'; LU.s.start = LU.s.instant - 75 * 60000; LU.zeichne(); });
   await schritt('zeigen');
+  for (const zf of ['klar', 'bayerndruck']) {
+    const ring = await app(z => { LU.einst.ziffern = z; LU.s.hilfen.minuten = true; LU.zeichne(); return __pruef.minutenring(); }, zf);
+    pruefe(gruppe, `Minutenring (${zf}): Zahlen überlappen nicht und liegen im Ring`, ring.length === 0, ring.slice(0, 3).join('; '));
+  }
+  const ueber = await app(() => {
+    LU.einst.ziffern = 'klar'; LU.s.instant = Lernzeit.wallToInstant(LU.ymd(), 5 * 60, LU.zone()); LU.zeichne();
+    const z = [...document.querySelectorAll('#stundenzahlen text')].find(t => t.textContent === '12').getBoundingClientRect();
+    const e = document.elementFromPoint(z.x + z.width / 2, z.y + z.height / 2); return e && e.getAttribute('class');
+  });
+  pruefe(gruppe, 'Zeiger liegen über den Zahlen (Minutenzeiger verdeckt um 5:00 die 12)', ueber === 'z-minute', ueber);
   await app(() => { LU.wechsle('quiz'); LU.zeichne(); }); await schritt('quiz-start');
   await app(() => { LU.quiz.weiter(); LU.s.anim.rate = 1e6; }); await pause(400);
   await app(() => LU.zeichne()); await schritt('quiz-frage');

@@ -38,6 +38,7 @@ function inhalt(reiter){
     teile.push(zeile('Stunden­zeiger',[[true,'an'],[false,'aus']],E.stundenzeiger,v=>{E.stundenzeiger=v;if(!v&&!LU.s.hilfen.minutenzeiger)LU.schalteHilfe('minutenzeiger');}));
     teile.push(zeile('Sekunden­zeiger bei „Jetzt“',[[false,'aus'],[true,'an']],E.sekundenzeiger,v=>{E.sekundenzeiger=v;}));
     teile.push(zeile('Himmel bei Zeigen und Quiz',[[true,'an'],[false,'aus']],E.himmel,v=>{E.himmel=v;}));
+    teile.push(zeile('Zahlen auf der Uhr',[['klar','Klar'],['bayerndruck','Bayerndruck']],E.ziffern,v=>{E.ziffern=v;LU.speichern();}));
   }else if(reiter==='sonne'){
     const orte=[['herrieden','Herrieden'],['ansbach','Ansbach'],['berlin','Berlin'],['hamburg','Hamburg'],['munich','München'],['eigen','Eigener Ort']];
     teile.push(zeile('Ort',orte,E.ort,v=>{if(v==='eigen'){blatt.ortBearbeiten();return;}E.ort=v;LU.setzeOrt(Object.assign({},Z.places[v]));},{oben:true,wahl:true,voll:true}));

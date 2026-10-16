@@ -55,6 +55,7 @@ function seite({ titel, preset, scorm }, A) {
   ersetze('/*SCRIPT*/', js);
   ersetze('{{TITEL}}', esc(titel));
   ersetze('{{FONT_BAYERNDRUCK}}', A.font);
+  ersetze('{{FONT_ZIFFERN}}', fs.readFileSync(path.join(SRC, 'assets', 'ziffern-atkinson.woff2')).toString('base64'));
   ersetze('{{METACOM_SONNE}}', A.sonne);
   ersetze('{{METACOM_MOND}}', A.mond);
   ersetze('<!--VOREINSTELLUNG-->', preset ? `<script>window.LERNUHR_VOREINSTELLUNG=${JSON.stringify(preset)};</script>` : '');

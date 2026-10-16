@@ -167,8 +167,29 @@ async function geraetPruefen(browser, geraet) {
   const verg = await f.evaluate(() => [LU.s.start != null, document.getElementById('verg-h').getAttribute('d') !== '', document.getElementById('seit').textContent]);
   pruefe(geraet.name, 'Zeigen: vergangene Zeit als Fläche und in Std./Min.', verg[0] && verg[1] && /Std\./.test(verg[2]), verg[2]);
   await schritt(ctx, 'zeigen');
-  const masken = await f.evaluate(() => document.getElementById('zeiger-maske').getAttribute('mask'));
-  pruefe(geraet.name, 'Zeiger laufen unter den Stundenzahlen durch (Maske aktiv)', masken === 'url(#zahlmaske)');
+  // Zeiger liegen über den Zahlen: um 5:00 trifft ein Tipp auf die Mitte der 12 den Minutenzeiger
+  const ueber = await f.evaluate(() => {
+    window.__stufeVorher = LU.einst.stufe; LU.setzeStufe('five'); LU.s.instant = Lernzeit.wallToInstant(LU.ymd(), 5 * 60, LU.zone()); LU.zeichne();
+    const z = [...document.querySelectorAll('#stundenzahlen text')].find(t => t.textContent === '12').getBoundingClientRect();
+    const e = document.elementFromPoint(z.x + z.width / 2, z.y + z.height / 2);
+    return [e && e.getAttribute('class'), !document.querySelector('#uhr [mask]')];
+  });
+  pruefe(geraet.name, 'Zeiger liegen über den Zahlen (Minutenzeiger verdeckt um 5:00 die 12)', ueber[0] === 'z-minute' && ueber[1], ueber[0]);
+  // Hervorheben: aktuelle Zahlen bleiben, alle anderen grau und blass
+  const matt = await f.evaluate(() => {
+    LU.s.hilfen.hervorheben = true; LU.s.instant = Lernzeit.wallToInstant(LU.ymd(), 4 * 60 + 23, LU.zone()); LU.zeichne();
+    const st = [...document.querySelectorAll('#stundenzahlen text')], mi = [...document.querySelectorAll('#minutenzahlen text')];
+    const r = [st.filter(t => t.classList.contains('matt')).length, st.find(t => !t.classList.contains('matt')).textContent, mi.filter(t => t.classList.contains('matt')).length,
+      document.querySelector('#mfokus text') && document.querySelector('#mfokus text').textContent, getComputedStyle(st[0]).opacity];
+    LU.s.hilfen.hervorheben = false; LU.zeichne(); return r;
+  });
+  pruefe(geraet.name, 'Hervorheben: andere Zahlen grau und blass (4:23 → Stunde 4, Minute 20)', matt[0] === 11 && matt[1] === '4' && matt[2] === 11 && matt[3] === '20' && +matt[4] < .8, matt.join(' / '));
+  // Minutenzahlen im Ring: keine Überlappung, in beiden Schriften
+  for (const zf of ['klar', 'bayerndruck']) {
+    const ring = await f.evaluate(z => { LU.einst.ziffern = z; LU.zeichne(); return __pruef.minutenring(); }, zf);
+    pruefe(geraet.name, `Minutenring (${zf}): Zahlen überlappen nicht und liegen im Ring`, ring.length === 0, ring.slice(0, 3).join('; '));
+  }
+  await f.evaluate(() => { LU.einst.ziffern = 'klar'; LU.setzeStufe(window.__stufeVorher); LU.zeichne(); });
   await f.tap('#jetzt'); await pause(300);
   const jetzt = await f.evaluate(() => Math.abs(LU.s.instant - Date.now()) < 2000 && LU.s.live);
   pruefe(geraet.name, 'Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit', jetzt);
@@ -333,7 +354,7 @@ async function geraetPruefen(browser, geraet) {
   pruefe(geraet.name, `Uhr in ${ctx.uhren.length} Schritten an derselben Stelle (${verschieden[0]})`, verschieden.length === 1, verschieden.join(' | '));
   const zb = await f.evaluate(p => __pruef.zifferblatt(p), geraet.profil);
   if (geraet.profil === 'tafel') pruefe(geraet.name, `Uhr ${zb.anteilHoehe} % der Höhe (Zifferblatt ${zb.zifferblattAnteil} %)`, zb.zifferblattAnteil >= 55);
-  pruefe(geraet.name, `Zifferblatt: Stundenzahlen ${zb.stundenzahlen} px, Minutenzahlen ${zb.minutenzahlen} px, alle Minuten ${zb.alleMinuten} px`, zb.minutenzahlen >= (geraet.profil === 'tafel' ? 28 : 20), 'alle Minuten sind geometrisch begrenzt');
+  pruefe(geraet.name, `Ziffernhöhe: Stunden ${zb.stundenzahlen} px, Minuten ${zb.minutenzahlen} px (vorher ${zb.minutenVorher} px), alle Minuten ${zb.alleMinuten} px`, zb.minutenzahlen >= 1.15 * zb.minutenVorher && zb.minutenzahlen >= (geraet.profil === 'tafel' ? 22 : 15.8), 'alle Minuten sind durch 60 Zahlen am Umfang begrenzt');
 
   if (geraet.name === 'escreen') {
     // Fernlesetest: Bild auf 25 % verkleinert

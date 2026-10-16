@@ -5,17 +5,24 @@
 #band{z-index:1;overflow:hidden}
 #uhr{z-index:2;touch-action:none;overflow:visible;cursor:default}
 #uhr .schatten{fill:var(--schatten)}
+#uhr .minutenring{fill:var(--minutenring);stroke:var(--tinte);stroke-width:1.2}
 #uhr .blatt{fill:var(--zifferblatt);stroke:var(--tinte);stroke-width:1.8}
 #uhr .sektor{fill:var(--sektor);stroke:var(--sektor-rand);stroke-width:.8}
 #uhr .verg-h{fill:var(--stunde-hell)}
 #uhr .verg-m{fill:var(--minute-hell)}
 #uhr .strich{stroke:#97A6A1;stroke-width:.75;stroke-linecap:round}
 #uhr .strich.gross{stroke:var(--tinte);stroke-width:1.8}
-#uhr .minutenzahlen text{fill:var(--minute);font-family:Bayerndruck,sans-serif;text-anchor:middle;dominant-baseline:central}
-#uhr .stundenzahlen text{fill:var(--tinte);font-family:Bayerndruck,sans-serif;text-anchor:middle;dominant-baseline:central;
-  stroke:var(--zifferblatt);stroke-width:4.4px;paint-order:stroke fill;stroke-linejoin:round}
-/* Zeiger: spitz zulaufend, leichter Schatten mit fester Lichtrichtung (Filter am nicht gedrehten Elternelement) */
-#zeiger-maske{filter:drop-shadow(.6px 1.4px 1.2px rgba(0,0,0,.28))}
+/* Ziffern: klare Schrift (Atkinson Hyperlegible Next) oder Bayerndruck; Grundlinie setzt das Skript */
+#uhr text{font-family:Ziffern,Bayerndruck,sans-serif;text-anchor:middle}
+#uhr.z-bayerndruck text{font-family:Bayerndruck,sans-serif}
+#uhr .minutenzahlen text{fill:var(--minute)}
+#uhr .stundenzahlen text{fill:var(--tinte)}
+/* Hervorheben: die anderen Zahlen treten grau und blass zurück */
+#uhr text.matt{fill:var(--zahl-matt);opacity:.5}
+#uhr text.weg{visibility:hidden}
+#uhr .mring{fill:var(--zifferblatt);stroke:var(--minute);stroke-width:1.4}
+/* Zeiger über den Zahlen: spitz zulaufend, leichter Schatten mit fester Lichtrichtung (Filter am nicht gedrehten Elternelement) */
+#zeiger-gruppe{filter:drop-shadow(.6px 1.4px 1.2px rgba(0,0,0,.28))}
 #uhr .z-stunde{fill:var(--stunde)}
 #uhr .z-minute{fill:var(--minute)}
 #uhr .zeiger-s line{stroke:var(--sekunde);stroke-width:1.1;stroke-linecap:round}

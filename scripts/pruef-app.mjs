@@ -56,10 +56,46 @@ export const IM_APP = () => {
     },
     uhr() { const r = document.getElementById('uhr').getBoundingClientRect(); return [r.x, r.y, r.width, r.height].map(v => Math.round(v * 10) / 10).join(','); },
     zifferblatt(profil) {
-      const r = document.getElementById('uhr').getBoundingClientRect(), s = r.width / 234, out = {};
-      out.stundenzahlen = +(17 * s).toFixed(1); out.minutenzahlen = +(11.5 * s).toFixed(1); out.alleMinuten = +(9.6 * s).toFixed(1);
-      out.anteilHoehe = Math.round(r.height / innerHeight * 100); out.zifferblattAnteil = Math.round(r.height / 1.17 / innerHeight * 100);
+      // Ziffernhöhe in px (gemessen mit Canvas an der tatsächlichen Schrift), Anteil des Zifferblatts an der Höhe
+      const svg = document.getElementById('uhr'), r = svg.getBoundingClientRect(), s = r.width / 234, K = LU.uhr.K, out = {};
+      const hoehe = (sel, faktor) => { const t = document.querySelector(sel); if (!t) return 0; const m = this.tinte(t); return +((m.y1 - m.y0) * faktor * s).toFixed(1); };
+      out.stundenzahlen = hoehe('#stundenzahlen text:nth-child(3)', K); out.minutenzahlen = hoehe('#minutenzahlen text:nth-child(4)', 1); out.alleMinuten = hoehe('#alleminuten text:nth-child(8)', 1);
+      out.minutenVorher = +(11.5 * .789 * s).toFixed(1); // Bayerndruck 11,5 im alten Zifferblatt
+      out.anteilHoehe = Math.round(r.height / innerHeight * 100); out.zifferblattAnteil = Math.round(r.height * 200 * K / 234 / innerHeight * 100);
       return out;
+    },
+    // Tintenrahmen einer SVG-Zahl in Einheiten des viewBox ihrer Gruppe (Canvas misst die Glyphen, textLength wird berücksichtigt)
+    tinte(t) {
+      const c = this._c || (this._c = document.createElement('canvas').getContext('2d'));
+      const fs = +t.getAttribute('font-size'), fam = getComputedStyle(t).fontFamily, txt = t.textContent;
+      c.font = `${fs * 10}px ${fam}`; const m = c.measureText(txt), w = m.width / 10;
+      const tl = t.getAttribute('textLength'), k = tl ? +tl / w : 1, x = +t.getAttribute('x'), y = +t.getAttribute('y'), start = x - w * k / 2;
+      return { x0: start - m.actualBoundingBoxLeft / 10 * k, x1: start + m.actualBoundingBoxRight / 10 * k, y0: y - m.actualBoundingBoxAscent / 10, y1: y + m.actualBoundingBoxDescent / 10 };
+    },
+    // Minutenzahlen: Glyphen pixelgenau gerastert (4 px je Einheit), mit Sicherheitsrand. Keine Zahl berührt eine andere, alle liegen im Minutenring.
+    minutenring(rand = .25) {
+      const p = [], K = LU.uhr.K, rin = 100 * K + .9 * K, rout = 116.4 - .6, S = 4, N = 234 * S;
+      const cv = document.createElement('canvas'); cv.width = cv.height = N; const c = cv.getContext('2d', { willReadFrequently: true });
+      for (const id of ['minutenzahlen', 'alleminuten']) {
+        const besetzt = new Int16Array(N * N).fill(-1), ts = [...document.querySelectorAll(`#${id} text`)];
+        ts.forEach((t, i) => {
+          const b = this.tinte(t), fs = +t.getAttribute('font-size'), fam = getComputedStyle(t).fontFamily;
+          c.clearRect(0, 0, N, N); c.save(); c.font = `${fs * S}px ${fam}`; c.textAlign = 'center'; c.textBaseline = 'alphabetic';
+          const w = c.measureText(t.textContent).width / S, tl = t.getAttribute('textLength'), k = tl ? +tl / w : 1, x = +t.getAttribute('x'), y = +t.getAttribute('y');
+          c.translate((x + 117) * S, (y + 117) * S); c.scale(k, 1); c.fillText(t.textContent, 0, 0);
+          if (rand > 0) { c.lineWidth = 2 * rand * S; c.lineJoin = 'round'; c.strokeText(t.textContent, 0, 0); } c.restore();
+          const x0 = Math.max(0, Math.floor((b.x0 + 116) * S)), y0 = Math.max(0, Math.floor((b.y0 + 116) * S)), x1 = Math.min(N, Math.ceil((b.x1 + 118) * S)), y1 = Math.min(N, Math.ceil((b.y1 + 118) * S));
+          const d = c.getImageData(x0, y0, x1 - x0, y1 - y0).data; let ring = true, wen = -1;
+          for (let yy = y0; yy < y1; yy++) for (let xx = x0; xx < x1; xx++) {
+            if (d[((yy - y0) * (x1 - x0) + xx - x0) * 4 + 3] < 96) continue;
+            const r = Math.hypot(xx / S - 117, yy / S - 117); if (r < rin || r > rout) ring = false;
+            const o = besetzt[yy * N + xx]; if (o >= 0 && o !== i) wen = o; besetzt[yy * N + xx] = i;
+          }
+          if (!ring) p.push(`${id}: ${t.textContent} ragt aus dem Ring`);
+          if (wen >= 0) p.push(`${id}: ${t.textContent} berührt ${ts[wen].textContent}`);
+        });
+      }
+      return p;
     }
   };
 };
