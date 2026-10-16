@@ -29,15 +29,16 @@ export const IM_APP = () => {
       return p;
     },
     groessen(profil) {
-      const S = this, p = [], minT = profil === 'tafel' ? 72 : 44, minF = profil === 'tafel' ? 28 : 20, minA = profil === 'tafel' ? 48 : 20;
+      // Mindestmaße nach Rückmeldung der Lehrkraft (kompaktere Bedienung): Tafel 60 px / Text 20 px / Antworten 40 px, Tablet 44 pt / 15 px / 22 px
+      const S = this, p = [], minT = profil === 'tafel' ? 60 : 44, minF = profil === 'tafel' ? 20 : 15, minA = profil === 'tafel' ? 40 : 22;
       for (const b of document.querySelectorAll('button,[role=slider]#jahr')) {
-        if (!S.sichtbar(b)) continue; const r = b.getBoundingClientRect();
+        if (!S.sichtbar(b)) continue; const r = b instanceof HTMLElement ? { width: b.offsetWidth, height: b.offsetHeight } : b.getBoundingClientRect();
         if (Math.min(r.width, r.height) < minT - .5) p.push(`Tippfläche ${Math.round(r.width)}×${Math.round(r.height)}: „${b.textContent.trim().slice(0, 24)}“`);
       }
       const walker = document.createTreeWalker(document.getElementById('app'), NodeFilter.SHOW_TEXT);
       for (let n; (n = walker.nextNode());) {
         if (!n.textContent.trim()) continue; const el = n.parentElement;
-        if (el.closest('#uhr') || !S.sichtbar(el) || el.closest('.unsichtbar') || el.getBoundingClientRect().width <= 1) continue;
+        if (el.closest('#uhr,symbol,.sprite') || !S.sichtbar(el) || el.closest('.unsichtbar') || el.getBoundingClientRect().width <= 1) continue;
         const fs = parseFloat(getComputedStyle(el).fontSize);
         if (el.closest('#band,#jahr')) { if (fs * (el.ownerSVGElement.getBoundingClientRect().width / el.ownerSVGElement.viewBox.baseVal.width) < minF - .5) p.push(`Bandtext ${fs}px: „${n.textContent.trim()}“`); continue; }
         if (fs < minF - .5) p.push(`Text ${fs}px: „${n.textContent.trim().slice(0, 30)}“`);
@@ -48,7 +49,7 @@ export const IM_APP = () => {
     reichweite() {
       const S = this, p = [], grenze = innerHeight / 3;
       for (const b of document.querySelectorAll('.spalte button,#jahr')) {
-        if (!S.sichtbar(b) || b.closest('.blatt,.entsperren,#kopf')) continue;
+        if (!S.sichtbar(b) || b.closest('.blatt,.entsperren,#kopf,[data-lehrkraft]')) continue;
         const r = b.getBoundingClientRect(); if (r.top < grenze - .5) p.push(`„${b.textContent.trim().slice(0, 24)}“ bei y=${Math.round(r.top)}`);
       }
       return p;

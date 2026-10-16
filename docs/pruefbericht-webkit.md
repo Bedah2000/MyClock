@@ -27,7 +27,7 @@ WebKitGTK 2.52.6 über WebKitWebDriver, MiniBrowser unter Xvfb. Dieselbe Engine-
 | ✅ | [webkit-ipad-quer] sonne-vergleich: Mindestgrößen |  |
 | ✅ | [webkit-ipad-quer] einstellungen: kein Scrollen, nichts ragt heraus |  |
 | ✅ | [webkit-ipad-quer] einstellungen: Mindestgrößen |  |
-| ✅ | [webkit-ipad-quer] Uhr in 11 Schritten an derselben Stelle (251,81,498,498) | 251,81,498,498 |
+| ✅ | [webkit-ipad-quer] Uhr in 11 Schritten an derselben Stelle (259,79,482,482) | 259,79,482,482 |
 | ✅ | [webkit-ipad-quer] Zeiger ziehen (Touch) von 9:00 auf 9:15 | 09:15 |
 | ✅ | [webkit-ipad-quer] Keine JavaScript-Fehler |  |
 | ✅ | [webkit-ipad-hoch] Fenster 760×1000 (App 760×952), Layout tablet/hoch |  |
@@ -53,6 +53,6 @@ WebKitGTK 2.52.6 über WebKitWebDriver, MiniBrowser unter Xvfb. Dieselbe Engine-
 | ✅ | [webkit-ipad-hoch] sonne-vergleich: Mindestgrößen |  |
 | ✅ | [webkit-ipad-hoch] einstellungen: kein Scrollen, nichts ragt heraus |  |
 | ✅ | [webkit-ipad-hoch] einstellungen: Mindestgrößen |  |
-| ✅ | [webkit-ipad-hoch] Uhr in 11 Schritten an derselben Stelle (125,78,510,510) | 125,78,510,510 |
+| ✅ | [webkit-ipad-hoch] Uhr in 11 Schritten an derselben Stelle (107.5,76,545,545) | 107.5,76,545,545 |
 | ✅ | [webkit-ipad-hoch] Zeiger ziehen (Touch) von 9:00 auf 9:15 | 09:15 |
 | ✅ | [webkit-ipad-hoch] Keine JavaScript-Fehler |  |

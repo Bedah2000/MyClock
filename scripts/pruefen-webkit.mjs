@@ -86,7 +86,7 @@ async function geraet(name, breite, hoehe) {
   const v = [...new Set(uhren)];
   pruefe(gruppe, `Uhr in ${uhren.length} Schritten an derselben Stelle (${v[0]})`, v.length === 1, v.join(' | '));
   // Touch-Ziehen über WebDriver-Aktionen (Zeigertyp touch), falls WebKitGTK es unterstützt
-  await app(() => { LU.blatt.schliessen(); LU.wechsle('zeigen'); LU.s.instant = Lernzeit.wallToInstant(LU.ymd(), 9 * 60, LU.zone()); LU.zeichne(); });
+  await app(() => { LU.blatt.schliessen(); LU.wechsle('zeigen'); LU.setzeStufe('any'); LU.s.instant = Lernzeit.wallToInstant(LU.ymd(), 9 * 60, LU.zone()); LU.zeichne(); });
   const r = await js('const r=document.getElementById("uhr").getBoundingClientRect();return [r.x,r.y,r.width,r.height];');
   // WebDriver-Koordinaten beziehen sich auf das Hauptfenster: Versatz des iframes addieren
   await wd('POST', `${S}/frame/parent`, {});

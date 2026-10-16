@@ -12,6 +12,32 @@
 </head>
 <body>
 <div id="app" data-bereich="zeigen" data-profil="tablet" data-lage="quer">
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-zurueck-schnell" viewBox="0 0 24 24"><path d="M11.5 5.5 3 12l8.5 6.5zM21 5.5 12.5 12l8.5 6.5z"/></symbol>
+  <symbol id="i-zurueck" viewBox="0 0 24 24"><path d="M16.5 5 7 12l9.5 7z"/></symbol>
+  <symbol id="i-stopp" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></symbol>
+  <symbol id="i-vor" viewBox="0 0 24 24"><path d="M7.5 5 17 12l-9.5 7z"/></symbol>
+  <symbol id="i-vor-schnell" viewBox="0 0 24 24"><path d="M3 5.5 11.5 12 3 18.5zM12.5 5.5 21 12l-8.5 6.5z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4.2" height="14" rx="1.2"/><rect x="13.8" y="5" width="4.2" height="14" rx="1.2"/></symbol>
+  <symbol id="i-nochmal" viewBox="0 0 24 24"><path d="M5 12a7 7 0 1 0 2.1-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M4 3.5v5h5z"/></symbol>
+  <symbol id="i-links" viewBox="0 0 24 24"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-rechts" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-wuerfel" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8.3" cy="8.3" r="1.7"/><circle cx="15.7" cy="8.3" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="8.3" cy="15.7" r="1.7"/><circle cx="15.7" cy="15.7" r="1.7"/></symbol>
+  <symbol id="i-jetzt" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7.2V12l3.4 2.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-stoppuhr" viewBox="0 0 24 24"><circle cx="12" cy="13.5" r="7.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="9.5" y="2.5" width="5" height="2.4" rx="1"/><path d="M12 13.5V9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M18.2 6.3l1.4-1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-lautsprecher" viewBox="0 0 24 24"><path d="M3.5 9.2h3.8L12 5v14l-4.7-4.2H3.5z"/><path d="M15.2 9a4 4 0 0 1 0 6M17.8 6.4a7.6 7.6 0 0 1 0 11.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-digital" viewBox="0 0 24 24"><rect x="1.5" y="5.5" width="21" height="13" rx="2.8" fill="none" stroke="currentColor" stroke-width="1.8"/><text x="12" y="12.4" text-anchor="middle" dominant-baseline="central" font-size="8.4" font-family="Bayerndruck,sans-serif">12:00</text></symbol>
+  <symbol id="i-worte" viewBox="0 0 24 24"><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-size="13" font-family="Bayerndruck,sans-serif">Aa</text></symbol>
+  <symbol id="i-stundenzahlen" viewBox="0 0 24 24"><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="Bayerndruck,sans-serif">12</text></symbol>
+  <symbol id="i-minutenzahlen" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="1.4 3.8"/><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-size="10" font-family="Bayerndruck,sans-serif">15</text></symbol>
+  <symbol id="i-alleminuten" viewBox="0 0 24 24"><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-size="8.6" font-family="Bayerndruck,sans-serif">0–59</text></symbol>
+  <symbol id="i-bereich" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 12V3a9 9 0 0 1 7.8 4.5z" opacity=".55"/></symbol>
+  <symbol id="i-hervorheben" viewBox="0 0 24 24"><text x="6.5" y="14.5" text-anchor="middle" dominant-baseline="central" font-size="9" opacity=".5" font-family="Bayerndruck,sans-serif">8</text><text x="15" y="12.5" text-anchor="middle" dominant-baseline="central" font-size="17" font-family="Bayerndruck,sans-serif">9</text></symbol>
+  <symbol id="i-minutenzeiger" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 13.5 12 4.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="12" r="1.8"/></symbol>
+  <symbol id="i-einrasten" viewBox="0 0 24 24"><path d="M5 14v6M12 13v7M19 14v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8.6 3.5h6.8L12 9.5z"/></symbol>
+  <symbol id="i-vollbild" viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-einstellungen" viewBox="0 0 24 24"><path d="M12 2.8l1.6 2.2 2.7-.6.9 2.6 2.6.9-.6 2.7 2.2 1.6-2.2 1.6.6 2.7-2.6.9-.9 2.6-2.7-.6L12 21.2l-1.6-2.2-2.7.6-.9-2.6-2.6-.9.6-2.7L2.6 12l2.2-1.6-.6-2.7 2.6-.9.9-2.6 2.7.6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+</svg>
 
 <header id="kopf">
   <div id="bereiche" class="seg" role="group" aria-label="Bereich wählen">
@@ -22,8 +48,8 @@
   <div id="bereich-name" class="bereich-name" hidden></div>
   <div id="digital" aria-label="Uhrzeit digital"><span id="digital-zeit">09:00</span><span id="kopf-satz" class="satz" hidden></span></div>
   <div class="kopf-rechts">
-    <button type="button" id="vollbild" class="leise" hidden>Vollbild</button>
-    <button type="button" id="einstellungen" class="leise">Einstellungen</button>
+    <button type="button" id="vollbild" class="leise nurikon" aria-label="Vollbild" hidden><svg class="ik"><use href="#i-vollbild"/></svg></button>
+    <button type="button" id="einstellungen" class="leise nurikon" aria-label="Einstellungen für die Lehrkraft"><svg class="ik"><use href="#i-einstellungen"/></svg></button>
   </div>
 </header>
 
@@ -43,17 +69,16 @@
   <defs><mask id="zahlmaske" maskUnits="userSpaceOnUse" x="-117" y="-117" width="234" height="234"><rect x="-117" y="-117" width="234" height="234" fill="#fff"/></mask></defs>
   <g id="zeiger-maske">
   <g id="zeiger-h" class="zeiger" role="slider" tabindex="0" aria-label="Stundenzeiger" aria-valuemin="0" aria-valuemax="1439">
-    <line class="z-stunde" x1="0" y1="8" x2="0" y2="-52"/>
+    <path class="z-stunde" d="M-2.6 12.5 L-4.6 0 L-2.9 -46.5 Q0 -55.5 2.9 -46.5 L4.6 0 L2.6 12.5 Q0 14.2 -2.6 12.5Z"/>
   </g>
   <g id="zeiger-m" class="zeiger" role="slider" tabindex="0" aria-label="Minutenzeiger" aria-valuemin="0" aria-valuemax="1439">
-    <line class="z-minute" x1="0" y1="8" x2="0" y2="-57"/>
-    <line class="z-nadel" x1="0" y1="-56" x2="0" y2="-86"/>
+    <path class="z-minute" d="M-1.9 15 L-3.3 0 L-1.25 -82.5 Q0 -89 1.25 -82.5 L3.3 0 L1.9 15 Q0 16.5 -1.9 15Z"/>
   </g>
-  <g id="zeiger-s" class="zeiger-s"><line x1="0" y1="14" x2="0" y2="-90"/></g>
+  <g id="zeiger-s" class="zeiger-s"><line x1="0" y1="17" x2="0" y2="-91"/><circle cx="0" cy="11" r="2.6"/></g>
   </g>
   <g id="ringe"></g>
   <g id="stundenzahlen" class="stundenzahlen"></g>
-  <circle class="mitte" r="4.6"/>
+  <circle class="mitte" r="4.4"/><circle class="mitte-punkt" r="1.5"/>
 </svg>
 <div id="lob" aria-hidden="true"><div class="lob-scheibe"><span id="lob-text">Richtig!</span></div></div>
 
@@ -75,36 +100,42 @@
     <div class="wort-zeile" data-form="sued"><span class="wort-tag">süddeutsch</span><span class="wort-text"></span></div>
     <div class="wort-zeile" data-form="hoch"><span class="wort-tag">hochdeutsch</span><span class="wort-text"></span></div>
   </div>
-  <div class="block b-start" id="b-start" data-teil="zeigen">
-    <button type="button" id="start-fest" aria-pressed="false">Start festhalten</button>
-    <p id="seit" class="seit"></p>
+  <div class="block b-seit" id="b-seit" data-teil="zeigen"><p id="seit" class="seit"></p></div>
+  <div class="block b-transport" id="b-transport" role="group" aria-label="Zeit laufen lassen" data-teil="zeigen">
+    <button type="button" data-lauf="-2" aria-label="Schnell rückwärts"><svg class="ik"><use href="#i-zurueck-schnell"/></svg></button>
+    <button type="button" data-lauf="-1" aria-label="Rückwärts"><svg class="ik"><use href="#i-zurueck"/></svg></button>
+    <button type="button" data-lauf="0" aria-label="Stopp"><svg class="ik"><use href="#i-stopp"/></svg></button>
+    <button type="button" data-lauf="1" aria-label="Vorwärts"><svg class="ik"><use href="#i-vor"/></svg></button>
+    <button type="button" data-lauf="2" aria-label="Schnell vorwärts"><svg class="ik"><use href="#i-vor-schnell"/></svg></button>
   </div>
-  <div class="block b-lauf" id="b-lauf" data-teil="zeigen">
-    <div class="reihe3">
-      <button type="button" data-lauf="-1" aria-pressed="false"><svg class="sym" viewBox="0 0 20 20" aria-hidden="true"><path d="M14 3 5 10l9 7z"/></svg><span class="lbl">Rückwärts</span></button>
-      <button type="button" data-lauf="0" aria-pressed="true"><svg class="sym" viewBox="0 0 20 20" aria-hidden="true"><rect x="5" y="5" width="10" height="10" rx="1.5"/></svg><span class="lbl">Stopp</span></button>
-      <button type="button" data-lauf="1" aria-pressed="false"><span class="lbl">Vorwärts</span><svg class="sym" viewBox="0 0 20 20" aria-hidden="true"><path d="M6 3l9 7-9 7z"/></svg></button>
-    </div>
+  <div class="block b-aktionen" id="b-aktionen" data-teil="zeigen">
+    <button type="button" id="zufall" class="ikon"><svg class="ik"><use href="#i-wuerfel"/></svg><span class="cap">Zufall</span></button>
+    <button type="button" id="jetzt" class="ikon" aria-pressed="false"><svg class="ik"><use href="#i-jetzt"/></svg><span class="cap">Jetzt</span></button>
+    <button type="button" id="start-fest" class="ikon" aria-pressed="false" aria-label="Startzeit festhalten"><svg class="ik"><use href="#i-stoppuhr"/></svg><span class="cap">Start</span></button>
   </div>
-  <div class="block b-tempo seg" id="b-tempo" role="group" aria-label="Tempo" data-teil="zeigen">
-    <button type="button" data-tempo="langsam">Langsam</button><button type="button" data-tempo="mittel">Mittel</button><button type="button" data-tempo="schnell">Schnell</button>
-  </div>
-  <div class="block b-jetzt" id="b-jetzt" data-teil="zeigen"><button type="button" id="jetzt" aria-pressed="false">Jetzt</button></div>
-  <div class="block b-titel" id="b-hilfen-titel" data-teil="zeigen"><p class="titel">Lernhilfen</p></div>
-  <div class="block b-hilfen" id="b-hilfen" data-teil="zeigen" role="group" aria-label="Lernhilfen">
-    <button type="button" class="schalter" data-hilfe="stunden" aria-pressed="false"><span>Stunden&shy;zahlen</span><i></i></button>
-    <button type="button" class="schalter" data-hilfe="minuten" aria-pressed="false"><span>Minuten&shy;zahlen</span><i></i></button>
-    <button type="button" class="schalter" data-hilfe="alleMinuten" aria-pressed="false"><span>Alle Minuten</span><i></i></button>
-    <button type="button" class="schalter" data-hilfe="bereich" aria-pressed="false"><span>Stunden&shy;bereich</span><i></i></button>
-    <button type="button" class="schalter" data-hilfe="hervorheben" aria-pressed="false"><span>Hervor&shy;heben</span><i></i></button>
-    <button type="button" class="schalter" data-hilfe="digital" aria-pressed="false"><span>Digital 24&nbsp;h</span><i></i></button>
-    <button type="button" class="schalter" data-hilfe="worte" aria-pressed="false"><span>In Worten</span><i></i></button>
-    <button type="button" class="schalter" data-hilfe="vorlesen" aria-pressed="false"><span>Vorlesen</span><i></i></button>
+  <div class="block b-anzeige" id="b-anzeige" role="group" aria-label="Anzeige" data-teil="zeigen">
+    <button type="button" class="hilfe" data-hilfe="digital" aria-pressed="false"><svg class="ik"><use href="#i-digital"/></svg><span class="cap">Digital</span></button>
+    <button type="button" class="hilfe" data-hilfe="worte" aria-pressed="false"><svg class="ik"><use href="#i-worte"/></svg><span class="cap">Worte</span></button>
+    <button type="button" class="ikon vorlesen" id="vorlesen"><svg class="ik"><use href="#i-lautsprecher"/></svg><span class="cap">Vorlesen</span></button>
   </div>
   <div class="block b-sprechweise seg" id="b-sprechweise" role="group" aria-label="Sprechweise" data-teil="zeigen">
     <button type="button" data-form="sued" aria-label="Süddeutsch"><span class="lang">Süddeutsch</span><span class="kurz">Süd</span></button><button type="button" data-form="hoch" aria-label="Hochdeutsch"><span class="lang">Hochdeutsch</span><span class="kurz">Hoch</span></button><button type="button" data-form="beide">Beide</button>
   </div>
-  <div class="block b-vorlesen" id="b-vorlesen" data-teil="zeigen"><button type="button" class="vorlesen">Vorlesen</button></div>
+  <div class="block b-stufe" id="b-stufe" data-teil="zeigen" data-lehrkraft>
+    <p class="titel klein">Stufe</p>
+    <div class="seg" role="group" aria-label="Stufe">
+      <button type="button" data-stufe="full">Stunde</button><button type="button" data-stufe="half">halbe</button><button type="button" data-stufe="quarter">Viertel</button><button type="button" data-stufe="five">5 Min.</button><button type="button" data-stufe="any">Minute</button>
+    </div>
+  </div>
+  <div class="block b-hilfen" id="b-hilfen" data-teil="zeigen" role="group" aria-label="Hilfen auf der Uhr">
+    <button type="button" class="hilfe" data-hilfe="stunden" aria-pressed="false"><svg class="ik"><use href="#i-stundenzahlen"/></svg><span class="cap">Stunden&shy;zahlen</span></button>
+    <button type="button" class="hilfe" data-hilfe="minuten" aria-pressed="false"><svg class="ik"><use href="#i-minutenzahlen"/></svg><span class="cap">Minuten&shy;zahlen</span></button>
+    <button type="button" class="hilfe" data-hilfe="alleMinuten" aria-pressed="false"><svg class="ik"><use href="#i-alleminuten"/></svg><span class="cap">Alle Minuten</span></button>
+    <button type="button" class="hilfe" data-hilfe="bereich" aria-pressed="false"><svg class="ik"><use href="#i-bereich"/></svg><span class="cap">Stunden&shy;bereich</span></button>
+    <button type="button" class="hilfe" data-hilfe="hervorheben" aria-pressed="false"><svg class="ik"><use href="#i-hervorheben"/></svg><span class="cap">Hervor&shy;heben</span></button>
+    <button type="button" class="hilfe" data-hilfe="minutenzeiger" aria-pressed="false"><svg class="ik"><use href="#i-minutenzeiger"/></svg><span class="cap">Minuten&shy;zeiger</span></button>
+    <button type="button" class="hilfe" data-hilfe="einrasten" aria-pressed="false"><svg class="ik"><use href="#i-einrasten"/></svg><span class="cap">Einrasten</span></button>
+  </div>
 
   <!-- ===== Quiz ===== -->
   <div class="block b-fortschritt" id="b-fortschritt" data-teil="quiz" aria-label="Fortschritt der Runde"></div>
@@ -132,20 +163,20 @@
     <button type="button" id="satz-zurueck">Zurück</button><button type="button" id="satz-pruefen" class="primaer">Prüfen</button>
   </div>
   <div class="block b-vorlesen" id="b-vorlesen2" data-teil="quiz"><button type="button" class="vorlesen">Vorlesen</button></div>
-  <div class="block b-nochmal" id="b-nochmal" data-teil="quiz"><button type="button" id="nochmal">Noch einmal ansehen</button></div>
-  <div class="block b-weiter" id="b-weiter" data-teil="quiz"><button type="button" id="weiter" class="primaer gross">Los geht’s</button></div>
-  <div class="block b-pause" id="b-pause" data-teil="quiz"><button type="button" id="pause" class="leise">Pause</button></div>
+  <div class="block b-nochmal" id="b-nochmal" data-teil="quiz"><button type="button" id="nochmal"><svg class="ik"><use href="#i-nochmal"/></svg><span class="cap">Noch einmal</span></button></div>
+  <div class="block b-weiter" id="b-weiter" data-teil="quiz"><button type="button" id="weiter" class="primaer gross"><span class="cap">Los geht’s</span><svg class="ik"><use href="#i-vor"/></svg></button></div>
+  <div class="block b-pause" id="b-pause" data-teil="quiz"><button type="button" id="pause" class="leise" aria-label="Pause"><svg class="ik"><use href="#i-pause"/></svg></button></div>
 
   <!-- ===== Sonne ===== -->
   <div class="block b-ort" id="b-ort" data-teil="sonne"><p class="ort" id="ort-name">Herrieden</p><p class="datum" id="datum"></p></div>
   <div class="block b-tage" id="b-tage" data-teil="sonne">
-    <button type="button" data-tage="-1">Tag zurück</button><button type="button" data-tage="1">Tag vor</button>
-    <button type="button" data-monat="-1">Monat zurück</button><button type="button" data-monat="1">Monat vor</button>
+    <button type="button" data-tage="-1" aria-label="Tag zurück"><svg class="ik"><use href="#i-links"/></svg><span class="cap">Tag</span></button><button type="button" data-tage="1" aria-label="Tag vor"><span class="cap">Tag</span><svg class="ik"><use href="#i-rechts"/></svg></button>
+    <button type="button" data-monat="-1" aria-label="Monat zurück"><svg class="ik"><use href="#i-zurueck-schnell"/></svg><span class="cap">Monat</span></button><button type="button" data-monat="1" aria-label="Monat vor"><span class="cap">Monat</span><svg class="ik"><use href="#i-vor-schnell"/></svg></button>
   </div>
   <div class="block b-schnell seg" id="b-schnell" role="group" aria-label="Datum schnell wählen" data-teil="sonne">
     <button type="button" data-schnell="heute">Heute</button><button type="button" data-schnell="sommer">Sommer</button><button type="button" data-schnell="winter">Winter</button><button type="button" data-schnell="beide">Beide</button>
   </div>
-  <div class="block b-tagspiel" id="b-tagspiel" data-teil="sonne"><button type="button" id="tagspiel" aria-pressed="false">Tag abspielen</button></div>
+  <div class="block b-tagspiel" id="b-tagspiel" data-teil="sonne"><button type="button" id="tagspiel" aria-pressed="false"><svg class="ik"><use href="#i-vor"/></svg><span class="cap">Tag abspielen</span></button></div>
   <div class="block b-fakten" id="b-fakten" data-teil="sonne">
     <dl>
       <div><dt>Aufgang</dt><dd id="f-auf"></dd></div>

@@ -10,7 +10,7 @@ const GERAET_KEY='lernuhr-geraet';
 LU.einst={
   stufe:'full', antworten:'leicht', aufgabe:'zahlen', sprechweise:'sued',
   runde:5, tempoAblauf:'mittel', dauerZeigen:false,
-  einrasten:false, zeigerSperren:false, stundenzeiger:true, minutenzeiger:true, sekundenzeiger:false, himmel:true,
+  zeigerSperren:false, stundenzeiger:true, sekundenzeiger:true, himmel:true,
   ort:'herrieden', mond:false, eigenerOrt:{lat:49.23,lon:10.5,zone:'Europe/Berlin'},
   layout:'auto', schema:'hell', ton:true, lob:'kurz', bereichSperre:false
 };
@@ -18,13 +18,25 @@ LU.STUFEN={full:'volle Stunden',half:'halbe Stunden',quarter:'Viertelstunden',fi
 LU.STUFEN_KURZ={full:'volle',half:'halbe',quarter:'Viertel',five:'5 Min.',any:'alle'};
 LU.ZONEN=[['Europe/Berlin','Deutschland'],['Europe/London','London'],['America/New_York','New York'],['Asia/Tokyo','Tokio'],['Australia/Sydney','Sydney'],['UTC','UTC']];
 
+/* Stufen: jede bringt passende Hilfen auf der Uhr mit und merkt sich Änderungen (auf diesem Gerät). */
+LU.HILFEN_STUFE=['stunden','minuten','alleMinuten','bereich','hervorheben','minutenzeiger','einrasten'];
+LU.STUFEN_STANDARD={
+  full:   {stunden:true,minuten:false,alleMinuten:false,bereich:true, hervorheben:true, minutenzeiger:true,einrasten:true},
+  half:   {stunden:true,minuten:false,alleMinuten:false,bereich:true, hervorheben:false,minutenzeiger:true,einrasten:true},
+  quarter:{stunden:true,minuten:true, alleMinuten:false,bereich:false,hervorheben:false,minutenzeiger:true,einrasten:true},
+  five:   {stunden:true,minuten:true, alleMinuten:false,bereich:false,hervorheben:false,minutenzeiger:true,einrasten:true},
+  any:    {stunden:true,minuten:false,alleMinuten:true, bereich:false,hervorheben:false,minutenzeiger:true,einrasten:false}
+};
+const STUFEN_KEY='lernuhr-stufen';
+LU.stufenHilfen=JSON.parse(JSON.stringify(LU.STUFEN_STANDARD));
+
 const heute=Z.parts(Date.now(),'Europe/Berlin').ymd;
 LU.s={
   bereich:'zeigen',
   place:Object.assign({},Z.places.herrieden),
   instant:Z.wallToInstant(heute,540,'Europe/Berlin'),
-  hilfen:{stunden:true,minuten:false,alleMinuten:false,bereich:false,hervorheben:false,digital:true,worte:false,vorlesen:false},
-  form:'sued', tempo:'mittel', lauf:0, live:false, start:null,
+  hilfen:Object.assign({digital:true,worte:false},LU.stufenHilfen.full),
+  form:'sued', live:false, start:null,
   quiz:null, sonne:{vergleich:false}, blatt:null, autoHilfe:null, anim:null
 };
 
@@ -34,7 +46,29 @@ LU.laden=function(){
     const raw=window.localStorage&&localStorage.getItem(GERAET_KEY);
     if(raw){const v=JSON.parse(raw);for(const k of ['layout','schema','ton','lob'])if(k in v)LU.einst[k]=v[k];}
   }catch(e){/* Speicher gesperrt: Voreinstellungen gelten */}
+  try{
+    const raw=window.localStorage&&localStorage.getItem(STUFEN_KEY);
+    if(raw){const v=JSON.parse(raw);for(const st in LU.stufenHilfen)if(v[st])for(const k of LU.HILFEN_STUFE)if(typeof v[st][k]==='boolean')LU.stufenHilfen[st][k]=v[st][k];}
+  }catch(e){}
 };
+LU.stufenSpeichern=function(){try{localStorage.setItem(STUFEN_KEY,JSON.stringify(LU.stufenHilfen));}catch(e){}};
+/* Stufe wählen: gilt für Zeigen (Zufall, Einrasten, Hilfen) und Quiz (Lernstufe). */
+LU.setzeStufe=function(st){
+  if(!A.STEP[st])return;
+  const neu=LU.einst.stufe!==st;LU.einst.stufe=st;
+  for(const k of LU.HILFEN_STUFE)LU.s.hilfen[k]=LU.stufenHilfen[st][k];
+  if(LU.s.hilfen.minuten&&LU.s.hilfen.alleMinuten)LU.s.hilfen.minuten=false;
+  if(!LU.einst.stundenzeiger&&!LU.s.hilfen.minutenzeiger)LU.s.hilfen.minutenzeiger=true;
+  if(neu&&LU.quiz&&LU.s.quiz)LU.quiz.neu();
+};
+LU.schalteHilfe=function(k){
+  const h=LU.s.hilfen;h[k]=!h[k];
+  if(k==='minuten'&&h.minuten)h.alleMinuten=false;
+  if(k==='alleMinuten'&&h.alleMinuten)h.minuten=false;
+  if(k==='minutenzeiger'&&!h.minutenzeiger&&!LU.einst.stundenzeiger)h.minutenzeiger=true;
+  if(LU.HILFEN_STUFE.includes(k)){const st=LU.stufenHilfen[LU.einst.stufe];for(const x of LU.HILFEN_STUFE)st[x]=h[x];LU.stufenSpeichern();}
+};
+LU.stufenZuruecksetzen=function(){LU.stufenHilfen=JSON.parse(JSON.stringify(LU.STUFEN_STANDARD));LU.stufenSpeichern();LU.setzeStufe(LU.einst.stufe);};
 LU.speichern=function(){
   try{localStorage.setItem(GERAET_KEY,JSON.stringify({layout:LU.einst.layout,schema:LU.einst.schema,ton:LU.einst.ton,lob:LU.einst.lob}));}catch(e){}
 };

@@ -7,7 +7,7 @@ const blatt={};LU.blatt=blatt;
 let zeigTimer=null;
 
 function zeile(name,optionen,aktuell,setze,opt={}){
-  const lang=optionen.some(o=>String(o[1]).length>7),lange=optionen.reduce((n,o)=>n+String(o[1]).length+2,0)>18;
+  const lang=optionen.some(o=>String(o[1]).length>7),lange=optionen.reduce((n,o)=>n+String(o[1]).length+2,0)>22;
   const z=document.createElement('div');z.className='ezeile'+(opt.oben?' oben':'')+(opt.voll?' voll':'')+(lange?' lange':'');
   const n=document.createElement('div');n.className='name';
   if(opt.bild){const i=document.createElement('img');i.className='metacom';i.src=$('metacom-mond').src;i.alt='';n.appendChild(i);}
@@ -19,7 +19,7 @@ function zeile(name,optionen,aktuell,setze,opt={}){
     LU.tippen(b,()=>{setze(wert);blatt.zeichne();LU.neu();});box.appendChild(b);}
   z.appendChild(box);return z;
 }
-const quizAendern=(k)=>v=>{if(LU.einst[k]!==v){LU.einst[k]=v;LU.quiz.neu();}};
+const quizAendern=(k)=>v=>{if(LU.einst[k]===v)return;if(k==='stufe'){LU.setzeStufe(v);return;}LU.einst[k]=v;LU.quiz.neu();};
 const geraet=(k)=>v=>{LU.einst[k]=v;LU.speichern();if(k==='schema')document.documentElement.dataset.schema=v;if(k==='layout')LU.layout(true);};
 
 function inhalt(reiter){
@@ -34,10 +34,8 @@ function inhalt(reiter){
     teile.push(zeile('Tempo',[['langsam','Langsam'],['mittel','Mittel'],['schnell','Schnell']],E.tempoAblauf,v=>{E.tempoAblauf=v;},{oben:!hoch}));
     teile.push(zeile('Zeitdauer beim Ablauf zeigen',[[false,'aus'],[true,'an']],E.dauerZeigen,v=>{E.dauerZeigen=v;}));
   }else if(reiter==='anzeige'){
-    teile.push(zeile('Einrasten',[[false,'aus'],[true,'an']],E.einrasten,v=>{E.einrasten=v;}));
     teile.push(zeile('Zeiger sperren',[[false,'aus'],[true,'an']],E.zeigerSperren,v=>{E.zeigerSperren=v;}));
-    teile.push(zeile('Stunden­zeiger',[[true,'an'],[false,'aus']],E.stundenzeiger,v=>{E.stundenzeiger=v;if(!v&&!E.minutenzeiger)E.minutenzeiger=true;}));
-    teile.push(zeile('Minuten­zeiger',[[true,'an'],[false,'aus']],E.minutenzeiger,v=>{E.minutenzeiger=v;if(!v&&!E.stundenzeiger)E.stundenzeiger=true;}));
+    teile.push(zeile('Stunden­zeiger',[[true,'an'],[false,'aus']],E.stundenzeiger,v=>{E.stundenzeiger=v;if(!v&&!LU.s.hilfen.minutenzeiger)LU.schalteHilfe('minutenzeiger');}));
     teile.push(zeile('Sekunden­zeiger bei „Jetzt“',[[false,'aus'],[true,'an']],E.sekundenzeiger,v=>{E.sekundenzeiger=v;}));
     teile.push(zeile('Himmel bei Zeigen und Quiz',[[true,'an'],[false,'aus']],E.himmel,v=>{E.himmel=v;}));
   }else if(reiter==='sonne'){
@@ -46,11 +44,14 @@ function inhalt(reiter){
     teile.push(zeile('Mond',[[false,'aus'],[true,'an']],E.mond,v=>{E.mond=v;},{bild:true}));
     if(!hoch){const h=document.createElement('p');h.className='hinweis info';h.textContent='Zeiten gelten für freien Horizont. Berge, Häuser und Wetter sind nicht berücksichtigt. Sommer- und Winterzeit gelten für den gewählten Ort.';teile.push(h);}
   }else if(reiter==='geraet'){
-    teile.push(zeile('Darstellung',[['auto','Automatisch'],['tafel','Tafel'],['tablet','Tablet']],E.layout,geraet('layout'),{oben:!hoch,wahl:!hoch,voll:hoch}));
+    teile.push(zeile('Darstellung',[['auto','Auto'],['tafel','Tafel'],['tablet','Tablet']],E.layout,geraet('layout')));
     teile.push(zeile('Farben',[['hell','Hell'],['kontrast','Kontrast']],E.schema,geraet('schema')));
     teile.push(zeile('Ton',[[true,'an'],[false,'aus']],E.ton,geraet('ton')));
     teile.push(zeile('Lob',[['kurz','kurz'],['fanfare','Fanfare']],E.lob,geraet('lob')));
     teile.push(zeile('Bereichswahl',[[false,'frei'],[true,'gesperrt']],E.bereichSperre,v=>{E.bereichSperre=v;}));
+    const z=document.createElement('div');z.className='ezeile';const n=document.createElement('div');n.className='name';n.textContent='Hilfen der Stufen';
+    const b=document.createElement('button');b.type='button';b.textContent='zurücksetzen';LU.tippen(b,()=>{LU.stufenZuruecksetzen();b.textContent='zurückgesetzt';LU.neu();});
+    z.append(n,b);teile.push(z);
   }
   return teile;
 }

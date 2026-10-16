@@ -120,6 +120,7 @@ async function aufgabe(ctx, art, { bilder = false, falschZuerst = false, prefix 
   await schnell(f); await warteBis(f, () => LU.s.quiz.phase === 'frage');
   if (bilder) await schritt(ctx, prefix + 'frage');
   if (falschZuerst && art === 'leicht') {
+    pruefe(ctx.geraet.name, 'Quiz: Stundenbereich und Hervorheben erst nach Fehlversuchen', await f.evaluate(() => document.getElementById('sektor').getAttribute('d') === '' && !document.querySelector('#ringe circle')));
     const falsch = await f.evaluate(() => [...document.querySelectorAll('.antwort')].map(b => +b.dataset.v).filter(v => v !== LU.s.quiz.antwort).slice(0, 2));
     for (const v of falsch) { await f.tap(`.antwort[data-v="${v}"]`); await pause(80); }
     const hilfe = await f.evaluate(() => !!(LU.s.autoHilfe && LU.s.autoHilfe.bereich) && document.querySelectorAll('.antwort.falsch').length === 2 && document.getElementById('sektor').getAttribute('d') !== '');
@@ -162,7 +163,7 @@ async function geraetPruefen(browser, geraet) {
 
   // Zeigen
   await f.evaluate(() => { LU.s.hilfen.worte = true; LU.s.form = 'beide'; LU.s.hilfen.minuten = true; LU.neu(); });
-  await f.tap('#start-fest'); await f.tap('[data-tempo="schnell"]'); await f.tap('[data-lauf="1"]'); await pause(800); await f.tap('[data-lauf="0"]');
+  await f.tap('#start-fest'); await f.tap('[data-lauf="2"]'); await pause(800); await f.tap('[data-lauf="0"]');
   const verg = await f.evaluate(() => [LU.s.start != null, document.getElementById('verg-h').getAttribute('d') !== '', document.getElementById('seit').textContent]);
   pruefe(geraet.name, 'Zeigen: vergangene Zeit als Fläche und in Std./Min.', verg[0] && verg[1] && /Std\./.test(verg[2]), verg[2]);
   await schritt(ctx, 'zeigen');
@@ -171,33 +172,61 @@ async function geraetPruefen(browser, geraet) {
   await f.tap('#jetzt'); await pause(300);
   const jetzt = await f.evaluate(() => Math.abs(LU.s.instant - Date.now()) < 2000 && LU.s.live);
   pruefe(geraet.name, 'Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit', jetzt);
+  // Sekundenzeiger springt auf die Minutenstriche (ganze Sekunden)
+  const winkel = [];
+  for (let i = 0; i < 3; i++) { await pause(450); winkel.push(await f.evaluate(() => [getComputedStyle(document.getElementById('zeiger-s')).display, document.getElementById('zeiger-s').getAttribute('transform')])); }
+  const ganz = winkel.every(([d, t]) => d !== 'none' && /^rotate\((\d+)\)$/.test(t) && Number(/\d+/.exec(t)[0]) % 6 === 0);
+  pruefe(geraet.name, 'Sekundenzeiger springt auf die Minutenstriche', ganz, winkel.map(w => w[1]).join(' '));
+  // Laufwerk: ▶▶ ist schneller als ▶
+  await f.evaluate(() => { LU.stoppeAlles(); LU.s.instant = Lernzeit.wallToInstant(LU.ymd(), 9 * 60, LU.zone()); LU.zeichne(); });
+  await f.tap('[data-lauf="1"]'); await pause(1000); await f.tap('[data-lauf="0"]');
+  const langsam = await f.evaluate(() => LU.wandMinuten() - 540);
+  await f.evaluate(() => { LU.s.instant = Lernzeit.wallToInstant(LU.ymd(), 9 * 60, LU.zone()); LU.zeichne(); });
+  await f.tap('[data-lauf="2"]'); await pause(1000); await f.tap('[data-lauf="0"]');
+  const schnellLauf = await f.evaluate(() => LU.wandMinuten() - 540);
+  await f.tap('[data-lauf="-1"]'); await pause(500); await f.tap('[data-lauf="0"]');
+  const zurueck = await f.evaluate(() => LU.wandMinuten() - 540);
+  pruefe(geraet.name, 'Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts', langsam > 0.5 && langsam < 3 && schnellLauf > 8 && zurueck < schnellLauf, `▶ ${langsam.toFixed(1)} min, ▶▶ ${schnellLauf.toFixed(1)} min, danach ◀ ${zurueck.toFixed(1)}`);
+  // Zufall im Schritt der Stufe
+  await f.tap('[data-stufe="quarter"]');
+  const zeiten = [];
+  for (let i = 0; i < 4; i++) { await f.tap('#zufall'); await pause(1100); zeiten.push(await f.evaluate(() => Math.round(LU.wandMinuten()))); }
+  pruefe(geraet.name, 'Zufall: neue Uhrzeit im Viertelstunden-Schritt', zeiten.every(t => t % 15 === 0) && new Set(zeiten).size > 1, zeiten.map(t => String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0')).join(', '));
+  // Stufe merkt sich Änderungen, Anzeige-Hilfen bleiben
+  const vorher = await f.evaluate(() => [LU.s.hilfen.bereich, LU.s.hilfen.worte]);
+  await f.tap('#b-hilfen [data-hilfe="bereich"]');
+  await f.tap('[data-stufe="five"]'); await f.tap('[data-stufe="quarter"]');
+  const nachher = await f.evaluate(() => [LU.s.hilfen.bereich, LU.s.hilfen.worte, LU.einst.stufe]);
+  pruefe(geraet.name, 'Stufe merkt sich geänderte Hilfen; Worte und Digital bleiben gleich', nachher[0] === !vorher[0] && nachher[1] === vorher[1] && nachher[2] === 'quarter', JSON.stringify([vorher, nachher]));
+  await f.tap('#b-hilfen [data-hilfe="bereich"]');
+  await f.tap('[data-stufe="full"]');
 
   // Ziehen mit Touch: Minutenzeiger um 90° im Uhrzeigersinn, zweiter Finger stört nicht
   if (geraet.name !== 'ipad-quer') {
     await f.tap('[data-lauf="0"]');
-    await f.evaluate(() => { LU.stoppeAlles(); LU.s.instant = Lernzeit.wallToInstant(LU.ymd(), 9 * 60, LU.zone()); LU.neu(); });
+    await f.evaluate(() => { LU.stoppeAlles(); LU.setzeStufe('any'); LU.s.instant = Lernzeit.wallToInstant(LU.ymd(), 9 * 60, LU.zone()); LU.zeichne(); });
     const box = await f.locator('#uhr').boundingBox(); const cx = box.x + box.width / 2, cy = box.y + box.height / 2, r = box.width / 234 * 70;
     const cdp = await context.newCDPSession(page);
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: cx, y: cy - r, id: 1 }] });
-    const knopf = await f.locator('[data-tempo="langsam"]').boundingBox();
+    const knopf = await f.locator('[data-stufe="five"]').boundingBox();
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: cx, y: cy - r, id: 1 }, { x: knopf.x + 10, y: knopf.y + 10, id: 2 }] });
     for (let i = 1; i <= 15; i++) { const a = i / 15 * Math.PI / 2; await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: cx + r * Math.sin(a), y: cy - r * Math.cos(a), id: 1 }, { x: knopf.x + 10, y: knopf.y + 10, id: 2 }] }); }
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [{ x: knopf.x + 10, y: knopf.y + 10, id: 2 }] });
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
     await pause(150);
-    const z = await f.evaluate(() => [document.getElementById('digital-zeit').textContent, scrollY, document.scrollingElement.scrollTop, window.visualViewport ? visualViewport.scale : 1, LU.s.tempo]);
+    const z = await f.evaluate(() => [document.getElementById('digital-zeit').textContent, scrollY, document.scrollingElement.scrollTop, window.visualViewport ? visualViewport.scale : 1, LU.einst.stufe]);
     const oben = await page.evaluate(() => [scrollY, window.visualViewport ? visualViewport.scale : 1]);
     pruefe(geraet.name, 'Touch: Minutenzeiger von 9:00 um eine Viertelstunde gezogen', z[0] === '09:15', z[0]);
     pruefe(geraet.name, 'Touch: kein Scrollen oder Zoomen beim Ziehen', z[1] === 0 && z[2] === 0 && z[3] === 1 && oben[0] === 0 && oben[1] === 1);
-    pruefe(geraet.name, 'Touch: zweiter Finger löst nichts aus', z[4] === 'schnell', 'Tempo blieb ' + z[4]);
+    pruefe(geraet.name, 'Touch: zweiter Finger löst nichts aus', z[4] === 'any', 'Stufe blieb ' + z[4]);
     // Einrasten passend zur Lernstufe (Viertelstunden): Ziehen auf etwa 9:17 rastet auf 9:15
-    await f.evaluate(() => { LU.einst.einrasten = true; LU.einst.stufe = 'quarter'; LU.s.instant = Lernzeit.wallToInstant(LU.ymd(), 9 * 60, LU.zone()); LU.zeichne(); });
+    await f.evaluate(() => { LU.setzeStufe('quarter'); LU.s.instant = Lernzeit.wallToInstant(LU.ymd(), 9 * 60, LU.zone()); LU.zeichne(); });
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: cx, y: cy - r, id: 5 }] });
     for (let i = 1; i <= 12; i++) { const a = i / 12 * 102 * Math.PI / 180; await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: cx + r * Math.sin(a), y: cy - r * Math.cos(a), id: 5 }] }); }
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); await pause(120);
     const ein = await f.evaluate(() => document.getElementById('digital-zeit').textContent);
     pruefe(geraet.name, 'Einrasten: Loslassen bei etwa 9:17 ergibt 9:15', ein === '09:15', ein);
-    await f.evaluate(() => { LU.einst.einrasten = false; LU.einst.stufe = 'full'; LU.zeichne(); });
+    await f.evaluate(() => { LU.setzeStufe('full'); LU.zeichne(); });
   }
 
   // Quiz: Start, Lauf, leicht mit Fehlversuchen, ganze Runde

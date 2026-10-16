@@ -62,7 +62,8 @@ sonne.zeichne=function(){
     b.setAttribute('aria-pressed',String(w==='beide'?v:!v&&(w==='heute'?ymd===heute:w==='sommer'?ymd.slice(5)==='06-21':ymd.slice(5)==='12-21')));}
   const a=s.anim&&s.anim.art==='tag';
   $('tagspiel').setAttribute('aria-pressed',String(a&&!s.anim.pause));
-  $('tagspiel').textContent=a?(s.anim.pause?'Tag fortsetzen':'Anhalten'):'Tag abspielen';
+  $('tagspiel').querySelector('.cap').textContent=a?(s.anim.pause?'Weiter':'Anhalten'):'Tag abspielen';
+  $('tagspiel').querySelector('use').setAttribute('href',a&&!s.anim.pause?'#i-pause':'#i-vor');
   // Fakten
   $('b-fakten').hidden=v;
   if(!v){

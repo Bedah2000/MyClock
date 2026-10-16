@@ -1,9 +1,10 @@
-/* Bereich Zeigen: Zeit laufen lassen, Jetzt, vergangene Zeit, Lernhilfen, Sprechweise, Vorlesen */
+/* Bereich Zeigen: Laufwerk, Zufallszeit, Jetzt, vergangene Zeit, Stufe mit passenden Hilfen,
+   Anzeige (digital, in Worten, Vorlesen auf Tipp) */
 (function(){
 'use strict';
 const LU=window.LU,$=LU.$,Z=LU.Z,W=LU.W,A=LU.A;
 const zeigen={};LU.zeigen=zeigen;
-const TEMPO={langsam:1,mittel:10,schnell:60}; // Minuten pro Sekunde
+const TEMPO={1:1,2:15}; // Minuten pro Sekunde: ▶ und ▶▶
 
 zeigen.worte=function(form){
   const m=Math.floor(LU.wandMinuten()+1e-6);
@@ -15,58 +16,60 @@ zeigen.vorlesen=function(e){
   LU.sprache.sprich(text,e&&e.currentTarget);
 };
 
+/* Zufallszeit im Schritt der Stufe, am selben Tag; die Zeiger fahren kurz dorthin */
+zeigen.zufall=function(zufall=Math.random){
+  LU.stoppeAlles();LU.s.start=null;
+  const schritt=A.STEP[LU.einst.stufe]||60,jetzt=Math.round(LU.wandMinuten())%1440,wahl=[];
+  for(let t=0;t<1440;t+=schritt)if(t%720!==jetzt%720)wahl.push(t);
+  const ziel=wahl[Math.min(wahl.length-1,Math.floor(zufall()*wahl.length))];
+  const zielZeit=Z.wallToInstant(LU.ymd(),ziel,LU.zone());
+  LU.animiere({art:'gehe',von:LU.s.instant,ziel:zielZeit,dauer:900});
+  LU.neu();
+  return ziel;
+};
+
 zeigen.binden=function(){
   for(const b of LU.qa('[data-lauf]'))LU.tippen(b,()=>{
-    const r=Number(b.dataset.lauf);
-    if(r===0){LU.stoppeAlles();}
-    else{LU.stoppeAlles();LU.s.lauf=r;LU.animiere({art:'lauf',richtung:r,rate:TEMPO[LU.s.tempo]});}
+    const r=Number(b.dataset.lauf);LU.stoppeAlles();
+    if(r!==0)LU.animiere({art:'lauf',richtung:Math.sign(r),rate:TEMPO[Math.abs(r)],taste:r});
     LU.neu();
   });
-  for(const b of LU.qa('[data-tempo]'))LU.tippen(b,()=>{
-    LU.s.tempo=b.dataset.tempo;
-    if(LU.s.anim&&LU.s.anim.art==='lauf')LU.s.anim.rate=TEMPO[LU.s.tempo];
-    LU.neu();
-  });
-  LU.tippen($('jetzt'),()=>{LU.stoppeAlles();LU.s.live=true;LU.s.instant=Date.now();LU.liveStart();LU.neu();});
+  LU.tippen($('zufall'),()=>zeigen.zufall());
+  LU.tippen($('jetzt'),()=>{LU.stoppeAlles();LU.s.instant=Date.now();LU.liveStart();LU.neu();});
   LU.tippen($('start-fest'),()=>{LU.s.start=LU.s.start==null?LU.s.instant:null;LU.neu();});
-  for(const b of LU.qa('[data-hilfe]'))LU.tippen(b,()=>{
-    const k=b.dataset.hilfe,h=LU.s.hilfen;h[k]=!h[k];
-    if(k==='minuten'&&h.minuten)h.alleMinuten=false;
-    if(k==='alleMinuten'&&h.alleMinuten)h.minuten=false;
-    LU.neu();
-  });
-  for(const b of LU.qa('#b-sprechweise [data-form]'))LU.tippen(b,()=>{LU.s.form=b.dataset.form;if(!LU.s.hilfen.worte)LU.s.hilfen.worte=true;LU.neu();});
-  LU.tippen($('b-vorlesen').querySelector('button'),zeigen.vorlesen);
+  for(const b of LU.qa('#b-hilfen [data-hilfe],#b-anzeige [data-hilfe]'))LU.tippen(b,()=>{LU.schalteHilfe(b.dataset.hilfe);LU.neu();});
+  for(const b of LU.qa('[data-stufe]'))LU.tippen(b,()=>{LU.setzeStufe(b.dataset.stufe);LU.neu();});
+  for(const b of LU.qa('#b-sprechweise [data-form]'))LU.tippen(b,()=>{LU.s.form=b.dataset.form;LU.neu();});
+  LU.tippen($('vorlesen'),zeigen.vorlesen);
 };
 
 zeigen.zeichne=function(){
-  const s=LU.s,h=s.hilfen;
-  for(const b of LU.qa('[data-lauf]'))b.setAttribute('aria-pressed',String(s.anim&&s.anim.art==='lauf'?Number(b.dataset.lauf)===s.anim.richtung:Number(b.dataset.lauf)===0&&!s.live));
-  for(const b of LU.qa('[data-tempo]'))b.setAttribute('aria-pressed',String(b.dataset.tempo===s.tempo));
+  const s=LU.s,h=s.hilfen,a=s.anim;
+  const taste=a&&a.art==='lauf'?a.taste:(s.live?null:0);
+  for(const b of LU.qa('[data-lauf]'))b.setAttribute('aria-pressed',String(Number(b.dataset.lauf)===taste));
   $('jetzt').setAttribute('aria-pressed',String(s.live));
-  for(const b of LU.qa('[data-hilfe]'))b.setAttribute('aria-pressed',String(!!h[b.dataset.hilfe]));
+  $('start-fest').setAttribute('aria-pressed',String(s.start!=null));
+  for(const b of LU.qa('#b-hilfen [data-hilfe],#b-anzeige [data-hilfe]'))b.setAttribute('aria-pressed',String(!!h[b.dataset.hilfe]));
+  for(const b of LU.qa('[data-stufe]'))b.setAttribute('aria-pressed',String(b.dataset.stufe===LU.einst.stufe));
   for(const b of LU.qa('#b-sprechweise [data-form]'))b.setAttribute('aria-pressed',String(b.dataset.form===s.form));
+  $('b-sprechweise').hidden=!h.worte;
   // Worte
   const bw=$('b-worte');bw.hidden=!h.worte;
   if(h.worte){
     const beide=s.form==='beide';bw.classList.toggle('einzeln',!beide);
     for(const z of LU.qa('.wort-zeile',bw)){const f=z.dataset.form,an=beide||f===s.form;z.hidden=!an;if(an)z.querySelector('.wort-text').textContent=zeigen.worte(f);}
   }
-  $('b-vorlesen').hidden=!h.vorlesen;
   // Vergangene Zeit
-  const st=$('start-fest');st.setAttribute('aria-pressed',String(s.start!=null));
-  st.textContent=s.start==null?'Start festhalten':'Start löschen';
-  const seit=$('seit');
-  if(s.start==null){seit.textContent=LU.G&&LU.G.hoch?'':'Startzeit festhalten, dann Zeit laufen lassen.';}
-  else{
+  const seit=$('seit');$('b-seit').hidden=s.start==null;
+  if(s.start!=null){
     const min=Math.round((s.instant-s.start)/Z.MIN);
     seit.replaceChildren();
-    if(min<0){seit.textContent='Die Uhr steht vor der Startzeit.';}
+    if(min<0){seit.textContent='vor der Startzeit';}
     else{
       if(!LU.G.hoch)seit.append('seit '+LU.hm(s.start)+' · ');
-      const a=document.createElement('span');a.className='h';a.textContent=Math.floor(min/60)+' Std.';
-      const b=document.createElement('span');b.className='m';b.textContent=(min%60)+' Min.';
-      seit.append(a,' ',b);
+      const x=document.createElement('span');x.className='h';x.textContent=Math.floor(min/60)+' Std.';
+      const y=document.createElement('span');y.className='m';y.textContent=(min%60)+' Min.';
+      seit.append(x,' ',y);
     }
   }
 };

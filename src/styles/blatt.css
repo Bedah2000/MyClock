@@ -33,7 +33,8 @@
 .koord .feld{min-height:var(--h-ans)}
 #blatt-dock .koord .feld{flex-direction:row;gap:.5em;min-height:var(--h-btn)}
 .bl-zonen{display:flex;flex-direction:column;gap:var(--gap)}
-#blatt-dock .bl-zonen{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+#blatt-dock .bl-zonen{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+#blatt-dock .bl-zonen button{font-size:var(--fs-klein);padding:.1em .1em}
 .schmal .koord{flex-direction:column}
 #blatt-dock .hinweis.leer{display:none}
 .bl-zonen button[aria-pressed="true"]{background:var(--akzent);border-color:var(--akzent);color:var(--auf-akzent)}

@@ -1,8 +1,8 @@
 # Prüfbericht
 
-Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 00:09:55 mit Chromium 141.0.7390.37 und Touch-Emulation. Die App läuft jeweils in einem iframe unter einer 48 px hohen Leiste als Nachbildung des mebis-Rahmens.
+Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 05:15:21 mit Chromium 141.0.7390.37 und Touch-Emulation. Die App läuft jeweils in einem iframe unter einer 48 px hohen Leiste als Nachbildung des mebis-Rahmens.
 
-**301 von 301 Prüfungen bestanden.**
+**316 von 316 Prüfungen bestanden.**
 
 ## escreen
 
@@ -10,15 +10,19 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 00:09:55 mit Chromi
 |---|---|---|
 | ✅ | Vollbild-Knopf erscheint, wenn der Rahmen Vollbild erlaubt |  |
 | ✅ | Layout erkannt: tafel |  |
-| ✅ | Zeigen: vergangene Zeit als Fläche und in Std./Min. | seit 09:00 · 0 Std. 56 Min. |
+| ✅ | Zeigen: vergangene Zeit als Fläche und in Std./Min. | seit 09:00 · 0 Std. 13 Min. |
 | ✅ | zeigen: kein Scrollen, nichts ragt heraus |  |
 | ✅ | zeigen: Mindestgrößen |  |
 | ✅ | zeigen: Schüler-Bedienung in den unteren zwei Dritteln |  |
 | ✅ | Zeiger laufen unter den Stundenzahlen durch (Maske aktiv) |  |
 | ✅ | Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit |  |
+| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(78) rotate(78) rotate(84) |
+| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.1 min, ▶▶ 16.0 min, danach ◀ 15.4 |
+| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 06:30, 13:00, 16:30, 15:15 |
+| ✅ | Stufe merkt sich geänderte Hilfen; Worte und Digital bleiben gleich | [[false,true],[true,true,"quarter"]] |
 | ✅ | Touch: Minutenzeiger von 9:00 um eine Viertelstunde gezogen | 09:15 |
 | ✅ | Touch: kein Scrollen oder Zoomen beim Ziehen |  |
-| ✅ | Touch: zweiter Finger löst nichts aus | Tempo blieb schnell |
+| ✅ | Touch: zweiter Finger löst nichts aus | Stufe blieb any |
 | ✅ | Einrasten: Loslassen bei etwa 9:17 ergibt 9:15 | 09:15 |
 | ✅ | quiz-start: kein Scrollen, nichts ragt heraus |  |
 | ✅ | quiz-start: Mindestgrößen |  |
@@ -29,6 +33,7 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 00:09:55 mit Chromi
 | ✅ | quiz-frage: kein Scrollen, nichts ragt heraus |  |
 | ✅ | quiz-frage: Mindestgrößen |  |
 | ✅ | quiz-frage: Schüler-Bedienung in den unteren zwei Dritteln |  |
+| ✅ | Quiz: Stundenbereich und Hervorheben erst nach Fehlversuchen |  |
 | ✅ | Falsch: Felder ausgegraut, nach zwei Fehlversuchen Lernhilfe |  |
 | ✅ | quiz-falsch: kein Scrollen, nichts ragt heraus |  |
 | ✅ | quiz-falsch: Mindestgrößen |  |
@@ -114,9 +119,9 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 00:09:55 mit Chromi
 | ✅ | sonne-vergleich: Schüler-Bedienung in den unteren zwei Dritteln |  |
 | ✅ | Sonne: Uhrzeit und Sonnenstand gekoppelt (Mittag hoch, Nacht dunkel) | 64° hoch / untergegangen |
 | ✅ | Sonne: Antippen im Jahresband wählt ein Datum | 2026-06-25 |
-| ✅ | Uhr in 22 Schritten an derselben Stelle (511,120,578,578) | 511,120,578,578 |
-| ✅ | Uhr 72 % der Höhe (Zifferblatt 62 %) |  |
-| ✅ | Zifferblatt: Stundenzahlen 42 px, Minutenzahlen 28.4 px, alle Minuten 23.7 px | alle Minuten sind geometrisch begrenzt |
+| ✅ | Uhr in 22 Schritten an derselben Stelle (500,100,600,600) | 500,100,600,600 |
+| ✅ | Uhr 75 % der Höhe (Zifferblatt 64 %) |  |
+| ✅ | Zifferblatt: Stundenzahlen 43.6 px, Minutenzahlen 29.5 px, alle Minuten 24.6 px | alle Minuten sind geometrisch begrenzt |
 | ✅ | Fernlesetest: Bild auf 25 % gespeichert (Sichtprüfung im Bericht) | docs/screens/escreen-fernlesetest-25prozent.png |
 | ✅ | Keine Netzwerkanfragen außer Rahmen und App |  |
 | ✅ | Keine JavaScript-Fehler |  |
@@ -127,17 +132,22 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 00:09:55 mit Chromi
 |---|---|---|
 | ✅ | Vollbild-Knopf erscheint, wenn der Rahmen Vollbild erlaubt |  |
 | ✅ | Layout erkannt: tablet |  |
-| ✅ | Zeigen: vergangene Zeit als Fläche und in Std./Min. | seit 09:00 · 0 Std. 52 Min. |
+| ✅ | Zeigen: vergangene Zeit als Fläche und in Std./Min. | seit 09:00 · 0 Std. 13 Min. |
 | ✅ | zeigen: kein Scrollen, nichts ragt heraus |  |
 | ✅ | zeigen: Mindestgrößen |  |
 | ✅ | Zeiger laufen unter den Stundenzahlen durch (Maske aktiv) |  |
 | ✅ | Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit |  |
+| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(96) rotate(102) rotate(102) |
+| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.0 min, ▶▶ 15.8 min, danach ◀ 15.2 |
+| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 06:30, 19:15, 08:30, 19:15 |
+| ✅ | Stufe merkt sich geänderte Hilfen; Worte und Digital bleiben gleich | [[false,true],[true,true,"quarter"]] |
 | ✅ | quiz-start: kein Scrollen, nichts ragt heraus |  |
 | ✅ | quiz-start: Mindestgrößen |  |
 | ✅ | quiz-lauf: kein Scrollen, nichts ragt heraus |  |
 | ✅ | quiz-lauf: Mindestgrößen |  |
 | ✅ | quiz-frage: kein Scrollen, nichts ragt heraus |  |
 | ✅ | quiz-frage: Mindestgrößen |  |
+| ✅ | Quiz: Stundenbereich und Hervorheben erst nach Fehlversuchen |  |
 | ✅ | Falsch: Felder ausgegraut, nach zwei Fehlversuchen Lernhilfe |  |
 | ✅ | quiz-falsch: kein Scrollen, nichts ragt heraus |  |
 | ✅ | quiz-falsch: Mindestgrößen |  |
@@ -205,8 +215,8 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 00:09:55 mit Chromi
 | ✅ | sonne-vergleich: Mindestgrößen |  |
 | ✅ | Sonne: Uhrzeit und Sonnenstand gekoppelt (Mittag hoch, Nacht dunkel) | 64° hoch / untergegangen |
 | ✅ | Sonne: Antippen im Jahresband wählt ein Datum | 2026-06-25 |
-| ✅ | Uhr in 22 Schritten an derselben Stelle (251,81,498,498) | 251,81,498,498 |
-| ✅ | Zifferblatt: Stundenzahlen 36.2 px, Minutenzahlen 24.5 px, alle Minuten 20.4 px | alle Minuten sind geometrisch begrenzt |
+| ✅ | Uhr in 22 Schritten an derselben Stelle (259,79,482,482) | 259,79,482,482 |
+| ✅ | Zifferblatt: Stundenzahlen 35 px, Minutenzahlen 23.7 px, alle Minuten 19.8 px | alle Minuten sind geometrisch begrenzt |
 | ✅ | Keine Netzwerkanfragen außer Rahmen und App |  |
 | ✅ | Keine JavaScript-Fehler |  |
 
@@ -216,14 +226,18 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 00:09:55 mit Chromi
 |---|---|---|
 | ✅ | Vollbild-Knopf erscheint, wenn der Rahmen Vollbild erlaubt |  |
 | ✅ | Layout erkannt: tablet |  |
-| ✅ | Zeigen: vergangene Zeit als Fläche und in Std./Min. | 0 Std. 51 Min. |
+| ✅ | Zeigen: vergangene Zeit als Fläche und in Std./Min. | 0 Std. 13 Min. |
 | ✅ | zeigen: kein Scrollen, nichts ragt heraus |  |
 | ✅ | zeigen: Mindestgrößen |  |
 | ✅ | Zeiger laufen unter den Stundenzahlen durch (Maske aktiv) |  |
 | ✅ | Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit |  |
+| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(96) rotate(102) rotate(102) |
+| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.1 min, ▶▶ 16.0 min, danach ◀ 15.4 |
+| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 05:30, 11:15, 05:30, 07:30 |
+| ✅ | Stufe merkt sich geänderte Hilfen; Worte und Digital bleiben gleich | [[false,true],[true,true,"quarter"]] |
 | ✅ | Touch: Minutenzeiger von 9:00 um eine Viertelstunde gezogen | 09:15 |
 | ✅ | Touch: kein Scrollen oder Zoomen beim Ziehen |  |
-| ✅ | Touch: zweiter Finger löst nichts aus | Tempo blieb schnell |
+| ✅ | Touch: zweiter Finger löst nichts aus | Stufe blieb any |
 | ✅ | Einrasten: Loslassen bei etwa 9:17 ergibt 9:15 | 09:15 |
 | ✅ | quiz-start: kein Scrollen, nichts ragt heraus |  |
 | ✅ | quiz-start: Mindestgrößen |  |
@@ -231,6 +245,7 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 00:09:55 mit Chromi
 | ✅ | quiz-lauf: Mindestgrößen |  |
 | ✅ | quiz-frage: kein Scrollen, nichts ragt heraus |  |
 | ✅ | quiz-frage: Mindestgrößen |  |
+| ✅ | Quiz: Stundenbereich und Hervorheben erst nach Fehlversuchen |  |
 | ✅ | Falsch: Felder ausgegraut, nach zwei Fehlversuchen Lernhilfe |  |
 | ✅ | quiz-falsch: kein Scrollen, nichts ragt heraus |  |
 | ✅ | quiz-falsch: Mindestgrößen |  |
@@ -298,8 +313,8 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 00:09:55 mit Chromi
 | ✅ | sonne-vergleich: Mindestgrößen |  |
 | ✅ | Sonne: Uhrzeit und Sonnenstand gekoppelt (Mittag hoch, Nacht dunkel) | 64° hoch / untergegangen |
 | ✅ | Sonne: Antippen im Jahresband wählt ein Datum | 2026-06-25 |
-| ✅ | Uhr in 22 Schritten an derselben Stelle (125,78,510,510) | 125,78,510,510 |
-| ✅ | Zifferblatt: Stundenzahlen 37.1 px, Minutenzahlen 25.1 px, alle Minuten 20.9 px | alle Minuten sind geometrisch begrenzt |
+| ✅ | Uhr in 22 Schritten an derselben Stelle (107.5,76,545,545) | 107.5,76,545,545 |
+| ✅ | Zifferblatt: Stundenzahlen 39.6 px, Minutenzahlen 26.8 px, alle Minuten 22.4 px | alle Minuten sind geometrisch begrenzt |
 | ✅ | Drehen ins Querformat: Zustand bleibt erhalten | quer |
 | ✅ | Nach dem Drehen: kein Scrollen, nichts ragt heraus |  |
 | ✅ | Zurück ins Hochformat: Zustand bleibt erhalten |  |

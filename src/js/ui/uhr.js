@@ -40,9 +40,9 @@ uhr.zeichne=function(sicht){
   const m=LU.wandMinuten(),ganz=Math.floor(m+1e-6),E=LU.einst;
   $('zeiger-h').setAttribute('transform',`rotate(${f((m%720)*.5)})`);
   $('zeiger-m').setAttribute('transform',`rotate(${f((m%60)*6)})`);
-  $('zeiger-s').setAttribute('transform',`rotate(${f((m*60%60)*6)})`);
+  $('zeiger-s').setAttribute('transform',`rotate(${(LU.teile().second%60)*6})`);
   $('zeiger-h').style.display=E.stundenzeiger?'':'none';
-  $('zeiger-m').style.display=E.minutenzeiger?'':'none';
+  $('zeiger-m').style.display=sicht.minutenzeiger!==false?'':'none';
   $('zeiger-s').style.display=E.sekundenzeiger&&LU.s.live?'':'none';
   $('stundenzahlen').style.display=sicht.stunden?'':'none';
   $('zeiger-maske').setAttribute('mask',sicht.stunden?'url(#zahlmaske)':'');
@@ -90,7 +90,7 @@ function greife(e){
   const {rho,winkel}=lokal(e);
   if(rho<10||rho>117)return;
   const m=LU.wandMinuten(),E=LU.einst;
-  const dm=E.minutenzeiger?winkelAbstand(winkel,(m%60)*6):999,dh=E.stundenzeiger?winkelAbstand(winkel,(m%720)*.5):999;
+  const dm=LU.s.hilfen.minutenzeiger!==false?winkelAbstand(winkel,(m%60)*6):999,dh=E.stundenzeiger?winkelAbstand(winkel,(m%720)*.5):999;
   const TOL=26;let zeiger=null;
   if(dm<=TOL&&dh<=TOL)zeiger=rho>62?'m':'h';
   else if(dm<=TOL)zeiger='m';else if(dh<=TOL)zeiger='h';
@@ -113,7 +113,7 @@ function lasse(e){
   zug=null;$('uhr').classList.remove('zieht');
   const m=LU.teile().minutes;
   let ziel=Math.round(m);
-  if(LU.einst.einrasten)ziel=A.snapNearest(m,LU.einst.stufe);
+  if(LU.s.hilfen.einrasten)ziel=A.snapNearest(m,LU.einst.stufe);
   LU.s.instant+=(ziel-m)*Z.MIN;
   LU.s.instant=Math.round(LU.s.instant/1000)*1000;
   LU.zeitGeaendert&&LU.zeitGeaendert();LU.neu();

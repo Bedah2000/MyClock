@@ -14,16 +14,19 @@
 #uhr .minutenzahlen text{fill:var(--minute);font-family:Bayerndruck,sans-serif;text-anchor:middle;dominant-baseline:central}
 #uhr .stundenzahlen text{fill:var(--tinte);font-family:Bayerndruck,sans-serif;text-anchor:middle;dominant-baseline:central;
   stroke:var(--zifferblatt);stroke-width:4.4px;paint-order:stroke fill;stroke-linejoin:round}
-#uhr .z-stunde{stroke:var(--stunde);stroke-width:8.5;stroke-linecap:round}
-#uhr .z-minute{stroke:var(--minute);stroke-width:5.4;stroke-linecap:round}
-#uhr .z-nadel{stroke:var(--minute);stroke-width:2.6;stroke-linecap:round}
-#uhr .zeiger-s line{stroke:var(--tinte);stroke-width:.9;stroke-linecap:round}
+/* Zeiger: spitz zulaufend, leichter Schatten mit fester Lichtrichtung (Filter am nicht gedrehten Elternelement) */
+#zeiger-maske{filter:drop-shadow(.6px 1.4px 1.2px rgba(0,0,0,.28))}
+#uhr .z-stunde{fill:var(--stunde)}
+#uhr .z-minute{fill:var(--minute)}
+#uhr .zeiger-s line{stroke:var(--sekunde);stroke-width:1.1;stroke-linecap:round}
+#uhr .zeiger-s circle{fill:var(--sekunde)}
 #uhr .mitte{fill:var(--tinte)}
+#uhr .mitte-punkt{fill:var(--zifferblatt)}
 #uhr .ring{fill:var(--zifferblatt);stroke:var(--akzent);stroke-width:1.6}
 #uhr .ring.m{stroke:var(--minute)}
 #uhr .start-marke circle{fill:var(--stunde);stroke:#fff;stroke-width:.8}
 #uhr .zeiger:focus-visible{outline:none}
-#uhr .zeiger:focus-visible line{filter:drop-shadow(0 0 2px var(--akzent))}
+#uhr .zeiger:focus-visible path{stroke:var(--akzent);stroke-width:1.2}
 #app.gesperrt #uhr{cursor:default}
 #uhr.zieht{cursor:grabbing}
 

@@ -2,10 +2,10 @@
 :root{
   --bg:#F2F5F4; --flaeche:#FFFFFF; --flaeche-2:#E4EAE8; --tinte:#1D2B28; --leise:#4E605A; --linie:#C3D0CC;
   --akzent:#13756B; --akzent-hell:#DCEFEA; --akzent-text:#0E5F57; --auf-akzent:#FFFFFF;
-  --stunde:#B03A48; --minute:#1E5EA6; --stunde-hell:rgba(176,58,72,.18); --minute-hell:rgba(30,94,166,.20);
+  --stunde:#B03A48; --minute:#1E5EA6; --sekunde:#3C4A46; --stunde-hell:rgba(176,58,72,.18); --minute-hell:rgba(30,94,166,.20);
   --falsch-bg:#E6EBE9; --falsch-text:#6B7874; --zifferblatt:#FFFFFF; --fenster-neutral:#E7EDEB;
   --sektor:#F6E3B4; --sektor-rand:#D9AE52; --schatten:rgba(20,40,35,.13); --rand:1.5px;
-  --fs-ans:26px; --fs-txt:20px; --fs-kopf:22px; --fs-dig:38px; --fs-worte:24px; --h-ans:60px; --h-btn:48px; --gap:8px; --r:12px;
+  --fs-ans:22px; --fs-txt:18px; --fs-kopf:20px; --fs-dig:34px; --fs-worte:20px; --fs-klein:15px; --h-ans:52px; --h-btn:44px; --gap:8px; --r:12px;
 }
 html[data-schema="kontrast"]{
   --bg:#FFFFFF; --flaeche:#FFFFFF; --flaeche-2:#FFFFFF; --tinte:#000000; --leise:#1A1A1A; --linie:#000000;
@@ -42,13 +42,19 @@ html[data-schema="kontrast"] .seg{border:var(--rand) solid var(--linie)}
 .schmal .lang{display:none}.schmal .kurz{display:inline}
 .seg>button[aria-pressed="true"]{background:var(--akzent);border-color:var(--akzent);color:var(--auf-akzent);box-shadow:0 1px 3px rgba(0,0,0,.18)}
 
-/* Schalter mit eindeutigem Zustand: Fläche, Rahmen und Knopf */
-.schalter{justify-content:space-between;text-align:left;padding:.25em .5em .25em .6em;gap:.4em;hyphens:manual}
-.schalter span{min-width:0;overflow-wrap:break-word}
-.schalter i{flex:none;width:1.7em;height:1em;border-radius:1em;background:var(--linie);position:relative;transition:background-color .15s}
-.schalter i::after{content:"";position:absolute;top:.12em;left:.12em;width:.76em;height:.76em;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:left .15s}
-.schalter[aria-pressed="true"]{background:var(--akzent-hell);border-color:var(--akzent);border-width:calc(var(--rand) + 1px)}
-.schalter[aria-pressed="true"] i{background:var(--akzent)}
-.schalter[aria-pressed="true"] i::after{left:.82em}
+/* Symbole (SVG-Sprite) */
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+.ik{width:1.2em;height:1.2em;fill:currentColor;flex:none;overflow:visible}
+button.nurikon{padding:.1em .45em;min-width:var(--h-btn)}
+button.nurikon .ik{width:1.3em;height:1.3em}
+/* Symbol mit kleiner Beschriftung darunter */
+button.ikon,button.hilfe{flex-direction:column;gap:.1em;padding:.15em .2em;line-height:1.05}
+button.ikon .cap,button.hilfe .cap{font-size:var(--fs-klein);hyphens:manual;overflow-wrap:break-word;max-width:100%}
+button .cap{min-width:0}
+/* Schalter: an = gefüllt in Akzentfarbe, aus = weiß. Eindeutig auch ohne Farbe durch den Rahmen. */
+button.hilfe[aria-pressed="true"]{background:var(--akzent-hell);border-color:var(--akzent);border-width:2px;color:var(--akzent-text)}
+button.hilfe .ik{width:1.55em;height:1.55em}
+button.ikon .ik{width:1.45em;height:1.45em}
+button.hilfe[aria-pressed="false"]{background:var(--flaeche)}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation-duration:.01ms!important}}

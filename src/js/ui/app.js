@@ -11,6 +11,14 @@ LU.animiere=function(a){
 };
 function schritt(ts){
   frame=null;const a=LU.s.anim;if(!a)return;
+  if(a.art==='gehe'){ // feste Dauer, weich ein- und ausgeblendet (Zufallszeit)
+    if(a.t0==null)a.t0=ts;
+    const ruhig=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const p=ruhig?1:Math.min(1,(ts-a.t0)/a.dauer),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+    LU.s.instant=a.von+(a.ziel-a.von)*e;
+    if(p>=1){LU.s.instant=a.ziel;LU.s.anim=null;vorher=null;LU.zeichne();return;}
+    LU.zeichne();frame=requestAnimationFrame(schritt);return;
+  }
   if(vorher!==null&&!a.pause){
     const dt=Math.min((ts-vorher)/1000,.1);
     if(a.art==='lauf'){LU.s.instant+=a.richtung*a.rate*dt*Z.MIN;}
@@ -24,8 +32,14 @@ LU.stoppeAlles=function(){
   LU.s.anim=null;vorher=null;if(frame!==null){cancelAnimationFrame(frame);frame=null;}
   LU.liveStopp();LU.uhr.abbrechen&&0;
 };
-LU.liveStart=function(){if(liveTimer)clearInterval(liveTimer);LU.s.live=true;liveTimer=setInterval(()=>{if(!document.hidden&&LU.s.live){LU.s.instant=Date.now();LU.zeichne();}},250);};
-LU.liveStopp=function(){LU.s.live=false;if(liveTimer){clearInterval(liveTimer);liveTimer=null;}};
+/* Echtzeit: im Takt der Sekunde, damit der Sekundenzeiger genau auf den Minutenstrichen springt */
+function liveTakt(){
+  if(!LU.s.live)return;
+  if(!document.hidden){LU.s.instant=Date.now();LU.zeichne();}
+  liveTimer=setTimeout(liveTakt,1000-Date.now()%1000+8);
+}
+LU.liveStart=function(){if(liveTimer)clearTimeout(liveTimer);LU.s.live=true;liveTimer=setTimeout(liveTakt,1000-Date.now()%1000+8);};
+LU.liveStopp=function(){LU.s.live=false;if(liveTimer){clearTimeout(liveTimer);liveTimer=null;}};
 /* Datum bleibt im Bereich der Vorlage (1900 bis 2100) */
 LU.grenzen=function(){
   const p=LU.teile();if(Z.validDate(p.ymd))return;
@@ -81,7 +95,9 @@ LU.zeichne=function(){
   const m=Math.floor(LU.wandMinuten()+1e-6);$('digital-zeit').textContent=LU.label(m);
   $('digital').setAttribute('aria-label',digitalAn?'Uhrzeit '+LU.label(m):'Uhrzeit verdeckt');
   // Uhr
-  const sicht={stunden:h.stunden,minuten:h.minuten,alleMinuten:h.alleMinuten,bereich:h.bereich||!!a.bereich,hervorheben:h.hervorheben||!!a.hervorheben,vergangen:null};
+  // Im Quiz verraten Stundenbereich und Hervorheben die Lösung: dort nur als Hilfe nach zwei Fehlversuchen
+  const quiz=b==='quiz';
+  const sicht={stunden:h.stunden,minuten:h.minuten,alleMinuten:h.alleMinuten,bereich:(!quiz&&h.bereich)||!!a.bereich,hervorheben:(!quiz&&h.hervorheben)||!!a.hervorheben,minutenzeiger:h.minutenzeiger,vergangen:null};
   if(b==='zeigen'&&s.start!=null)sicht.vergangen={startWand:Z.parts(s.start,LU.zone()).minutes,min:(s.instant-s.start)/Z.MIN};
   if(b==='quiz'&&s.quiz&&s.quiz.start!=null&&(a.vergangen||(s.quiz.phase==='lauf'&&E.dauerZeigen)))
     sicht.vergangen={startWand:Z.parts(s.quiz.start,LU.zone()).minutes,min:(s.instant-s.quiz.start)/Z.MIN};
@@ -102,7 +118,7 @@ function start(){
   document.documentElement.dataset.schema=LU.einst.schema;
   LU.uhr.aufbauen();LU.uhr.binden();
   LU.zeigen.binden();LU.quiz.binden();LU.sonne.binden();LU.blatt.binden();
-  if(LU.s.bereich==='quiz')LU.quiz.neu();else LU.quiz.neu();
+  LU.setzeStufe(LU.einst.stufe);LU.quiz.neu();
   for(const k of LU.qa('#bereiche [data-bereich]'))LU.tippen(k,()=>LU.wechsle(k.dataset.bereich));
   for(const b of LU.qa('.b-vorlesen button'))b.addEventListener('pointerdown',()=>LU.entsperreMedien());
   // Vollbild nur, wenn der Rahmen es erlaubt

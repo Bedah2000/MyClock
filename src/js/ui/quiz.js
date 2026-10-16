@@ -240,8 +240,8 @@ quiz.zeichne=function(){
   // Knöpfe
   $('b-vorlesen2').hidden=!(ph==='gut1'||ph==='gut2');
   $('b-weiter').hidden=!(ph==='start'||ph==='gut1'||ph==='gut2'||ph==='ende');
-  $('weiter').textContent=ph==='start'?'Los geht’s':ph==='ende'?'Neue Runde':'Weiter';
-  $('b-pause').hidden=!lauf;$('pause').textContent=x.pause?'Weiter laufen':'Pause';
+  $('weiter').querySelector('.cap').textContent=ph==='start'?'Los geht’s':ph==='ende'?'Neue Runde':'Weiter';
+  $('b-pause').hidden=!lauf;$('pause').querySelector('use').setAttribute('href',x.pause?'#i-vor':'#i-pause');$('pause').setAttribute('aria-label',x.pause?'Weiter laufen':'Pause');
   $('b-nochmal').hidden=ph!=='dauer';$('nochmal').disabled=!!x.erneut;
 };
 })();

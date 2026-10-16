@@ -2,7 +2,7 @@
 
 Web-App für den Förderschwerpunkt geistige Entwicklung (Berufsschulstufe): Eine Lehrkraft erklärt die Uhrzeit am eScreen, Schülerinnen und Schüler üben allein oder zu zweit am iPad. Die Uhr steht in jedem Bereich und jedem Schritt an derselben Stelle und ist das größte Element.
 
-- **Zeigen:** Zeiger ziehen (gekoppelt), Zeit vorwärts oder rückwärts laufen lassen (Langsam, Mittel, Schnell), „Jetzt“, vergangene Zeit als Fläche und in Std./Min., Lernhilfen einzeln zuschaltbar, Uhrzeit in Worten süddeutsch, hochdeutsch oder beide nebeneinander, Vorlesen auf Tipp.
+- **Zeigen:** Zeiger ziehen (gekoppelt), Laufwerk wie am Walkman (◀◀ ◀ ■ ▶ ▶▶), Zufallszeit (Würfel), „Jetzt“ mit tickendem Sekundenzeiger, vergangene Zeit als Fläche und in Std./Min. Eine Stufe (Stunde bis Minute) bestimmt Zufallsschritt, Einrasten und passende Hilfen; jede Hilfe lässt sich mit einem Tipp ändern, die Stufe merkt sich die Änderung. Uhrzeit in Worten süddeutsch, hochdeutsch oder beide nebeneinander, Vorlesen nur auf Tipp.
 - **Quiz:** Runde mit 3, 5 oder 8 Aufgaben. Die Zeit läuft 1 bis 4 Stunden zur Zielzeit, dann wird die Uhrzeit erraten, dann die Zeitdauer. Lernstufen volle, halbe, Viertelstunden, 5 Minuten, alle Minuten. Leicht mit vier Auswahlfeldern, Schwer mit eigenem Ziffernfeld oder, bei Worten, mit Wortbausteinen.
 - **Sonne:** Himmel hinter der Uhr und Horizontband darunter folgen Uhrzeit und Datum. Aufgang, Untergang, Tageslänge, Sonnenhöhe, Jahresband, Sommer und Winter im Vergleich, optional der Mond. Ort voreingestellt auf Herrieden.
 
@@ -66,14 +66,15 @@ Der Knopf „Vollbild“ erscheint nur, wenn der Rahmen Vollbild erlaubt.
 
 ## Bedienung für die Lehrkraft
 
+- **Zeigen an die Klasse anpassen:** rechts die Stufe wählen (Stunde, halbe, Viertel, 5 Min., Minute). Jede Stufe bringt passende Hilfen mit (Stundenzahlen, Minutenzahlen, alle Minuten, Stundenbereich, Hervorheben, Minutenzeiger, Einrasten). Darunter lassen sie sich einzeln an- und ausschalten; die Stufe merkt sich das auf diesem Gerät. Der Würfel stellt eine zufällige Uhrzeit im Schritt der Stufe ein. ▶ läuft 1 Minute pro Sekunde, ▶▶ 15 Minuten pro Sekunde, ■ hält an. Die Stufe ist dieselbe wie die Lernstufe im Quiz.
 - **Bereich wechseln:** oben links Zeigen, Quiz oder Sonne. In den Einstellungen (Reiter Gerät) lässt sich die Bereichswahl für Schüler sperren.
-- **Einstellungen:** Knopf oben rechts, dann den Regler nach rechts schieben. So öffnen Schüler das Blatt nicht aus Versehen. Das Blatt liegt neben der Uhr (quer) oder unter ihr (hoch), nie über ihr. Reiter: Quiz (Lernstufe, Antworten, Aufgabe, Sprechweise), Runde (Aufgaben je Runde, Tempo, Zeitdauer beim Ablauf zeigen), Anzeige (Einrasten, Zeiger sperren, einzelne Zeiger, Sekundenzeiger, Himmel), Sonne (Ort, eigener Ort mit Koordinaten und Zeitzone, Mond), Gerät (Darstellung Tafel/Tablet/automatisch, Farben Hell/Kontrast, Ton, Lob, Bereichswahl).
+- **Einstellungen:** Knopf oben rechts, dann den Regler nach rechts schieben. So öffnen Schüler das Blatt nicht aus Versehen. Das Blatt liegt neben der Uhr (quer) oder unter ihr (hoch), nie über ihr. Reiter: Quiz (Lernstufe, Antworten, Aufgabe, Sprechweise), Runde (Aufgaben je Runde, Tempo, Zeitdauer beim Ablauf zeigen), Anzeige (Zeiger sperren, Stundenzeiger, Sekundenzeiger, Himmel), Sonne (Ort, eigener Ort mit Koordinaten und Zeitzone, Mond), Gerät (Darstellung Auto/Tafel/Tablet, Farben Hell/Kontrast, Ton, Lob, Bereichswahl, Hilfen der Stufen zurücksetzen).
 - **Quizrunde in unter 10 Sekunden:** Einstellungen, Regler, Lernstufe, Leicht/Schwer, Zahlen/Worte, Fertig. Mit einem Lernstufen-Paket entfällt das.
-- **Darstellung:** Die App wählt Tafel (eScreen) oder Tablet (iPad) nach der verfügbaren Fläche. Wenn das nicht passt, im Reiter Gerät fest einstellen.
+- **Darstellung:** Die App wählt Tafel (eScreen) oder Tablet (iPad) nach der verfügbaren Fläche; Geräte nur mit Maus bekommen immer Tablet. Wenn das nicht passt, im Reiter Gerät fest einstellen. Bedienelemente sind kompakt gehalten und tragen Symbole mit kurzer Beschriftung: Tafel mindestens 60 px hohe Knöpfe und 20 px Schrift, Tablet 44 px und 15 px (Beschriftungen unter Symbolen), Antworten 40 px bzw. 22 px.
 
 ## Uhrzeit in Worten: süddeutsch und hochdeutsch
 
-Die Sprechweise ist überall wählbar. In **Zeigen** die Lernhilfe „In Worten“ einschalten und darunter „Süddeutsch“, „Hochdeutsch“ oder „Beide“ wählen. „Beide“ stellt die Formen nebeneinander, damit die Klasse die Unterschiede besprechen kann. Im **Quiz** gilt die Sprechweise aus den Einstellungen; bei Schwer richten sich die Wortbausteine nach ihr.
+Die Sprechweise ist überall wählbar. In **Zeigen** den Schalter „Worte“ einschalten und darunter „Süddeutsch“, „Hochdeutsch“ oder „Beide“ wählen. „Beide“ stellt die Formen nebeneinander, damit die Klasse die Unterschiede besprechen kann. Im **Quiz** gilt die Sprechweise aus den Einstellungen; bei Schwer richten sich die Wortbausteine nach ihr.
 
 | Uhrzeit | süddeutsch | hochdeutsch |
 |---|---|---|
@@ -101,4 +102,4 @@ vorlage/    scorm.js und imsmanifest.xml der Vorlage (index.html nur lokal)
 
 ## Datenschutz und Speicher
 
-Keine Daten über Lernende, kein Tracking, keine Ergebnisse. `localStorage` speichert höchstens Darstellung, Farben, Ton und Lob dieses Geräts; ist der Speicher gesperrt, arbeitet die App mit den Voreinstellungen.
+Keine Daten über Lernende, kein Tracking, keine Ergebnisse. `localStorage` speichert höchstens Darstellung, Farben, Ton, Lob und die Hilfen je Stufe dieses Geräts; ist der Speicher gesperrt, arbeitet die App mit den Voreinstellungen.
