@@ -6,8 +6,8 @@
 const LU=window.LU,$=LU.$;
 
 const TYP={
-  tafel:{ans:40,txt:24,kopf:28,dig:54,worte:34,klein:20,hAns:72,hBtn:60,gap:10,r:14},
-  tablet:{ans:22,txt:18,kopf:20,dig:34,worte:20,klein:15,hAns:52,hBtn:44,gap:8,r:12}
+  tafel:{ans:40,txt:24,kopf:28,dig:54,worte:34,klein:20,cap:16,hAns:72,hBtn:60,gap:10,r:14},
+  tablet:{ans:22,txt:18,kopf:20,dig:34,worte:20,klein:15,cap:12.5,hAns:52,hBtn:44,gap:8,r:12}
 };
 LU.TYP=TYP;
 
@@ -86,7 +86,7 @@ LU.layout=function(erzwingen){
   const root=document.documentElement.style;
   const px=v=>Math.round(v*s)+'px';
   root.setProperty('--fs-ans',px(t.ans));root.setProperty('--fs-txt',px(t.txt));root.setProperty('--fs-kopf',px(t.kopf));
-  root.setProperty('--fs-dig',px(t.dig));root.setProperty('--fs-worte',px(t.worte));root.setProperty('--fs-klein',px(t.klein));root.setProperty('--h-ans',px(t.hAns));
+  root.setProperty('--fs-dig',px(t.dig));root.setProperty('--fs-worte',px(t.worte));root.setProperty('--fs-klein',px(t.klein));root.setProperty('--fs-cap',px(t.cap));root.setProperty('--h-ans',px(t.hAns));
   root.setProperty('--h-btn',px(t.hBtn));root.setProperty('--gap',px(t.gap));root.setProperty('--r',px(t.r));
   root.setProperty('--uhr-d',G.uhr.w+'px');
   const kopf=$('kopf');setze(kopf,{x:G.g,y:0,w:W-2*G.g,h:G.T});

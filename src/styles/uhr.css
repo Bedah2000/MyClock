@@ -4,22 +4,34 @@
 #app[data-himmel="aus"] #band{visibility:hidden}
 #band{z-index:1;overflow:hidden}
 #uhr{z-index:2;touch-action:none;overflow:visible;cursor:default}
-#uhr .schatten{fill:var(--schatten)}
-#uhr .minutenring{fill:var(--minutenring);stroke:var(--tinte);stroke-width:1.2}
-#uhr .blatt{fill:var(--zifferblatt);stroke:var(--tinte);stroke-width:1.8}
+/* Minutenring und Zifferblatt: Pastell, schmaler Rand, leicht abgehoben (Schatten-Filter im SVG) */
+#uhr .minutenring{fill:url(#g-ring);stroke:var(--ring-rand);stroke-width:.9}
+#uhr .blatt{fill:url(#g-blatt);stroke:var(--blatt-rand);stroke-width:1}
+#uhr .kante{fill:none;stroke:url(#g-kante);stroke-width:1.1}
+html[data-schema="kontrast"] #uhr .kante{display:none}
+#uhr .s-ring-1{stop-color:var(--ring-hell)}
+#uhr .s-ring-2{stop-color:var(--ring)}
+#uhr .s-blatt-1{stop-color:var(--blatt-hell)}
+#uhr .s-blatt-2{stop-color:var(--blatt)}
+#uhr .f-schattenfarbe{flood-color:var(--uhr-schatten)}
+#uhr .f-leuchtfarbe{flood-color:var(--leuchten)}
+#uhr .s-hof-1{stop-color:var(--leuchten);stop-opacity:.75}
+#uhr .s-hof-2{stop-color:var(--leuchten);stop-opacity:.32}
+#uhr .s-hof-3{stop-color:var(--leuchten);stop-opacity:0}
 #uhr .sektor{fill:var(--sektor);stroke:var(--sektor-rand);stroke-width:.8}
 #uhr .verg-h{fill:var(--stunde-hell)}
 #uhr .verg-m{fill:var(--minute-hell)}
 #uhr .strich{stroke:#97A6A1;stroke-width:.75;stroke-linecap:round}
 #uhr .strich.gross{stroke:var(--tinte);stroke-width:1.8}
-/* Ziffern: Atkinson Hyperlegible Next SemiBold; Grundlinie setzt das Skript */
+/* Ziffern: Lernuhr Schulziffern SemiBold; Grundlinie setzt das Skript */
 #uhr text{font-family:Ziffern,Andika,sans-serif;font-weight:600;text-anchor:middle}
 #uhr .minutenzahlen text{fill:var(--minute)}
 #uhr .stundenzahlen text{fill:var(--tinte)}
 /* Hervorheben: die anderen Zahlen treten grau und blass zurück */
-#uhr text.matt{fill:var(--zahl-matt);opacity:.5}
+#uhr text.matt{fill:var(--zahl-matt);opacity:.6}
 #uhr text.weg{visibility:hidden}
-#uhr .mring{fill:var(--zifferblatt);stroke:var(--minute);stroke-width:1.4}
+#uhr .hof{fill:url(#g-hof)}
+#uhr text.leuchtet{filter:url(#f-leuchten)}
 /* Zeiger über den Zahlen: spitz zulaufend, leichter Schatten mit fester Lichtrichtung (Filter am nicht gedrehten Elternelement) */
 #zeiger-gruppe{filter:drop-shadow(.6px 1.4px 1.2px rgba(0,0,0,.28))}
 #uhr .z-stunde{fill:var(--stunde)}
@@ -28,7 +40,6 @@
 #uhr .zeiger-s circle{fill:var(--sekunde)}
 #uhr .mitte{fill:var(--tinte)}
 #uhr .mitte-punkt{fill:var(--zifferblatt)}
-#uhr .ring{fill:var(--zifferblatt);stroke:var(--akzent);stroke-width:1.6}
 #uhr .ring.m{stroke:var(--minute)}
 #uhr .start-marke circle{fill:var(--stunde);stroke:#fff;stroke-width:.8}
 #uhr .zeiger:focus-visible{outline:none}

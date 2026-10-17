@@ -67,14 +67,15 @@ Der Knopf „Vollbild“ erscheint nur, wenn der Rahmen Vollbild erlaubt.
 - **Bereich wechseln:** oben links Zeigen, Quiz oder Sonne. In den Einstellungen (Reiter Gerät) lässt sich die Bereichswahl für Schüler sperren.
 - **Einstellungen:** Knopf oben rechts, dann den Regler nach rechts schieben. So öffnen Schüler das Blatt nicht aus Versehen. Das Blatt liegt neben der Uhr (quer) oder unter ihr (hoch), nie über ihr. Reiter: Quiz (Lernstufe, Antworten, Aufgabe, Sprechweise), Runde (Aufgaben je Runde, Tempo, Zeitdauer beim Ablauf zeigen), Anzeige (Zeiger sperren, Stundenzeiger, Sekundenzeiger, Himmel), Sonne (Ort, eigener Ort mit Koordinaten und Zeitzone, Mond), Gerät (Darstellung Auto/Tafel/Tablet, Farben Hell/Kontrast, Ton, Lob, Bereichswahl, Hilfen der Stufen zurücksetzen).
 - **Quizrunde in unter 10 Sekunden:** Einstellungen, Regler, Lernstufe, Leicht/Schwer, Zahlen/Worte, Fertig. Mit einem Lernstufen-Paket entfällt das.
-- **Darstellung:** Die App wählt Tafel (eScreen) oder Tablet (iPad) nach der verfügbaren Fläche; Geräte nur mit Maus bekommen immer Tablet. Wenn das nicht passt, im Reiter Gerät fest einstellen. Bedienelemente sind kompakt gehalten und tragen Symbole mit kurzer Beschriftung: Tafel mindestens 60 px hohe Knöpfe und 20 px Schrift, Tablet 44 px und 15 px (Beschriftungen unter Symbolen), Antworten 40 px bzw. 22 px.
+- **Darstellung:** Die App wählt Tafel (eScreen) oder Tablet (iPad) nach der verfügbaren Fläche; Geräte nur mit Maus bekommen immer Tablet. Wenn das nicht passt, im Reiter Gerät fest einstellen. Bedienelemente sind kompakt gehalten und tragen Symbole mit kurzer Beschriftung: Tafel mindestens 60 px hohe Knöpfe und 20 px Schrift, Tablet 44 px und 15 px, Antworten 40 px bzw. 22 px. Auf Symbolschaltern sind die Symbole groß und die Beschriftungen darunter kleiner (Tafel 16 px, Tablet 12,5 px).
 
 ## Zifferblatt
 
 - Die Zeiger laufen über die Zahlen wie bei einer echten Uhr.
-- Die Minutenzahlen stehen mittig in einem hellen Minutenring außen, in natürlicher Breite (nicht gestaucht). Das Innenblatt ist dafür etwas kleiner (93 %), die Minutenzahlen im 5-Minuten-Raster sind etwa 25 % höher als vorher. Bei „alle Minuten“ begrenzen die 60 Zahlen am Umfang der Ringmitte die Größe; sie sind deshalb kleiner als die 5er-Zahlen. Mit „Hervorheben“ erscheint die aktuelle Minute in voller Größe mit Rahmen.
-- **Ziffern:** Atkinson Hyperlegible Next, entwickelt vom Braille Institute für Menschen mit Sehbehinderung: Eins mit Fahne ohne Fuß, offene Vier, Null ohne Schrägstrich. Dieselben Ziffern stehen in der Digitalanzeige, auf den Antworten und im Ziffernfeld.
-- **Hervorheben:** Die aktuelle Stundenzahl wird größer und umrandet, die aktuelle Minutenzahl bekommt einen Rahmen (im 5-Minuten-Raster die zuletzt erreichte Zahl). Alle anderen Zahlen werden grau und blass.
+- **Aussehen:** Minutenring in hellem Pastellblau, Zifferblatt in hellerem Elfenbein, beide mit schmalem Rand, feiner Lichtkante und weichem Schatten; das Zifferblatt liegt leicht über dem Ring, die Uhr leicht über dem Himmel. Im Farbschema „Kontrast“ bleiben beide weiß mit schwarzem Rand.
+- Die Minutenzahlen stehen mittig im Minutenring, in natürlicher Breite (nicht gestaucht). Das Innenblatt ist dafür etwas kleiner (93 %). Die Stundenzahlen sind etwas größer als die Minutenzahlen. Bei „alle Minuten“ begrenzen die 60 Zahlen am Umfang der Ringmitte die Größe.
+- **Ziffern:** „Lernuhr Schulziffern“, eigens gezeichnet wie mit dem Stift geschrieben, nach deutscher Schreibweise: offene 4, 1 mit Aufstrich ohne Fuß, 7 mit Querstrich, 9 mit gerader Unterlänge. Dieselben Ziffern stehen in der Digitalanzeige, auf den Antworten und im Ziffernfeld; sie sind so hoch wie die Großbuchstaben der Textschrift.
+- **Hervorheben:** Die aktuelle Stundenzahl und die aktuelle Minutenzahl (im 5-Minuten-Raster die zuletzt erreichte) erscheinen etwas größer und leuchten warm. Alle anderen Zahlen treten grau und blass zurück.
 
 `npm run pruefen` rastert die Minutenzahlen pixelgenau und prüft in beiden Schriften, dass keine Zahl eine andere berührt, alle mittig im Ring liegen und keine gestaucht ist.
 
@@ -98,7 +99,7 @@ Bei Schwer gibt es zuerst den Minutenteil, dann die Stunde. Die Minutenteile ste
 
 ```
 src/        index.html, styles/, js/core/ (Fachlogik aus der Vorlage), js/vendor/ (SunCalc), js/ui/, scorm/
-scripts/    build.mjs, test-logik.mjs, pruefen.mjs, pruefen-webkit.mjs, pruef-app.mjs, ziffern-bauen.py
+scripts/    build.mjs, test-logik.mjs, pruefen.mjs, pruefen-webkit.mjs, pruef-app.mjs, schulziffern.py
 dist/       erzeugt (nicht im Repository, enthält die eingebettete Schrift)
 docs/       plan/ (freigegebener Plan), bestand/ (Bilder der Vorlage), screens/, Prüfberichte
 vorlage/    scorm.js und imsmanifest.xml der Vorlage (index.html mit lizenzierten Dateien nur lokal, wird nicht gebraucht)
@@ -108,12 +109,12 @@ vorlage/    scorm.js und imsmanifest.xml der Vorlage (index.html mit lizenzierte
 
 ## Schriften und Bilder
 
-Alles, was in die App eingebettet wird, ist frei nutzbar und liegt in `src/assets/`. `npm run pruefen` stellt für jedes Paket sicher, dass keine andere Datei eingebettet ist.
+Alles, was in die App eingebettet wird, ist frei nutzbar oder eigene Arbeit und liegt in `src/assets/`. `npm run pruefen` stellt für jedes Paket sicher, dass keine andere Datei eingebettet ist.
 
 | Datei | Inhalt | Lizenz |
 |---|---|---|
 | `andika-400.woff2` | Andika 6.101 Regular, lateinischer Teilsatz (Google Fonts, über `@fontsource/andika@5.3.0`), unverändert. Schrift von SIL International für Leseanfänger: einstöckiges a und g wie in der Schulschrift, I, l und 1 gut unterscheidbar. | SIL Open Font License 1.1, `andika-OFL.txt` |
-| `ziffern-atkinson-400.woff2`, `ziffern-atkinson-600.woff2` | Atkinson Hyperlegible Next Regular und SemiBold, nur Ziffern 0–9, Null ohne Schrägstrich (abgeändert). `scripts/ziffern-bauen.py` erzeugt beide aus `@fontsource/atkinson-hyperlegible-next@5.3.0`. | SIL Open Font License 1.1, `ziffern-atkinson-OFL.txt` |
+| `schulziffern-400.woff2`, `schulziffern-600.woff2` | Lernuhr Schulziffern Regular und SemiBold, nur 0–9: eigene Zeichnung als Federstriche, `scripts/schulziffern.py` erzeugt beide Dateien | Teil dieses Projekts |
 | `bilder/sonne.svg`, `bilder/mond.svg` | einfache eigene Zeichnungen als Platzhalter | Teil dieses Projekts |
 
 ### Eigene Bilder für Sonne und Mond

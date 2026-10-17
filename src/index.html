@@ -6,10 +6,9 @@
 <meta name="format-detection" content="telephone=no">
 <title>{{TITEL}}</title>
 <style>
-/* Schriften: frei lizenziert (SIL Open Font License 1.1, https://openfontlicense.org), Lizenztexte in src/assets/.
-   Text: Andika 6.101, Copyright (c) 2004-2022 SIL International, unverändert (lateinischer Teilsatz von Google Fonts).
-   Ziffern: Atkinson Hyperlegible Next, Copyright 2020-2024 The Atkinson Hyperlegible Next Project Authors
-   (https://github.com/googlefonts/atkinson-hyperlegible-next); nur 0-9, Null ohne Schrägstrich (abgeändert, scripts/ziffern-bauen.py).
+/* Schriften: Text in Andika 6.101, Copyright (c) 2004-2022 SIL International, SIL Open Font License 1.1
+   (https://openfontlicense.org), unverändert (lateinischer Teilsatz von Google Fonts), Lizenztext in src/assets/.
+   Ziffern: Lernuhr Schulziffern, eigene Zeichnung (scripts/schulziffern.py): offene 4, 1 mit Aufstrich, 7 mit Querstrich.
    Ziffern steht in jeder Schriftliste vorn, damit Zahlen überall gleich aussehen: Zifferblatt, Digitalanzeige, Ziffernfeld. */
 @font-face{font-family:Andika;src:url('data:font/woff2;base64,{{FONT_ANDIKA}}') format('woff2');font-weight:400;font-display:block}
 @font-face{font-family:Ziffern;src:url('data:font/woff2;base64,{{FONT_ZIFFERN_400}}') format('woff2');font-weight:400;font-display:block}
@@ -64,12 +63,38 @@
 <svg id="band" aria-hidden="true"></svg>
 
 <svg id="uhr" viewBox="-117 -117 234 234" role="group" aria-label="Analoge Uhr">
-  <circle class="schatten" cx="0" cy="1.6" r="116.6"/>
-  <circle class="minutenring" cx="0" cy="0" r="116.4"/>
+  <defs>
+    <!-- Pastellflächen mit Licht von links oben; Farben über CSS-Variablen -->
+    <radialGradient id="g-ring" cx="38%" cy="30%" r="80%"><stop offset="0" class="s-ring-1"/><stop offset="1" class="s-ring-2"/></radialGradient>
+    <radialGradient id="g-blatt" cx="40%" cy="32%" r="78%"><stop offset="0" class="s-blatt-1"/><stop offset="1" class="s-blatt-2"/></radialGradient>
+    <!-- weicher Schatten nach unten: die Uhr liegt leicht über dem Himmel, das Zifferblatt leicht über dem Minutenring -->
+    <filter id="f-schatten" x="-15%" y="-15%" width="130%" height="135%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.4"/><feOffset dy="2.2" result="s"/>
+      <feFlood class="f-schattenfarbe"/><feComposite in2="s" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="f-schatten-klein" x="-10%" y="-10%" width="120%" height="125%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1.9"/><feOffset dy="1.9" result="s"/>
+      <feFlood class="f-schattenfarbe"/><feComposite in2="s" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Leuchten der hervorgehobenen Zahl -->
+    <filter id="f-leuchten" x="-80%" y="-80%" width="260%" height="260%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.6" result="b"/>
+      <feFlood class="f-leuchtfarbe"/><feComposite in2="b" operator="in" result="g"/>
+      <feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Lichtkante: oben hell, unten unsichtbar -->
+    <linearGradient id="g-kante" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <radialGradient id="g-hof"><stop offset="0" class="s-hof-1"/><stop offset=".55" class="s-hof-2"/><stop offset="1" class="s-hof-3"/></radialGradient>
+  </defs>
+  <circle class="minutenring" cx="0" cy="0" r="116.2" filter="url(#f-schatten)"/>
+  <circle class="kante" cx="0" cy="0" r="115.2"/>
   <g id="minutenzahlen" class="minutenzahlen"></g>
   <g id="alleminuten" class="minutenzahlen"></g>
   <g id="innen">
-  <circle class="blatt" cx="0" cy="0" r="100"/>
+  <circle class="blatt" cx="0" cy="0" r="100" filter="url(#f-schatten-klein)"/>
+  <circle class="kante" cx="0" cy="0" r="98.9"/>
   <path id="sektor" class="sektor" d=""/>
   <path id="verg-h" class="verg-h" d=""/>
   <path id="verg-m" class="verg-m" d=""/>

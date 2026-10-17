@@ -29,8 +29,9 @@ export const IM_APP = () => {
       return p;
     },
     groessen(profil) {
-      // Mindestmaße nach Rückmeldung der Lehrkraft (kompaktere Bedienung): Tafel 60 px / Text 20 px / Antworten 40 px, Tablet 44 pt / 15 px / 22 px
-      const S = this, p = [], minT = profil === 'tafel' ? 60 : 44, minF = profil === 'tafel' ? 20 : 15, minA = profil === 'tafel' ? 40 : 22;
+      // Mindestmaße nach Rückmeldung der Lehrkraft (kompaktere Bedienung): Tafel 60 px / Text 20 px / Antworten 40 px, Tablet 44 pt / 15 px / 22 px;
+      // Beschriftungen unter großen Symbolen kleiner: Tafel 16 px, Tablet 12,5 px
+      const S = this, p = [], minT = profil === 'tafel' ? 60 : 44, minF = profil === 'tafel' ? 20 : 15, minA = profil === 'tafel' ? 40 : 22, minC = profil === 'tafel' ? 16 : 12.5;
       for (const b of document.querySelectorAll('button,[role=slider]#jahr')) {
         if (!S.sichtbar(b)) continue; const r = b instanceof HTMLElement ? { width: b.offsetWidth, height: b.offsetHeight } : b.getBoundingClientRect();
         if (Math.min(r.width, r.height) < minT - .5) p.push(`Tippfläche ${Math.round(r.width)}×${Math.round(r.height)}: „${b.textContent.trim().slice(0, 24)}“`);
@@ -41,7 +42,7 @@ export const IM_APP = () => {
         if (el.closest('#uhr,symbol,.sprite') || !S.sichtbar(el) || el.closest('.unsichtbar') || el.getBoundingClientRect().width <= 1) continue;
         const fs = parseFloat(getComputedStyle(el).fontSize);
         if (el.closest('#band,#jahr')) { if (fs * (el.ownerSVGElement.getBoundingClientRect().width / el.ownerSVGElement.viewBox.baseVal.width) < minF - .5) p.push(`Bandtext ${fs}px: „${n.textContent.trim()}“`); continue; }
-        if (fs < minF - .5) p.push(`Text ${fs}px: „${n.textContent.trim().slice(0, 30)}“`);
+        if (fs < (el.closest('.cap') ? minC : minF) - .5) p.push(`Text ${fs}px: „${n.textContent.trim().slice(0, 30)}“`);
       }
       for (const a of document.querySelectorAll('.antwort')) if (S.sichtbar(a) && parseFloat(getComputedStyle(a).fontSize) < minA - .5) p.push(`Antworttext ${getComputedStyle(a).fontSize}`);
       return p;

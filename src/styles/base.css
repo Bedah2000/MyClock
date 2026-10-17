@@ -4,13 +4,15 @@
   --akzent:#13756B; --akzent-hell:#DCEFEA; --akzent-text:#0E5F57; --auf-akzent:#FFFFFF;
   --stunde:#B03A48; --minute:#1E5EA6; --sekunde:#3C4A46; --stunde-hell:rgba(176,58,72,.18); --minute-hell:rgba(30,94,166,.20);
   --falsch-bg:#E6EBE9; --falsch-text:#6B7874; --zifferblatt:#FFFFFF; --fenster-neutral:#E7EDEB;
-  --minutenring:#EAF1F9; --zahl-matt:#8A9692; --sektor:#F6E3B4; --sektor-rand:#D9AE52; --schatten:rgba(20,40,35,.13); --rand:1.5px;
-  --fs-ans:22px; --fs-txt:18px; --fs-kopf:20px; --fs-dig:34px; --fs-worte:20px; --fs-klein:15px; --h-ans:52px; --h-btn:44px; --gap:8px; --r:12px;
+  /* Uhr in Pastell: Minutenring dunkler (Himmelblau), Zifferblatt heller (Elfenbein) */
+  --ring:#D3E3F3; --ring-hell:#E9F2FB; --ring-rand:#9AB4CF; --blatt:#FBF3DF; --blatt-hell:#FFFDF6; --blatt-rand:#CDBB92;
+  --uhr-schatten:rgba(25,45,70,.30); --leuchten:#FFC21F; --zahl-matt:#8A9692; --sektor:#F8D9C4; --sektor-rand:#E0A47E; --schatten:rgba(20,40,35,.13); --rand:1.5px;
+  --fs-ans:22px; --fs-txt:18px; --fs-kopf:20px; --fs-dig:34px; --fs-worte:20px; --fs-klein:15px; --fs-cap:12.5px; --h-ans:52px; --h-btn:44px; --gap:8px; --r:12px;
 }
 html[data-schema="kontrast"]{
   --bg:#FFFFFF; --flaeche:#FFFFFF; --flaeche-2:#FFFFFF; --tinte:#000000; --leise:#1A1A1A; --linie:#000000;
   --akzent:#00564D; --akzent-hell:#D7F0EA; --akzent-text:#00463F; --stunde:#9A0010; --minute:#00379A;
-  --falsch-bg:#EDEDED; --falsch-text:#4A4A4A; --fenster-neutral:#F2F2F2; --minutenring:#FFFFFF; --zahl-matt:#6E6E6E; --rand:2.5px; --schatten:rgba(0,0,0,.25);
+  --falsch-bg:#EDEDED; --falsch-text:#4A4A4A; --fenster-neutral:#F2F2F2; --ring:#FFFFFF; --ring-hell:#FFFFFF; --ring-rand:#000000; --blatt:#FFFFFF; --blatt-hell:#FFFFFF; --blatt-rand:#000000; --zahl-matt:#6E6E6E; --rand:2.5px; --schatten:rgba(0,0,0,.25);
 }
 *{box-sizing:border-box;font-weight:400;font-synthesis:none}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--tinte);
@@ -46,15 +48,15 @@ html[data-schema="kontrast"] .seg{border:var(--rand) solid var(--linie)}
 .sprite{position:absolute;width:0;height:0;overflow:hidden}
 .ik{width:1.2em;height:1.2em;fill:currentColor;flex:none;overflow:visible}
 button.nurikon{padding:.1em .45em;min-width:var(--h-btn)}
-button.nurikon .ik{width:1.3em;height:1.3em}
+button.nurikon .ik{width:1.5em;height:1.5em}
 /* Symbol mit kleiner Beschriftung darunter */
 button.ikon,button.hilfe{flex-direction:column;gap:.1em;padding:.15em .2em;line-height:1.05}
-button.ikon .cap,button.hilfe .cap{font-size:var(--fs-klein);hyphens:manual;overflow-wrap:break-word;max-width:100%}
+button.ikon .cap,button.hilfe .cap{font-size:var(--fs-cap);hyphens:manual;overflow-wrap:break-word;max-width:100%}
 button .cap{min-width:0}
 /* Schalter: an = gefüllt in Akzentfarbe, aus = weiß. Eindeutig auch ohne Farbe durch den Rahmen. */
 button.hilfe[aria-pressed="true"]{background:var(--akzent-hell);border-color:var(--akzent);border-width:2px;color:var(--akzent-text)}
-button.hilfe .ik{width:1.55em;height:1.55em}
-button.ikon .ik{width:1.45em;height:1.45em}
+button.hilfe .ik{width:1.95em;height:1.95em}
+button.ikon .ik{width:1.85em;height:1.85em}
 button.hilfe[aria-pressed="false"]{background:var(--flaeche)}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation-duration:.01ms!important}}

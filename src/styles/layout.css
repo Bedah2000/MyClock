@@ -51,8 +51,8 @@
 /* Laufwerk wie beim Walkman */
 .b-transport{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:calc(var(--gap)/2)}
 .b-transport button{padding:0}
-.b-transport .ik{width:1.35em;height:1.35em}
-.b-transport button[data-lauf="0"] .ik{width:1.1em;height:1.1em}
+.b-transport .ik{width:1.7em;height:1.7em}
+.b-transport button[data-lauf="0"] .ik{width:1.35em;height:1.35em}
 .b-aktionen,.b-anzeige{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:calc(var(--gap)/2)}
 .b-stufe{display:flex;flex-direction:column;gap:calc(var(--gap)/2)}
 .b-stufe .seg>button{flex:1 1 0;font-size:var(--fs-klein);padding:.1em .1em}
@@ -60,11 +60,11 @@
 #dock .b-stufe .titel{display:none}
 .b-hilfen{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--gap)/2)}
 .spalte .b-hilfen .hilfe{flex-direction:row;justify-content:flex-start;text-align:left;gap:.45em;padding:.1em .5em}
-.spalte .b-hilfen .hilfe .cap{font-size:var(--fs-klein)}
-.spalte .b-hilfen .hilfe .ik{width:1.7em;height:1.7em}
+.spalte .b-hilfen .hilfe .cap{font-size:var(--fs-cap)}
+.spalte .b-hilfen .hilfe .ik{width:2em;height:2em}
 .spalte.schmal .b-hilfen{grid-template-columns:1fr}
 #dock .b-hilfen{grid-template-columns:repeat(7,minmax(0,1fr))}
-#dock button.hilfe .ik,#dock button.ikon .ik{width:1.3em;height:1.3em}
+#dock button.hilfe .ik,#dock button.ikon .ik{width:1.6em;height:1.6em}
 #dock .b-sprechweise .lang{display:none}#dock .b-sprechweise .kurz{display:inline}
 #dock .zeile>.b-sprechweise{flex:0 0 auto}#dock .b-sprechweise>button{padding:.1em .7em}
 .spalte.schmal .b-schnell{display:grid;grid-template-columns:1fr 1fr}

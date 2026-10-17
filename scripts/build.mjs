@@ -37,7 +37,7 @@ function bild(name) {
 }
 function assets() {
   const b64 = n => fs.readFileSync(path.join(SRC, 'assets', n)).toString('base64');
-  return { andika: b64('andika-400.woff2'), ziffern400: b64('ziffern-atkinson-400.woff2'), ziffern600: b64('ziffern-atkinson-600.woff2'), sonne: bild('sonne'), mond: bild('mond') };
+  return { andika: b64('andika-400.woff2'), ziffern400: b64('schulziffern-400.woff2'), ziffern600: b64('schulziffern-600.woff2'), sonne: bild('sonne'), mond: bild('mond') };
 }
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
