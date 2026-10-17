@@ -14,11 +14,11 @@ html[data-schema="kontrast"]{
 }
 *{box-sizing:border-box;font-weight:400;font-synthesis:none}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--tinte);
-  font-family:Bayerndruck,sans-serif;touch-action:manipulation;-webkit-text-size-adjust:100%;
+  font-family:Ziffern,Andika,sans-serif;line-height:1.25;touch-action:manipulation;-webkit-text-size-adjust:100%;
   -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
 [hidden]{display:none!important}
 p{margin:0}
-img.metacom{height:1.15em;width:auto;vertical-align:-.22em;margin-right:.3em;background:#fff;border-radius:.2em}
+img.symbol{height:1.15em;width:auto;vertical-align:-.22em;margin-right:.3em;background:#fff;border-radius:.2em}
 .unsichtbar{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 
 button{font:inherit;font-size:var(--fs-txt);line-height:1.15;color:var(--tinte);background:var(--flaeche);

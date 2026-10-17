@@ -6,11 +6,14 @@
 <meta name="format-detection" content="telephone=no">
 <title>{{TITEL}}</title>
 <style>
-@font-face{font-family:Bayerndruck;src:url('data:font/ttf;base64,{{FONT_BAYERNDRUCK}}') format('truetype');font-weight:400;font-display:block}
-/* Ziffern der Uhr: Atkinson Hyperlegible Next SemiBold, nur 0-9, Null ohne Schrägstrich (abgeändert, scripts/ziffern-bauen.py).
-   Copyright 2020-2024 The Atkinson Hyperlegible Next Project Authors (https://github.com/googlefonts/atkinson-hyperlegible-next).
-   Lizenz: SIL Open Font License 1.1, https://openfontlicense.org */
-@font-face{font-family:Ziffern;src:url('data:font/woff2;base64,{{FONT_ZIFFERN}}') format('woff2');font-weight:400 700;font-display:block}
+/* Schriften: frei lizenziert (SIL Open Font License 1.1, https://openfontlicense.org), Lizenztexte in src/assets/.
+   Text: Andika 6.101, Copyright (c) 2004-2022 SIL International, unverändert (lateinischer Teilsatz von Google Fonts).
+   Ziffern: Atkinson Hyperlegible Next, Copyright 2020-2024 The Atkinson Hyperlegible Next Project Authors
+   (https://github.com/googlefonts/atkinson-hyperlegible-next); nur 0-9, Null ohne Schrägstrich (abgeändert, scripts/ziffern-bauen.py).
+   Ziffern steht in jeder Schriftliste vorn, damit Zahlen überall gleich aussehen: Zifferblatt, Digitalanzeige, Ziffernfeld. */
+@font-face{font-family:Andika;src:url('data:font/woff2;base64,{{FONT_ANDIKA}}') format('woff2');font-weight:400;font-display:block}
+@font-face{font-family:Ziffern;src:url('data:font/woff2;base64,{{FONT_ZIFFERN_400}}') format('woff2');font-weight:400;font-display:block}
+@font-face{font-family:Ziffern;src:url('data:font/woff2;base64,{{FONT_ZIFFERN_600}}') format('woff2');font-weight:500 700;font-display:block}
 /*STYLE*/
 </style>
 </head>
@@ -30,13 +33,13 @@
   <symbol id="i-jetzt" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7.2V12l3.4 2.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
   <symbol id="i-stoppuhr" viewBox="0 0 24 24"><circle cx="12" cy="13.5" r="7.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="9.5" y="2.5" width="5" height="2.4" rx="1"/><path d="M12 13.5V9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M18.2 6.3l1.4-1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
   <symbol id="i-lautsprecher" viewBox="0 0 24 24"><path d="M3.5 9.2h3.8L12 5v14l-4.7-4.2H3.5z"/><path d="M15.2 9a4 4 0 0 1 0 6M17.8 6.4a7.6 7.6 0 0 1 0 11.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
-  <symbol id="i-digital" viewBox="0 0 24 24"><rect x="1.5" y="5.5" width="21" height="13" rx="2.8" fill="none" stroke="currentColor" stroke-width="1.8"/><text x="12" y="12.4" text-anchor="middle" dominant-baseline="central" font-size="8.4" font-family="Bayerndruck,sans-serif">12:00</text></symbol>
-  <symbol id="i-worte" viewBox="0 0 24 24"><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-size="13" font-family="Bayerndruck,sans-serif">Aa</text></symbol>
-  <symbol id="i-stundenzahlen" viewBox="0 0 24 24"><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="Bayerndruck,sans-serif">12</text></symbol>
-  <symbol id="i-minutenzahlen" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="1.4 3.8"/><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-size="10" font-family="Bayerndruck,sans-serif">15</text></symbol>
-  <symbol id="i-alleminuten" viewBox="0 0 24 24"><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-size="8.6" font-family="Bayerndruck,sans-serif">0–59</text></symbol>
+  <symbol id="i-digital" viewBox="0 0 24 24"><rect x="1.5" y="5.5" width="21" height="13" rx="2.8" fill="none" stroke="currentColor" stroke-width="1.8"/><text x="12" y="12.4" text-anchor="middle" dominant-baseline="central" font-size="8.4" font-family="Ziffern,Andika,sans-serif">12:00</text></symbol>
+  <symbol id="i-worte" viewBox="0 0 24 24"><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-size="13" font-family="Ziffern,Andika,sans-serif">Aa</text></symbol>
+  <symbol id="i-stundenzahlen" viewBox="0 0 24 24"><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="Ziffern,Andika,sans-serif">12</text></symbol>
+  <symbol id="i-minutenzahlen" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="1.4 3.8"/><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-size="10" font-family="Ziffern,Andika,sans-serif">15</text></symbol>
+  <symbol id="i-alleminuten" viewBox="0 0 24 24"><text x="12" y="12.6" text-anchor="middle" dominant-baseline="central" font-size="8.6" font-family="Ziffern,Andika,sans-serif">0–59</text></symbol>
   <symbol id="i-bereich" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 12V3a9 9 0 0 1 7.8 4.5z" opacity=".55"/></symbol>
-  <symbol id="i-hervorheben" viewBox="0 0 24 24"><text x="6.5" y="14.5" text-anchor="middle" dominant-baseline="central" font-size="9" opacity=".5" font-family="Bayerndruck,sans-serif">8</text><text x="15" y="12.5" text-anchor="middle" dominant-baseline="central" font-size="17" font-family="Bayerndruck,sans-serif">9</text></symbol>
+  <symbol id="i-hervorheben" viewBox="0 0 24 24"><text x="6.5" y="14.5" text-anchor="middle" dominant-baseline="central" font-size="9" opacity=".5" font-family="Ziffern,Andika,sans-serif">8</text><text x="15" y="12.5" text-anchor="middle" dominant-baseline="central" font-size="17" font-family="Ziffern,Andika,sans-serif">9</text></symbol>
   <symbol id="i-minutenzeiger" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 13.5 12 4.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="12" r="1.8"/></symbol>
   <symbol id="i-einrasten" viewBox="0 0 24 24"><path d="M5 14v6M12 13v7M19 14v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8.6 3.5h6.8L12 9.5z"/></symbol>
   <symbol id="i-vollbild" viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -47,7 +50,7 @@
   <div id="bereiche" class="seg" role="group" aria-label="Bereich wählen">
     <button type="button" data-bereich="zeigen">Zeigen</button>
     <button type="button" data-bereich="quiz">Quiz</button>
-    <button type="button" data-bereich="sonne"><img class="metacom" src="{{METACOM_SONNE}}" alt="">Sonne</button>
+    <button type="button" data-bereich="sonne"><img class="symbol" src="{{BILD_SONNE}}" alt="">Sonne</button>
   </div>
   <div id="bereich-name" class="bereich-name" hidden></div>
   <div id="digital" aria-label="Uhrzeit digital"><span id="digital-zeit">09:00</span><span id="kopf-satz" class="satz" hidden></span></div>
@@ -192,7 +195,7 @@
       <div><dt>Sonne</dt><dd id="f-hoehe"></dd></div>
     </dl>
   </div>
-  <div class="block b-mond" id="b-mond" data-teil="sonne"><img class="metacom" src="{{METACOM_MOND}}" alt=""><p id="mond-text"></p></div>
+  <div class="block b-mond" id="b-mond" data-teil="sonne"><img class="symbol" src="{{BILD_MOND}}" alt=""><p id="mond-text"></p></div>
   <div class="block b-vergleich" id="b-vergleich" data-teil="sonne"></div>
   <div class="block b-jahr" id="b-jahr" data-teil="sonne">
     <p class="titel klein">Durch das Jahr</p>
@@ -210,7 +213,7 @@
   </div>
   <div class="block bl-zonen" id="bl-zonen" role="group" aria-label="Zeitzone"></div>
   <div class="block bl-inhalt" id="bl-inhalt"></div>
-  <img id="metacom-mond" src="{{METACOM_MOND}}" alt="" hidden>
+  <img id="bild-mond" src="{{BILD_MOND}}" alt="" hidden>
 </div>
 
 <p id="ansage" class="unsichtbar" aria-live="polite"></p>

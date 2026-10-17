@@ -10,7 +10,7 @@ function zeile(name,optionen,aktuell,setze,opt={}){
   const lang=optionen.some(o=>String(o[1]).length>7),lange=optionen.reduce((n,o)=>n+String(o[1]).length+2,0)>22;
   const z=document.createElement('div');z.className='ezeile'+(opt.oben?' oben':'')+(opt.voll?' voll':'')+(lange?' lange':'');
   const n=document.createElement('div');n.className='name';
-  if(opt.bild){const i=document.createElement('img');i.className='metacom';i.src=$('metacom-mond').src;i.alt='';n.appendChild(i);}
+  if(opt.bild){const i=document.createElement('img');i.className='symbol';i.src=$('bild-mond').src;i.alt='';n.appendChild(i);}
   n.appendChild(document.createTextNode(name));z.appendChild(n);
   const box=document.createElement('div');
   box.className=opt.wahl?'wahl'+(optionen.length===2||lang?' zwei':'')+(optionen.length===5?' fuenf':''):'seg';
@@ -38,7 +38,6 @@ function inhalt(reiter){
     teile.push(zeile('Stunden­zeiger',[[true,'an'],[false,'aus']],E.stundenzeiger,v=>{E.stundenzeiger=v;if(!v&&!LU.s.hilfen.minutenzeiger)LU.schalteHilfe('minutenzeiger');}));
     teile.push(zeile('Sekunden­zeiger bei „Jetzt“',[[false,'aus'],[true,'an']],E.sekundenzeiger,v=>{E.sekundenzeiger=v;}));
     teile.push(zeile('Himmel bei Zeigen und Quiz',[[true,'an'],[false,'aus']],E.himmel,v=>{E.himmel=v;}));
-    teile.push(zeile('Zahlen auf der Uhr',[['klar','Klar'],['bayerndruck','Bayerndruck']],E.ziffern,v=>{E.ziffern=v;LU.speichern();}));
   }else if(reiter==='sonne'){
     const orte=[['herrieden','Herrieden'],['ansbach','Ansbach'],['berlin','Berlin'],['hamburg','Hamburg'],['munich','München'],['eigen','Eigener Ort']];
     teile.push(zeile('Ort',orte,E.ort,v=>{if(v==='eigen'){blatt.ortBearbeiten();return;}E.ort=v;LU.setzeOrt(Object.assign({},Z.places[v]));},{oben:true,wahl:true,voll:true}));

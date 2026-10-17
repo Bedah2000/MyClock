@@ -28,10 +28,7 @@ Jedes Paket ist SCORM 1.2 und enthält `imsmanifest.xml`, `index.html` (alles ei
 
 Voraussetzung: Node.js 18 oder neuer. Es gibt keine Abhängigkeiten.
 
-Schrift und Symbole sind lizenziert und liegen **nicht** im Repository: Bayerndruck (© schulschriften.de) und zwei METACOM-Symbole (Sonne, Mond; © Annette Kitzinger). Die Ziffernschrift der Uhr (`src/assets/ziffern-atkinson.woff2`) steht unter freier Lizenz und liegt im Repository. Vor dem ersten Bau eine der beiden Möglichkeiten nutzen:
-
-1. `src/assets/bayerndruck.ttf`, `src/assets/metacom-sonne.png` und `src/assets/metacom-mond.png` ablegen, oder
-2. die `index.html` aus dem bisherigen SCORM-Paket nach `vorlage/index.html` kopieren. Das Bauskript holt Schrift und Symbole dann von dort.
+Alle Schriften und Bilder liegen im Repository und sind frei nutzbar (siehe „Schriften und Bilder“ unten). Lizenzierte Dateien braucht der Bau nicht.
 
 ```sh
 npm run build
@@ -68,7 +65,7 @@ Der Knopf „Vollbild“ erscheint nur, wenn der Rahmen Vollbild erlaubt.
 
 - **Zeigen an die Klasse anpassen:** rechts die Stufe wählen (Stunde, halbe, Viertel, 5 Min., Minute). Jede Stufe bringt passende Hilfen mit (Stundenzahlen, Minutenzahlen, alle Minuten, Stundenbereich, Hervorheben, Minutenzeiger, Einrasten). Darunter lassen sie sich einzeln an- und ausschalten; die Stufe merkt sich das auf diesem Gerät. Der Würfel stellt eine zufällige Uhrzeit im Schritt der Stufe ein. ▶ läuft 1 Minute pro Sekunde, ▶▶ 15 Minuten pro Sekunde, ■ hält an. Die Stufe ist dieselbe wie die Lernstufe im Quiz.
 - **Bereich wechseln:** oben links Zeigen, Quiz oder Sonne. In den Einstellungen (Reiter Gerät) lässt sich die Bereichswahl für Schüler sperren.
-- **Einstellungen:** Knopf oben rechts, dann den Regler nach rechts schieben. So öffnen Schüler das Blatt nicht aus Versehen. Das Blatt liegt neben der Uhr (quer) oder unter ihr (hoch), nie über ihr. Reiter: Quiz (Lernstufe, Antworten, Aufgabe, Sprechweise), Runde (Aufgaben je Runde, Tempo, Zeitdauer beim Ablauf zeigen), Anzeige (Zeiger sperren, Stundenzeiger, Sekundenzeiger, Himmel, Zahlen auf der Uhr Klar/Bayerndruck), Sonne (Ort, eigener Ort mit Koordinaten und Zeitzone, Mond), Gerät (Darstellung Auto/Tafel/Tablet, Farben Hell/Kontrast, Ton, Lob, Bereichswahl, Hilfen der Stufen zurücksetzen).
+- **Einstellungen:** Knopf oben rechts, dann den Regler nach rechts schieben. So öffnen Schüler das Blatt nicht aus Versehen. Das Blatt liegt neben der Uhr (quer) oder unter ihr (hoch), nie über ihr. Reiter: Quiz (Lernstufe, Antworten, Aufgabe, Sprechweise), Runde (Aufgaben je Runde, Tempo, Zeitdauer beim Ablauf zeigen), Anzeige (Zeiger sperren, Stundenzeiger, Sekundenzeiger, Himmel), Sonne (Ort, eigener Ort mit Koordinaten und Zeitzone, Mond), Gerät (Darstellung Auto/Tafel/Tablet, Farben Hell/Kontrast, Ton, Lob, Bereichswahl, Hilfen der Stufen zurücksetzen).
 - **Quizrunde in unter 10 Sekunden:** Einstellungen, Regler, Lernstufe, Leicht/Schwer, Zahlen/Worte, Fertig. Mit einem Lernstufen-Paket entfällt das.
 - **Darstellung:** Die App wählt Tafel (eScreen) oder Tablet (iPad) nach der verfügbaren Fläche; Geräte nur mit Maus bekommen immer Tablet. Wenn das nicht passt, im Reiter Gerät fest einstellen. Bedienelemente sind kompakt gehalten und tragen Symbole mit kurzer Beschriftung: Tafel mindestens 60 px hohe Knöpfe und 20 px Schrift, Tablet 44 px und 15 px (Beschriftungen unter Symbolen), Antworten 40 px bzw. 22 px.
 
@@ -76,7 +73,7 @@ Der Knopf „Vollbild“ erscheint nur, wenn der Rahmen Vollbild erlaubt.
 
 - Die Zeiger laufen über die Zahlen wie bei einer echten Uhr.
 - Die Minutenzahlen stehen mittig in einem hellen Minutenring außen, in natürlicher Breite (nicht gestaucht). Das Innenblatt ist dafür etwas kleiner (93 %), die Minutenzahlen im 5-Minuten-Raster sind etwa 25 % höher als vorher. Bei „alle Minuten“ begrenzen die 60 Zahlen am Umfang der Ringmitte die Größe; sie sind deshalb kleiner als die 5er-Zahlen. Mit „Hervorheben“ erscheint die aktuelle Minute in voller Größe mit Rahmen.
-- **Zahlen auf der Uhr:** voreingestellt „Klar“ (Atkinson Hyperlegible Next SemiBold, entwickelt vom Braille Institute für Menschen mit Sehbehinderung). Die Ziffernformen ähneln Bayerndruck (Eins mit Fahne ohne Fuß, offene Vier), stehen aber aufrecht und sind kräftiger. „Bayerndruck“ ist in den Einstellungen (Reiter Anzeige) wählbar; alle anderen Texte bleiben in Bayerndruck.
+- **Ziffern:** Atkinson Hyperlegible Next, entwickelt vom Braille Institute für Menschen mit Sehbehinderung: Eins mit Fahne ohne Fuß, offene Vier, Null ohne Schrägstrich. Dieselben Ziffern stehen in der Digitalanzeige, auf den Antworten und im Ziffernfeld.
 - **Hervorheben:** Die aktuelle Stundenzahl wird größer und umrandet, die aktuelle Minutenzahl bekommt einen Rahmen (im 5-Minuten-Raster die zuletzt erreichte Zahl). Alle anderen Zahlen werden grau und blass.
 
 `npm run pruefen` rastert die Minutenzahlen pixelgenau und prüft in beiden Schriften, dass keine Zahl eine andere berührt, alle mittig im Ring liegen und keine gestaucht ist.
@@ -104,13 +101,33 @@ src/        index.html, styles/, js/core/ (Fachlogik aus der Vorlage), js/vendor
 scripts/    build.mjs, test-logik.mjs, pruefen.mjs, pruefen-webkit.mjs, pruef-app.mjs, ziffern-bauen.py
 dist/       erzeugt (nicht im Repository, enthält die eingebettete Schrift)
 docs/       plan/ (freigegebener Plan), bestand/ (Bilder der Vorlage), screens/, Prüfberichte
-vorlage/    scorm.js und imsmanifest.xml der Vorlage (index.html nur lokal)
+vorlage/    scorm.js und imsmanifest.xml der Vorlage (index.html mit lizenzierten Dateien nur lokal, wird nicht gebraucht)
 ```
 
 Übernommen aus der Vorlage: Zeitzonen, Zeitumstellung und Mitternacht (`lernzeit.js`), Zielzeiten und Auswahlfelder (`aufgaben.js`), Wortformen und ihre Prüfung (`worte.js`), Sonnen- und Mondberechnung mit SunCalc 2.1.1 (BSD-2-Lizenz, Hinweis im Quelltext).
 
-Ziffernschrift: Atkinson Hyperlegible Next SemiBold, © 2020–2024 The Atkinson Hyperlegible Next Project Authors, SIL Open Font License 1.1 (`src/assets/ziffern-atkinson-OFL.txt`). Eingebettet sind nur die Ziffern 0–9; die Null ist abgeändert (ohne Schrägstrich). `scripts/ziffern-bauen.py` erzeugt die Datei aus dem npm-Paket `@fontsource/atkinson-hyperlegible-next@5.3.0`.
+## Schriften und Bilder
+
+Alles, was in die App eingebettet wird, ist frei nutzbar und liegt in `src/assets/`. `npm run pruefen` stellt für jedes Paket sicher, dass keine andere Datei eingebettet ist.
+
+| Datei | Inhalt | Lizenz |
+|---|---|---|
+| `andika-400.woff2` | Andika 6.101 Regular, lateinischer Teilsatz (Google Fonts, über `@fontsource/andika@5.3.0`), unverändert. Schrift von SIL International für Leseanfänger: einstöckiges a und g wie in der Schulschrift, I, l und 1 gut unterscheidbar. | SIL Open Font License 1.1, `andika-OFL.txt` |
+| `ziffern-atkinson-400.woff2`, `ziffern-atkinson-600.woff2` | Atkinson Hyperlegible Next Regular und SemiBold, nur Ziffern 0–9, Null ohne Schrägstrich (abgeändert). `scripts/ziffern-bauen.py` erzeugt beide aus `@fontsource/atkinson-hyperlegible-next@5.3.0`. | SIL Open Font License 1.1, `ziffern-atkinson-OFL.txt` |
+| `bilder/sonne.svg`, `bilder/mond.svg` | einfache eigene Zeichnungen als Platzhalter | Teil dieses Projekts |
+
+### Eigene Bilder für Sonne und Mond
+
+Eine Datei `src/assets/bilder/sonne.png` bzw. `mond.png` (auch `.webp` oder `.jpg`) ersetzt beim nächsten `npm run build` die mitgelieferte Zeichnung, ohne Änderung am Code. Quadratisch, transparenter Hintergrund, mindestens 256 × 256 Pixel; die App zeigt die Bilder etwa in Texthöhe.
+
+Vorschlag für einen Bildgenerator (zum Beispiel ChatGPT), erst die Sonne, dann im selben Gespräch der Mond:
+
+> Erstelle ein einfaches, freundliches Piktogramm einer Sonne für eine Lern-App für Jugendliche mit geistiger Behinderung: flacher Stil, gelbe Scheibe mit acht kurzen, abgerundeten Strahlen, kräftige dunkle Kontur, kein Gesicht, kein Schatten, kein Text, transparenter Hintergrund, mittig, quadratisch 1024 × 1024 Pixel. Eigene Gestaltung, keine Anlehnung an bestehende Symbolsammlungen.
+>
+> Jetzt im gleichen Stil eine Mondsichel in Hellgelb, gleiche Konturstärke, gleiche Größe und Anordnung.
+
+Vor dem Einchecken prüfen, dass das Ergebnis kein bekanntes Symbol nachbildet. Rein maschinell erzeugte Bilder sind in Deutschland nach herrschender Meinung urheberrechtlich nicht geschützt; Rechte Dritter an ähnlichen Vorlagen bleiben davon unberührt.
 
 ## Datenschutz und Speicher
 
-Keine Daten über Lernende, kein Tracking, keine Ergebnisse. `localStorage` speichert höchstens Darstellung, Farben, Ton, Lob, Ziffernschrift und die Hilfen je Stufe dieses Geräts; ist der Speicher gesperrt, arbeitet die App mit den Voreinstellungen.
+Keine Daten über Lernende, kein Tracking, keine Ergebnisse. `localStorage` speichert höchstens Darstellung, Farben, Ton, Lob und die Hilfen je Stufe dieses Geräts; ist der Speicher gesperrt, arbeitet die App mit den Voreinstellungen.

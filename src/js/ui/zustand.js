@@ -10,7 +10,7 @@ const GERAET_KEY='lernuhr-geraet';
 LU.einst={
   stufe:'full', antworten:'leicht', aufgabe:'zahlen', sprechweise:'sued',
   runde:5, tempoAblauf:'mittel', dauerZeigen:false,
-  zeigerSperren:false, stundenzeiger:true, sekundenzeiger:true, himmel:true, ziffern:'klar',
+  zeigerSperren:false, stundenzeiger:true, sekundenzeiger:true, himmel:true,
   ort:'herrieden', mond:false, eigenerOrt:{lat:49.23,lon:10.5,zone:'Europe/Berlin'},
   layout:'auto', schema:'hell', ton:true, lob:'kurz', bereichSperre:false
 };
@@ -44,8 +44,7 @@ LU.s={
 LU.laden=function(){
   try{
     const raw=window.localStorage&&localStorage.getItem(GERAET_KEY);
-    if(raw){const v=JSON.parse(raw);for(const k of ['layout','schema','ton','lob','ziffern'])if(k in v)LU.einst[k]=v[k];
-    if(!['klar','bayerndruck'].includes(LU.einst.ziffern))LU.einst.ziffern='klar';}
+    if(raw){const v=JSON.parse(raw);for(const k of ['layout','schema','ton','lob'])if(k in v)LU.einst[k]=v[k];}
   }catch(e){/* Speicher gesperrt: Voreinstellungen gelten */}
   try{
     const raw=window.localStorage&&localStorage.getItem(STUFEN_KEY);
@@ -71,7 +70,7 @@ LU.schalteHilfe=function(k){
 };
 LU.stufenZuruecksetzen=function(){LU.stufenHilfen=JSON.parse(JSON.stringify(LU.STUFEN_STANDARD));LU.stufenSpeichern();LU.setzeStufe(LU.einst.stufe);};
 LU.speichern=function(){
-  try{localStorage.setItem(GERAET_KEY,JSON.stringify({layout:LU.einst.layout,schema:LU.einst.schema,ton:LU.einst.ton,lob:LU.einst.lob,ziffern:LU.einst.ziffern}));}catch(e){}
+  try{localStorage.setItem(GERAET_KEY,JSON.stringify({layout:LU.einst.layout,schema:LU.einst.schema,ton:LU.einst.ton,lob:LU.einst.lob}));}catch(e){}
 };
 /* Voreinstellung aus dem SCORM-Paket (vom Bauskript eingesetzt). */
 LU.voreinstellung=function(){

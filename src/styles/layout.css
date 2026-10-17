@@ -135,7 +135,7 @@
 .b-fakten dd{margin:0;font-size:calc(var(--fs-txt)*1.12);text-align:right;font-variant-numeric:tabular-nums}
 .b-fakten dd small{font-size:var(--fs-txt);color:var(--leise)}
 #dock .b-fakten dl{display:grid;grid-template-columns:1fr 1fr;column-gap:calc(var(--gap)*3)}
-#dock .b-fakten dl>div{border-bottom:0;padding:.08em 0}
+#dock .b-fakten dl>div{border-bottom:0;padding:.04em 0;line-height:1.15}
 .b-mond{display:flex;align-items:center;gap:.5em;font-size:var(--fs-txt)}
 .b-mond img{height:1.6em}
 .b-mond p{white-space:pre-line;line-height:1.25}

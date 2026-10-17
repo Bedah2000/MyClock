@@ -1,14 +1,13 @@
 # Prüfbericht WebKit (Ersatz für Safari)
 
-WebKitGTK 2.52.6 über WebKitWebDriver, MiniBrowser unter Xvfb. Dieselbe Engine-Familie wie Safari, aber nicht Safari auf dem iPad. **58 von 58 Prüfungen bestanden.**
+WebKitGTK 2.52.6 über WebKitWebDriver, MiniBrowser unter Xvfb. Dieselbe Engine-Familie wie Safari, aber nicht Safari auf dem iPad. **56 von 56 Prüfungen bestanden.**
 
 | | Prüfung | Hinweis |
 |---|---|---|
 | ✅ | [webkit-ipad-quer] Fenster 1000×700 (App 1000×652), Layout tablet/quer |  |
 | ✅ | [webkit-ipad-quer] zeigen: kein Scrollen, nichts ragt heraus |  |
 | ✅ | [webkit-ipad-quer] zeigen: Mindestgrößen |  |
-| ✅ | [webkit-ipad-quer] Minutenring (klar): Zahlen mittig, ungestaucht, ohne Berührung |  |
-| ✅ | [webkit-ipad-quer] Minutenring (bayerndruck): Zahlen mittig, ungestaucht, ohne Berührung |  |
+| ✅ | [webkit-ipad-quer] Minutenring: Zahlen mittig, ungestaucht, ohne Berührung |  |
 | ✅ | [webkit-ipad-quer] Zeiger liegen über den Zahlen (Minutenzeiger verdeckt um 5:00 die 12) | z-minute |
 | ✅ | [webkit-ipad-quer] quiz-start: kein Scrollen, nichts ragt heraus |  |
 | ✅ | [webkit-ipad-quer] quiz-start: Mindestgrößen |  |
@@ -36,8 +35,7 @@ WebKitGTK 2.52.6 über WebKitWebDriver, MiniBrowser unter Xvfb. Dieselbe Engine-
 | ✅ | [webkit-ipad-hoch] Fenster 760×1000 (App 760×952), Layout tablet/hoch |  |
 | ✅ | [webkit-ipad-hoch] zeigen: kein Scrollen, nichts ragt heraus |  |
 | ✅ | [webkit-ipad-hoch] zeigen: Mindestgrößen |  |
-| ✅ | [webkit-ipad-hoch] Minutenring (klar): Zahlen mittig, ungestaucht, ohne Berührung |  |
-| ✅ | [webkit-ipad-hoch] Minutenring (bayerndruck): Zahlen mittig, ungestaucht, ohne Berührung |  |
+| ✅ | [webkit-ipad-hoch] Minutenring: Zahlen mittig, ungestaucht, ohne Berührung |  |
 | ✅ | [webkit-ipad-hoch] Zeiger liegen über den Zahlen (Minutenzeiger verdeckt um 5:00 die 12) | z-minute |
 | ✅ | [webkit-ipad-hoch] quiz-start: kein Scrollen, nichts ragt heraus |  |
 | ✅ | [webkit-ipad-hoch] quiz-start: Mindestgrößen |  |

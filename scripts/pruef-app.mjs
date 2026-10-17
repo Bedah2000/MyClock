@@ -60,7 +60,7 @@ export const IM_APP = () => {
       const svg = document.getElementById('uhr'), r = svg.getBoundingClientRect(), s = r.width / 234, K = LU.uhr.K, out = {};
       const hoehe = (sel, faktor) => { const t = document.querySelector(sel); if (!t) return 0; const m = this.tinte(t); return +((m.y1 - m.y0) * faktor * s).toFixed(1); };
       out.stundenzahlen = hoehe('#stundenzahlen text:nth-child(3)', K); out.minutenzahlen = hoehe('#minutenzahlen text:nth-child(4)', 1); out.alleMinuten = hoehe('#alleminuten text:nth-child(8)', 1);
-      out.minutenVorher = +(11.5 * .789 * s).toFixed(1); // Bayerndruck 11,5 im alten Zifferblatt
+      out.minutenVorher = +(11.5 * .789 * s).toFixed(1); // alte Minutenzahlen: Schriftgröße 11,5, Ziffernhöhe 0,789 em
       out.anteilHoehe = Math.round(r.height / innerHeight * 100); out.zifferblattAnteil = Math.round(r.height * 200 * K / 234 / innerHeight * 100);
       return out;
     },

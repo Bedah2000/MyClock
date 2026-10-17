@@ -3,6 +3,9 @@
 Bildschirmbilder der Vorlage (`vorlage/index.html`), aufgenommen am 15.10.2026 mit Playwright/Chromium,
 Touch-Emulation, App in einem iframe als Nachbildung des mebis-Rahmens (48 px Leiste darüber).
 
+Die Bilder sind aus dem Repository entfernt, weil sie lizenzierte METACOM-Symbole und die Schrift Bayerndruck
+zeigten. Wer die Vorlage lokal hat, kann sie mit Playwright neu aufnehmen.
+
 Geräte: `escreen` 1600 × 848 (App 1600 × 800), `ipad-quer` 1000 × 700 (App 1000 × 652),
 `ipad-hoch` 760 × 1000 (App 760 × 952).
 

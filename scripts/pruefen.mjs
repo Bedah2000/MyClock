@@ -185,11 +185,9 @@ async function geraetPruefen(browser, geraet) {
   });
   pruefe(geraet.name, 'Hervorheben: andere Zahlen grau und blass (4:23 → Stunde 4, Minute 20)', matt[0] === 11 && matt[1] === '4' && matt[2] === 11 && matt[3] === '20' && +matt[4] < .8, matt.join(' / '));
   // Minutenzahlen im Ring: keine Überlappung, in beiden Schriften
-  for (const zf of ['klar', 'bayerndruck']) {
-    const ring = await f.evaluate(z => { LU.einst.ziffern = z; LU.zeichne(); return __pruef.minutenring(); }, zf);
-    pruefe(geraet.name, `Minutenring (${zf}): Zahlen mittig, ungestaucht, ohne Berührung`, ring.length === 0, ring.slice(0, 3).join('; '));
-  }
-  await f.evaluate(() => { LU.einst.ziffern = 'klar'; LU.setzeStufe(window.__stufeVorher); LU.zeichne(); });
+  const ring = await f.evaluate(() => __pruef.minutenring());
+  pruefe(geraet.name, 'Minutenring: Zahlen mittig, ungestaucht, ohne Berührung', ring.length === 0, ring.slice(0, 3).join('; '));
+  await f.evaluate(() => { LU.setzeStufe(window.__stufeVorher); LU.zeichne(); });
   await f.tap('#jetzt'); await pause(300);
   const jetzt = await f.evaluate(() => Math.abs(LU.s.instant - Date.now()) < 2000 && LU.s.live);
   pruefe(geraet.name, 'Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit', jetzt);
@@ -437,6 +435,12 @@ async function paketePruefen(browser) {
     const dateienDa = pr.files && pr.files.every(f => z[f]);
     pruefe('pakete', `${p.datei}.zip: gültiges Manifest (SCORM 1.2), Dateien vollständig, Titel „${pr.titel}“`, pr.ok && dateienDa && pr.titel === p.titel && !ids.has(pr.id), pr.grund || '');
     ids.add(pr.id);
+    // Nur frei lizenzierte Dateien eingebettet: jede data-URI ist genau eine Datei aus src/assets
+    const frei = new Set(['andika-400.woff2', 'ziffern-atkinson-400.woff2', 'ziffern-atkinson-600.woff2'].map(n => path.join(ROOT, 'src', 'assets', n))
+      .concat(fs.readdirSync(path.join(ROOT, 'src', 'assets', 'bilder')).map(n => path.join(ROOT, 'src', 'assets', 'bilder', n))).map(f => fs.readFileSync(f).toString('base64')));
+    const html = z['index.html'].toString('utf8'), eingebettet = [...html.matchAll(/data:[a-z0-9+\/.-]+;base64,([A-Za-z0-9+\/=]+)/g)].map(m => m[1]);
+    const fremd = eingebettet.filter(b => !frei.has(b)).length;
+    pruefe('pakete', `${p.datei}: nur freie Schriften und Bilder eingebettet (${eingebettet.length} Dateien)`, eingebettet.length >= 5 && fremd === 0 && !/Bayerndruck|METACOM/i.test(html), fremd ? `${fremd} unbekannte Datei(en)` : '');
     // Start im Rahmen mit SCORM-API
     const fehler = []; const hdl = e => fehler.push(e.message); page.on('pageerror', hdl);
     await page.goto(`${BASIS}/rahmen.html?api=1&src=/paket/${p.datei}/index.html`);

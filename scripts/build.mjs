@@ -24,24 +24,20 @@ export const PAKETE = [
   { datei: 'lernuhr-quiz-alle-minuten', id: 'LERN_UHR_QUIZ_ANY', titel: 'Lernuhr – Quiz alle Minuten', preset: { bereich: 'quiz', stufe: 'any' } },
 ];
 
-/* Lizenzierte Dateien: aus src/assets/ oder, falls dort nicht vorhanden, aus vorlage/index.html */
-function assets() {
-  const a = path.join(SRC, 'assets');
-  const f = n => path.join(a, n);
-  if (fs.existsSync(f('bayerndruck.ttf')) && fs.existsSync(f('metacom-sonne.png')) && fs.existsSync(f('metacom-mond.png'))) {
-    return {
-      font: fs.readFileSync(f('bayerndruck.ttf')).toString('base64'),
-      sonne: 'data:image/png;base64,' + fs.readFileSync(f('metacom-sonne.png')).toString('base64'),
-      mond: 'data:image/png;base64,' + fs.readFileSync(f('metacom-mond.png')).toString('base64'),
-    };
+/* Schriften und Bilder: nur frei lizenzierte Dateien aus src/assets/ (Lizenzen dort).
+   Sonne und Mond: src/assets/bilder/sonne.* und mond.*; eine PNG-, WebP- oder JPG-Datei gleichen Namens
+   (zum Beispiel ein selbst erzeugtes Bild) ersetzt die mitgelieferte SVG-Zeichnung. */
+const BILDTYPEN = [['png', 'image/png'], ['webp', 'image/webp'], ['jpg', 'image/jpeg'], ['svg', 'image/svg+xml']];
+function bild(name) {
+  for (const [ext, typ] of BILDTYPEN) {
+    const f = path.join(SRC, 'assets', 'bilder', `${name}.${ext}`);
+    if (fs.existsSync(f)) return `data:${typ};base64,` + fs.readFileSync(f).toString('base64');
   }
-  const vorlage = path.join(ROOT, 'vorlage', 'index.html');
-  if (!fs.existsSync(vorlage)) throw new Error('Schrift und METACOM-Symbole fehlen: src/assets/ füllen oder vorlage/index.html ablegen (siehe README).');
-  const html = fs.readFileSync(vorlage, 'utf8');
-  const font = /data:font\/ttf;base64,([A-Za-z0-9+/=]+)/.exec(html);
-  const pngs = [...html.matchAll(/data:image\/png;base64,[A-Za-z0-9+/=]+/g)].map(m => m[0]);
-  if (!font || pngs.length < 2) throw new Error('vorlage/index.html enthält Schrift oder Symbole nicht.');
-  return { font: font[1], sonne: pngs[0], mond: pngs[1] };
+  throw new Error(`Bild fehlt: src/assets/bilder/${name}.svg (oder .png, .webp, .jpg)`);
+}
+function assets() {
+  const b64 = n => fs.readFileSync(path.join(SRC, 'assets', n)).toString('base64');
+  return { andika: b64('andika-400.woff2'), ziffern400: b64('ziffern-atkinson-400.woff2'), ziffern600: b64('ziffern-atkinson-600.woff2'), sonne: bild('sonne'), mond: bild('mond') };
 }
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -54,10 +50,11 @@ function seite({ titel, preset, scorm }, A) {
   ersetze('/*STYLE*/', css);
   ersetze('/*SCRIPT*/', js);
   ersetze('{{TITEL}}', esc(titel));
-  ersetze('{{FONT_BAYERNDRUCK}}', A.font);
-  ersetze('{{FONT_ZIFFERN}}', fs.readFileSync(path.join(SRC, 'assets', 'ziffern-atkinson.woff2')).toString('base64'));
-  ersetze('{{METACOM_SONNE}}', A.sonne);
-  ersetze('{{METACOM_MOND}}', A.mond);
+  ersetze('{{FONT_ANDIKA}}', A.andika);
+  ersetze('{{FONT_ZIFFERN_400}}', A.ziffern400);
+  ersetze('{{FONT_ZIFFERN_600}}', A.ziffern600);
+  ersetze('{{BILD_SONNE}}', A.sonne);
+  ersetze('{{BILD_MOND}}', A.mond);
   ersetze('<!--VOREINSTELLUNG-->', preset ? `<script>window.LERNUHR_VOREINSTELLUNG=${JSON.stringify(preset)};</script>` : '');
   ersetze('<!--SCORM-->', scorm ? '<script src="scorm.js"></script>' : '');
   return html;

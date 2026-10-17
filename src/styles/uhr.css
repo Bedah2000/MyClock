@@ -12,9 +12,8 @@
 #uhr .verg-m{fill:var(--minute-hell)}
 #uhr .strich{stroke:#97A6A1;stroke-width:.75;stroke-linecap:round}
 #uhr .strich.gross{stroke:var(--tinte);stroke-width:1.8}
-/* Ziffern: klare Schrift (Atkinson Hyperlegible Next) oder Bayerndruck; Grundlinie setzt das Skript */
-#uhr text{font-family:Ziffern,Bayerndruck,sans-serif;text-anchor:middle}
-#uhr.z-bayerndruck text{font-family:Bayerndruck,sans-serif}
+/* Ziffern: Atkinson Hyperlegible Next SemiBold; Grundlinie setzt das Skript */
+#uhr text{font-family:Ziffern,Andika,sans-serif;font-weight:600;text-anchor:middle}
 #uhr .minutenzahlen text{fill:var(--minute)}
 #uhr .stundenzahlen text{fill:var(--tinte)}
 /* Hervorheben: die anderen Zahlen treten grau und blass zurück */

@@ -1,8 +1,8 @@
 # Prüfbericht
 
-Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 07:37:46 mit Chromium 141.0.7390.37 und Touch-Emulation. Die App läuft jeweils in einem iframe unter einer 48 px hohen Leiste als Nachbildung des mebis-Rahmens.
+Automatisch erzeugt von `scripts/pruefen.mjs` am 17.10.2026, 07:55:26 mit Chromium 141.0.7390.37 und Touch-Emulation. Die App läuft jeweils in einem iframe unter einer 48 px hohen Leiste als Nachbildung des mebis-Rahmens.
 
-**325 von 325 Prüfungen bestanden.**
+**328 von 328 Prüfungen bestanden.**
 
 ## escreen
 
@@ -16,12 +16,11 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 07:37:46 mit Chromi
 | ✅ | zeigen: Schüler-Bedienung in den unteren zwei Dritteln |  |
 | ✅ | Zeiger liegen über den Zahlen (Minutenzeiger verdeckt um 5:00 die 12) | z-minute |
 | ✅ | Hervorheben: andere Zahlen grau und blass (4:23 → Stunde 4, Minute 20) | 11 / 4 / 11 / 20 / 0.5 |
-| ✅ | Minutenring (klar): Zahlen mittig, ungestaucht, ohne Berührung |  |
-| ✅ | Minutenring (bayerndruck): Zahlen mittig, ungestaucht, ohne Berührung |  |
+| ✅ | Minutenring: Zahlen mittig, ungestaucht, ohne Berührung |  |
 | ✅ | Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit |  |
-| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(210) rotate(216) rotate(216) |
-| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.1 min, ▶▶ 15.8 min, danach ◀ 15.2 |
-| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 02:15, 15:45, 14:30, 07:45 |
+| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(132) rotate(138) rotate(138) |
+| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.0 min, ▶▶ 15.8 min, danach ◀ 15.2 |
+| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 11:15, 13:00, 14:30, 14:15 |
 | ✅ | Stufe merkt sich geänderte Hilfen; Worte und Digital bleiben gleich | [[false,true],[true,true,"quarter"]] |
 | ✅ | Touch: Minutenzeiger von 9:00 um eine Viertelstunde gezogen | 09:15 |
 | ✅ | Touch: kein Scrollen oder Zoomen beim Ziehen |  |
@@ -140,12 +139,11 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 07:37:46 mit Chromi
 | ✅ | zeigen: Mindestgrößen |  |
 | ✅ | Zeiger liegen über den Zahlen (Minutenzeiger verdeckt um 5:00 die 12) | z-minute |
 | ✅ | Hervorheben: andere Zahlen grau und blass (4:23 → Stunde 4, Minute 20) | 11 / 4 / 11 / 20 / 0.5 |
-| ✅ | Minutenring (klar): Zahlen mittig, ungestaucht, ohne Berührung |  |
-| ✅ | Minutenring (bayerndruck): Zahlen mittig, ungestaucht, ohne Berührung |  |
+| ✅ | Minutenring: Zahlen mittig, ungestaucht, ohne Berührung |  |
 | ✅ | Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit |  |
-| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(240) rotate(240) rotate(246) |
-| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.1 min, ▶▶ 15.8 min, danach ◀ 15.2 |
-| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 22:45, 14:30, 13:00, 13:30 |
+| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(144) rotate(150) rotate(150) |
+| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.0 min, ▶▶ 15.5 min, danach ◀ 15.0 |
+| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 04:15, 11:45, 07:30, 19:00 |
 | ✅ | Stufe merkt sich geänderte Hilfen; Worte und Digital bleiben gleich | [[false,true],[true,true,"quarter"]] |
 | ✅ | quiz-start: kein Scrollen, nichts ragt heraus |  |
 | ✅ | quiz-start: Mindestgrößen |  |
@@ -232,17 +230,16 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 07:37:46 mit Chromi
 |---|---|---|
 | ✅ | Vollbild-Knopf erscheint, wenn der Rahmen Vollbild erlaubt |  |
 | ✅ | Layout erkannt: tablet |  |
-| ✅ | Zeigen: vergangene Zeit als Fläche und in Std./Min. | 0 Std. 14 Min. |
+| ✅ | Zeigen: vergangene Zeit als Fläche und in Std./Min. | 0 Std. 13 Min. |
 | ✅ | zeigen: kein Scrollen, nichts ragt heraus |  |
 | ✅ | zeigen: Mindestgrößen |  |
 | ✅ | Zeiger liegen über den Zahlen (Minutenzeiger verdeckt um 5:00 die 12) | z-minute |
 | ✅ | Hervorheben: andere Zahlen grau und blass (4:23 → Stunde 4, Minute 20) | 11 / 4 / 11 / 20 / 0.5 |
-| ✅ | Minutenring (klar): Zahlen mittig, ungestaucht, ohne Berührung |  |
-| ✅ | Minutenring (bayerndruck): Zahlen mittig, ungestaucht, ohne Berührung |  |
+| ✅ | Minutenring: Zahlen mittig, ungestaucht, ohne Berührung |  |
 | ✅ | Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit |  |
-| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(246) rotate(246) rotate(252) |
-| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.1 min, ▶▶ 16.0 min, danach ◀ 15.4 |
-| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 19:00, 12:15, 00:00, 13:30 |
+| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(138) rotate(138) rotate(144) |
+| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.0 min, ▶▶ 15.8 min, danach ◀ 15.2 |
+| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 10:00, 03:45, 10:15, 19:15 |
 | ✅ | Stufe merkt sich geänderte Hilfen; Worte und Digital bleiben gleich | [[false,true],[true,true,"quarter"]] |
 | ✅ | Touch: Minutenzeiger von 9:00 um eine Viertelstunde gezogen | 09:15 |
 | ✅ | Touch: kein Scrollen oder Zoomen beim Ziehen |  |
@@ -342,15 +339,21 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 16.10.2026, 07:37:46 mit Chromi
 | | Prüfung | Hinweis |
 |---|---|---|
 | ✅ | lernuhr-scorm.zip: gültiges Manifest (SCORM 1.2), Dateien vollständig, Titel „Meine Lernuhr“ |  |
+| ✅ | lernuhr-scorm: nur freie Schriften und Bilder eingebettet (6 Dateien) |  |
 | ✅ | lernuhr-scorm: Voreinstellung greift beim Start (zeigen), SCORM initialisiert |  / LMSInitialize,cmi.core.lesson_status=browsed,LMSCommit |
 | ✅ | lernuhr-quiz-volle-stunden.zip: gültiges Manifest (SCORM 1.2), Dateien vollständig, Titel „Lernuhr – Quiz volle Stunden“ |  |
+| ✅ | lernuhr-quiz-volle-stunden: nur freie Schriften und Bilder eingebettet (6 Dateien) |  |
 | ✅ | lernuhr-quiz-volle-stunden: Voreinstellung greift beim Start (quiz, full), SCORM initialisiert | Lernstufe: volle Stunden / LMSInitialize,cmi.core.lesson_status=browsed,LMSCommit |
 | ✅ | lernuhr-quiz-halbe-stunden.zip: gültiges Manifest (SCORM 1.2), Dateien vollständig, Titel „Lernuhr – Quiz halbe Stunden“ |  |
+| ✅ | lernuhr-quiz-halbe-stunden: nur freie Schriften und Bilder eingebettet (6 Dateien) |  |
 | ✅ | lernuhr-quiz-halbe-stunden: Voreinstellung greift beim Start (quiz, half), SCORM initialisiert | Lernstufe: halbe Stunden / LMSInitialize,cmi.core.lesson_status=browsed,LMSCommit |
 | ✅ | lernuhr-quiz-viertelstunden.zip: gültiges Manifest (SCORM 1.2), Dateien vollständig, Titel „Lernuhr – Quiz Viertelstunden“ |  |
+| ✅ | lernuhr-quiz-viertelstunden: nur freie Schriften und Bilder eingebettet (6 Dateien) |  |
 | ✅ | lernuhr-quiz-viertelstunden: Voreinstellung greift beim Start (quiz, quarter), SCORM initialisiert | Lernstufe: Viertelstunden / LMSInitialize,cmi.core.lesson_status=browsed,LMSCommit |
 | ✅ | lernuhr-quiz-5-minuten.zip: gültiges Manifest (SCORM 1.2), Dateien vollständig, Titel „Lernuhr – Quiz 5 Minuten“ |  |
+| ✅ | lernuhr-quiz-5-minuten: nur freie Schriften und Bilder eingebettet (6 Dateien) |  |
 | ✅ | lernuhr-quiz-5-minuten: Voreinstellung greift beim Start (quiz, five), SCORM initialisiert | Lernstufe: 5 Minuten / LMSInitialize,cmi.core.lesson_status=browsed,LMSCommit |
 | ✅ | lernuhr-quiz-alle-minuten.zip: gültiges Manifest (SCORM 1.2), Dateien vollständig, Titel „Lernuhr – Quiz alle Minuten“ |  |
+| ✅ | lernuhr-quiz-alle-minuten: nur freie Schriften und Bilder eingebettet (6 Dateien) |  |
 | ✅ | lernuhr-quiz-alle-minuten: Voreinstellung greift beim Start (quiz, any), SCORM initialisiert | Lernstufe: alle Minuten / LMSInitialize,cmi.core.lesson_status=browsed,LMSCommit |
 

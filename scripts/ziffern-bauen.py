@@ -1,8 +1,10 @@
-# Baut src/assets/ziffern-atkinson.woff2: Atkinson Hyperlegible Next SemiBold (SIL OFL 1.1), nur die Ziffern 0-9.
+# Baut die Ziffernschrift der Uhr: Atkinson Hyperlegible Next (SIL OFL 1.1), nur die Ziffern 0-9,
+# in zwei Stärken (Regular für Text, SemiBold für das Zifferblatt).
 # Abänderung: Die Null bekommt einen ungeteilten Innenraum (ohne Schrägstrich), weil eine durchgestrichene Null
 # auf der Lernuhr verwirrt. Quelle: npm pack @fontsource/atkinson-hyperlegible-next@5.3.0
 #   python3 -m pip install fonttools brotli
-#   python3 scripts/ziffern-bauen.py package/files/atkinson-hyperlegible-next-latin-600-normal.woff src/assets/ziffern-atkinson.woff2
+#   python3 scripts/ziffern-bauen.py package/files/atkinson-hyperlegible-next-latin-400-normal.woff src/assets/ziffern-atkinson-400.woff2
+#   python3 scripts/ziffern-bauen.py package/files/atkinson-hyperlegible-next-latin-600-normal.woff src/assets/ziffern-atkinson-600.woff2
 import sys
 from fontTools.ttLib import TTFont
 from fontTools.subset import Subsetter, Options

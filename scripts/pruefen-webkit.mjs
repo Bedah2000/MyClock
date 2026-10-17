@@ -55,6 +55,8 @@ async function geraet(name, breite, hoehe) {
   pruefe(gruppe, `Fenster ${ist[0]}×${ist[1]} (App ${ist[0]}×${ist[1] - 48}), Layout ${await js('return document.getElementById("app").dataset.profil+"/"+document.getElementById("app").dataset.lage;')}`, true);
   async function schritt(n) {
     await pause(250);
+    // laufende Einblend-Animationen abwarten (WebKit unter Xvfb ist langsamer als die 0,22 s des Blatts)
+    for (let i = 0; i < 20 && await js("return document.getAnimations().some(a => a.playState === 'running');"); i++) await pause(100);
     const lay = await js('return __pruef.layout();'), gr = await js('return __pruef.groessen("tablet");');
     pruefe(gruppe, `${n}: kein Scrollen, nichts ragt heraus`, lay.length === 0, lay.slice(0, 3).join('; '));
     pruefe(gruppe, `${n}: Mindestgrößen`, gr.length === 0, gr.slice(0, 3).join('; '));
@@ -66,12 +68,10 @@ async function geraet(name, breite, hoehe) {
   }
   await app(() => { LU.s.hilfen.worte = true; LU.s.form = 'beide'; LU.s.start = LU.s.instant - 75 * 60000; LU.zeichne(); });
   await schritt('zeigen');
-  for (const zf of ['klar', 'bayerndruck']) {
-    const ring = await app(z => { LU.einst.ziffern = z; LU.s.hilfen.minuten = true; LU.zeichne(); return __pruef.minutenring(); }, zf);
-    pruefe(gruppe, `Minutenring (${zf}): Zahlen mittig, ungestaucht, ohne Berührung`, ring.length === 0, ring.slice(0, 3).join('; '));
-  }
+  const ring = await app(() => { LU.s.hilfen.minuten = true; LU.zeichne(); return __pruef.minutenring(); });
+  pruefe(gruppe, 'Minutenring: Zahlen mittig, ungestaucht, ohne Berührung', ring.length === 0, ring.slice(0, 3).join('; '));
   const ueber = await app(() => {
-    LU.einst.ziffern = 'klar'; LU.s.instant = Lernzeit.wallToInstant(LU.ymd(), 5 * 60, LU.zone()); LU.zeichne();
+    LU.s.instant = Lernzeit.wallToInstant(LU.ymd(), 5 * 60, LU.zone()); LU.zeichne();
     const z = [...document.querySelectorAll('#stundenzahlen text')].find(t => t.textContent === '12').getBoundingClientRect();
     const e = document.elementFromPoint(z.x + z.width / 2, z.y + z.height / 2); return e && e.getAttribute('class');
   });
