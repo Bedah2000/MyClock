@@ -1,3 +1,6 @@
+Copyright 2023 The Playwrite Project Authors (https://github.com/TypeTogether/Playwrite)
+(Copyright-Vermerk aus den Metadaten der Schriftdatei playwrite-de-grund-400.woff2; das npm-Paket @fontsource/playwrite-de-grund@5.3.0 nennt hier nur „Google Inc.“)
+
 Google Inc.
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
