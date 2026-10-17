@@ -164,7 +164,7 @@ function kontextText(){
     case 'frage':
       if(bausteine())return {t:x.schritt===2?'Jetzt: die Stunde.':x.schritt==='zahl'?'Wie viele Minuten?':'Zuerst: die Minuten.'};
       if(worte())return {t:'In Worten, '+LU.formText(E.sprechweise)};
-      return {t:x.antwort<720?'Vormittags · 0\u00a0bis\u00a011\u00a0Uhr':'Nachmittags oder abends · 12\u00a0bis\u00a023\u00a0Uhr'};
+      {const t=LU.G&&LU.G.hoch?' · ':'\n';return {t:x.antwort<720?'Vormittags'+t+'0\u00a0bis\u00a011\u00a0Uhr':'Nachmittags oder abends'+t+'12\u00a0bis\u00a023\u00a0Uhr'};}
     default:return {t:''};
   }
 }
@@ -188,7 +188,7 @@ quiz.zeichne=function(){
   $('b-frage').classList.toggle('kompakt',bausteine()); // Wortbausteine brauchen den Platz
   if(ph==='start'){fr.textContent=E.runde+' Aufgaben';rm.textContent='Die Zeit läuft vorwärts. Welche Uhrzeit ist es dann?';}
   else if(lauf){fr.textContent=x.pause?'Angehalten':'Die Zeit läuft …';rm.textContent=x.pause?'':'Schauen Sie auf die Zeiger.';}
-  else if(ph==='frage'){fr.textContent=worte()?'Wie heißt die Uhrzeit in Worten?':'Welche Uhrzeit zeigt die Uhr?';rm.textContent=x.meldung;}
+  else if(ph==='frage'){fr.textContent=worte()?'Wie heißt die Uhrzeit?':'Welche Uhrzeit zeigt die Uhr?';rm.textContent=x.meldung;}
   else if(ph==='dauer'){fr.textContent='Wie viel Zeit ist vergangen?';rm.textContent=x.erneut?'Schauen Sie noch einmal zu.':x.meldung;}
   else if(ph==='gut1'){fr.textContent='Richtig!';fr.classList.add('loesung');rm.classList.add('gut');rm.style.whiteSpace='pre-line';rm.textContent='Es ist '+LU.hm(x.ziel)+' Uhr.\n'+loesungWorte();}
   else if(ph==='gut2'){fr.textContent='Richtig!';fr.classList.add('loesung');rm.classList.add('gut');rm.textContent='Es sind '+A.durationLabel(dauer())+' vergangen.';}

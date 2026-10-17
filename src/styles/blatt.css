@@ -31,7 +31,9 @@
 #blatt-dock .wahl.fuenf{grid-template-columns:repeat(5,1fr)}
 .koord{display:flex;gap:var(--gap)}
 .koord .feld{min-height:var(--h-ans)}
+.koord .feld{gap:.2em;padding:.25em .3em}
 .koord .feld small,.koord .feld span{line-height:1}
+.koord .feld span{font-size:calc(var(--fs-ans)*.85)}
 #blatt-dock .koord .feld{flex-direction:row;gap:.5em;min-height:var(--h-btn)}
 .bl-zonen{display:flex;flex-direction:column;gap:var(--gap)}
 #blatt-dock .bl-zonen{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}

@@ -1,6 +1,6 @@
 # Prüfbericht
 
-Automatisch erzeugt von `scripts/pruefen.mjs` am 17.10.2026, 13:50:57 mit Chromium 141.0.7390.37 und Touch-Emulation. Die App läuft jeweils in einem iframe unter einer 48 px hohen Leiste als Nachbildung des mebis-Rahmens.
+Automatisch erzeugt von `scripts/pruefen.mjs` am 17.10.2026, 14:26:13 mit Chromium 141.0.7390.37 und Touch-Emulation. Die App läuft jeweils in einem iframe unter einer 48 px hohen Leiste als Nachbildung des mebis-Rahmens.
 
 **331 von 331 Prüfungen bestanden.**
 
@@ -18,10 +18,10 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 17.10.2026, 13:50:57 mit Chromi
 | ✅ | Hervorheben: andere Zahlen grau und blass (4:23 → Stunde 4, Minute 20) | 11 / 4 / 11 / 20 / 0.6 |
 | ✅ | Minutenring: Zahlen mittig, ungestaucht, ohne Berührung |  |
 | ✅ | Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit |  |
-| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(252) rotate(252) rotate(258) |
-| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.1 min, ▶▶ 16.0 min, danach ◀ 15.4 |
+| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(342) rotate(348) rotate(348) |
+| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.0 min, ▶▶ 16.0 min, danach ◀ 15.4 |
 | ✅ | Zufall: Zeiger laufen nur vorwärts (höchstens 12 Stunden) | true,true,true,true |
-| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 12:15, 16:15, 20:30, 03:45 |
+| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 11:00, 22:30, 03:00, 06:45 |
 | ✅ | Stufe merkt sich geänderte Hilfen; Worte und Digital bleiben gleich | [[false,true],[true,true,"quarter"]] |
 | ✅ | Touch: Minutenzeiger von 9:00 um eine Viertelstunde gezogen | 09:15 |
 | ✅ | Touch: kein Scrollen oder Zoomen beim Ziehen |  |
@@ -142,10 +142,10 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 17.10.2026, 13:50:57 mit Chromi
 | ✅ | Hervorheben: andere Zahlen grau und blass (4:23 → Stunde 4, Minute 20) | 11 / 4 / 11 / 20 / 0.6 |
 | ✅ | Minutenring: Zahlen mittig, ungestaucht, ohne Berührung |  |
 | ✅ | Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit |  |
-| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(288) rotate(288) rotate(294) |
+| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(24) rotate(24) rotate(24) |
 | ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.0 min, ▶▶ 15.8 min, danach ◀ 15.2 |
 | ✅ | Zufall: Zeiger laufen nur vorwärts (höchstens 12 Stunden) | true,true,true,true |
-| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 20:30, 03:45, 07:15, 08:45 |
+| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 15:30, 19:15, 22:30, 10:15 |
 | ✅ | Stufe merkt sich geänderte Hilfen; Worte und Digital bleiben gleich | [[false,true],[true,true,"quarter"]] |
 | ✅ | quiz-start: kein Scrollen, nichts ragt heraus |  |
 | ✅ | quiz-start: Mindestgrößen |  |
@@ -232,17 +232,17 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 17.10.2026, 13:50:57 mit Chromi
 |---|---|---|
 | ✅ | Vollbild-Knopf erscheint, wenn der Rahmen Vollbild erlaubt |  |
 | ✅ | Layout erkannt: tablet |  |
-| ✅ | Zeigen: vergangene Zeit als Fläche und in Std./Min. | 0 Std. 13 Min. |
+| ✅ | Zeigen: vergangene Zeit als Fläche und in Std./Min. | 0 Std. 14 Min. |
 | ✅ | zeigen: kein Scrollen, nichts ragt heraus |  |
 | ✅ | zeigen: Mindestgrößen |  |
 | ✅ | Zeiger liegen über den Zahlen (Minutenzeiger verdeckt um 5:00 die 12) | z-minute |
 | ✅ | Hervorheben: andere Zahlen grau und blass (4:23 → Stunde 4, Minute 20) | 11 / 4 / 11 / 20 / 0.6 |
 | ✅ | Minutenring: Zahlen mittig, ungestaucht, ohne Berührung |  |
 | ✅ | Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit |  |
-| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(300) rotate(300) rotate(300) |
-| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.1 min, ▶▶ 16.0 min, danach ◀ 15.4 |
+| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(36) rotate(36) rotate(42) |
+| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.0 min, ▶▶ 15.8 min, danach ◀ 15.2 |
 | ✅ | Zufall: Zeiger laufen nur vorwärts (höchstens 12 Stunden) | true,true,true,true |
-| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 10:30, 14:45, 18:00, 22:00 |
+| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 13:30, 14:30, 17:15, 22:30 |
 | ✅ | Stufe merkt sich geänderte Hilfen; Worte und Digital bleiben gleich | [[false,true],[true,true,"quarter"]] |
 | ✅ | Touch: Minutenzeiger von 9:00 um eine Viertelstunde gezogen | 09:15 |
 | ✅ | Touch: kein Scrollen oder Zoomen beim Ziehen |  |

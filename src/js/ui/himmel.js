@@ -1,6 +1,7 @@
-/* Himmel hinter der Uhr und Horizontband darunter. Farbe folgt der Sonnenhöhe; das Band zeigt
-   die Sonnenbahn über die Tageszeit (0 bis 24 Uhr), Aufgang und Untergang. Mittig unter der Uhr stehen Sonne
-   und (optional) Mond, sobald sie über dem Horizont sind; sind beide zu sehen, überlagern sie sich. */
+/* Himmel hinter der Uhr und Horizontband darunter. Farbe folgt der Sonnenhöhe. Das Band zeigt den Himmel mit
+   Blick nach Süden, auf den mittleren Bereich unter der Uhr verkleinert: Osten links, Süden in der Mitte, Westen rechts.
+   Sonne und (optional) Mond laufen auf ihren Bahnen, gehen links auf, stehen mittags in der Mitte am höchsten und
+   verschwinden rechts hinter dem Boden. */
 (function(){
 'use strict';
 const LU=window.LU,$=LU.$,Z=LU.Z;
@@ -19,15 +20,12 @@ himmel.farben=function(alt){
 himmel.verlauf=(alt,richtung='180deg')=>{const [a,b]=himmel.farben(alt);return `linear-gradient(${richtung},${a},${b})`;};
 himmel.sonnenhoehe=(t,place=LU.s.place)=>SunCalc.getPosition(new Date(t),place.lat,place.lon).altitude;
 
-/* Sonnenbahn eines Tages: Wanduhr-Minute und Höhe in 10-Minuten-Schritten */
+/* Sonnenbahn eines Tages: Himmelsrichtung (Grad ab Norden) und Höhe in 10-Minuten-Schritten */
 const bahnCache=new Map();
 himmel.bahn=function(ymd,place=LU.s.place){
   const key=[ymd,place.lat,place.lon,place.zone].join('|');if(bahnCache.has(key))return bahnCache.get(key);
   const [start,end]=Z.dayBounds(ymd,place.zone),pts=[];
-  for(let t=start;t<=end;t+=10*Z.MIN){
-    let m=Z.parts(t,place.zone).minutes;if(t===end||(pts.length&&m<pts[pts.length-1][0]-600))m+=1440;
-    pts.push([m,SunCalc.getPosition(new Date(t),place.lat,place.lon).altitude]);
-  }
+  for(let t=start;t<=end;t+=10*Z.MIN){const p=SunCalc.getPosition(new Date(t),place.lat,place.lon);pts.push([p.azimuth,p.altitude]);}
   if(bahnCache.size>60)bahnCache.clear();bahnCache.set(key,pts);return pts;
 };
 
@@ -38,39 +36,43 @@ function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const
 let bandKey='',bandTeile=null;
 const MAXALT=66;
 
+function sonnenZeichen(parent,r){
+  const g=el('g',{},parent);
+  for(let k=0;k<8;k++){const w=k*Math.PI/4;el('line',{x1:(Math.cos(w)*r*1.35).toFixed(1),y1:(Math.sin(w)*r*1.35).toFixed(1),x2:(Math.cos(w)*r*1.8).toFixed(1),y2:(Math.sin(w)*r*1.8).toFixed(1),stroke:'#F2A000','stroke-width':Math.max(1.6,r*.3),'stroke-linecap':'round'},g);}
+  el('circle',{r,fill:'#FFC93C',stroke:'#E39400','stroke-width':Math.max(1.2,r*.16)},g);
+  return g;
+}
+
 function baueBand(ymd,vergleich,beschriften){
   const svg=$('band');svg.replaceChildren();
   const fs=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fs-txt'))||20;
-  const boden=Math.max(fs+10,BH*.4),hy=BH-boden,oben=Math.max(4,BH*.06),padX=BW*.045;
-  const X=m=>padX+(m/1440)*(BW-2*padX),Y=a=>hy-(Math.max(0,a)/MAXALT)*(hy-oben);
-  const teile={X,Y,hy};
-  teile.boden=el('rect',{x:0,y:hy,width:BW,height:boden,fill:'#55774F'},svg);
+  const boden=beschriften?Math.max(fs+10,BH*.4):Math.max(6,BH*.22),hy=BH-boden,oben=Math.max(3,BH*.05);
+  const r=Math.max(5,Math.min(BH*.12,(hy-oben)*.22)),cx=BW/2,halb=BW*.36;
+  // Himmelsrichtung -> x (Süden = Mitte, Osten/Westen bei halber Breite des mittleren Bereichs), Höhe -> y
+  const X=az=>cx+((az-180)/180)*halb,Y=a=>hy-(Math.min(a,MAXALT)/MAXALT)*(hy-oben-r*1.8);
+  const teile={X,Y,hy,r};
   const year=ymd.slice(0,4),tage=vergleich?[year+'-06-21',year+'-12-21']:[ymd];
+  const himmelG=el('g',{},svg); // Bahnen und Gestirne; der Boden darüber verdeckt alles unter dem Horizont
   tage.forEach((d,i)=>{
     let p='',an=false;
-    for(const [m,a] of himmel.bahn(d)){if(a>0){p+=(an?'L':'M')+X(m).toFixed(1)+' '+Y(a).toFixed(1);an=true;}else an=false;}
+    for(const [az,a] of himmel.bahn(d)){if(a>0){p+=(an?'L':'M')+X(az).toFixed(1)+' '+Y(a).toFixed(1);an=true;}else an=false;}
     const sommer=!vergleich||i===0;
-    el('path',{d:p,fill:'none',stroke:sommer?'#FFE27A':'#FFFFFF','stroke-width':Math.max(2.5,BH*(sommer?.04:.05)),'stroke-linecap':'round','stroke-dasharray':sommer?'none':`${BH*.1} ${BH*.08}`},svg);
+    el('path',{d:p,fill:'none',stroke:sommer?'#FFE27A':'#FFFFFF','stroke-opacity':.85,'stroke-width':Math.max(2,BH*(sommer?.03:.04)),'stroke-linecap':'round','stroke-linejoin':'round','stroke-dasharray':sommer?'none':`${BH*.08} ${BH*.07}`},himmelG);
   });
-  el('line',{x1:0,x2:BW,y1:hy,y2:hy,stroke:'#E6EFD9','stroke-width':2},svg);
-  teile.cursor=el('line',{y1:oben,y2:BH,stroke:'#FFFFFF','stroke-opacity':.6,'stroke-width':2},svg);
-  // Vergleich Sommer/Winter: zwei Sonnen auf ihren Bahnen
-  teile.sonnen=tage.map(()=>el('circle',{r:Math.max(6,BH*.11),fill:'#FFD84A',stroke:'#7A5A10','stroke-width':2},svg));
-  // Himmelszeichen mittig unter der Uhr
-  const r=Math.max(6,Math.min(BH*.2,(hy-oben)*.34));
-  teile.zeichenY=Math.max(oben+r*1.9,(oben+hy)/2);teile.zeichenR=r;
-  teile.sonne=el('g',{},svg);
-  for(let k=0;k<8;k++){const w=k*Math.PI/4;el('line',{x1:(Math.cos(w)*r*1.35).toFixed(1),y1:(Math.sin(w)*r*1.35).toFixed(1),x2:(Math.cos(w)*r*1.85).toFixed(1),y2:(Math.sin(w)*r*1.85).toFixed(1),stroke:'#F2A000','stroke-width':Math.max(2,r*.32),'stroke-linecap':'round'},teile.sonne);}
-  el('circle',{r,fill:'#FFC93C',stroke:'#E39400','stroke-width':Math.max(1.5,r*.16)},teile.sonne);
-  teile.mond=el('g',{},svg);
+  teile.sonnen=tage.map(()=>sonnenZeichen(himmelG,r));
+  teile.mond=el('g',{},himmelG);
   el('circle',{r,fill:'#2F3A52','fill-opacity':.6,stroke:'#E3ECF7','stroke-width':Math.max(1.2,r*.12)},teile.mond);
   teile.mondLicht=el('path',{fill:'#FFF2B5'},teile.mond);teile.mondR=r;
+  teile.boden=el('rect',{x:0,y:hy,width:BW,height:boden,fill:'#55774F'},svg);
+  el('line',{x1:0,x2:BW,y1:hy,y2:hy,stroke:'#E6EFD9','stroke-width':2},svg);
   if(beschriften){
     const ly=hy+boden/2,txt=(x,s,anchor)=>{const t=el('text',{x,y:ly,'font-size':fs,fill:'#FFFFFF','text-anchor':anchor,'dominant-baseline':'central','font-family':'Grund,sans-serif'},svg);t.textContent=s;return t;};
-    if(vergleich){txt(padX,'Sommer: gelb','start');txt(BW-padX,'Winter: weiß gestrichelt','end');}
-    else{const s=Z.solar(ymd,LU.s.place);
-      if(s.sunrise&&s.sunset){txt(X(s.riseMinute),Z.clock(s.sunrise,LU.zone()),'middle');txt(X(s.setMinute),Z.clock(s.sunset,LU.zone()),'middle');}
-      txt(X(720),'12','middle').setAttribute('fill','#DCE8D2');}
+    if(vergleich){txt(BW*.03,'Sommer: gelb','start');txt(BW*.97,'Winter: weiß gestrichelt','end');}
+    else{const so=Z.solar(ymd,LU.s.place),pl=LU.s.place;
+      if(so.sunrise&&so.sunset){
+        txt(X(SunCalc.getPosition(new Date(so.sunrise),pl.lat,pl.lon).azimuth),Z.clock(so.sunrise,LU.zone()),'middle');
+        txt(X(SunCalc.getPosition(new Date(so.sunset),pl.lat,pl.lon).azimuth),Z.clock(so.sunset,LU.zone()),'middle');}
+      txt(BW*.03,'Osten','start').setAttribute('fill','#DCE8D2');txt(BW*.97,'Westen','end').setAttribute('fill','#DCE8D2');}
   }
   bandTeile=teile;
 }
@@ -95,18 +97,19 @@ himmel.zeichne=function(an,beschriften,vergleich){
   if(vergleich){fen.style.background=`${himmel.verlauf(hoehen[0])} left/50% 100% no-repeat,${himmel.verlauf(hoehen[1])} right/50% 100% no-repeat`;}
   else fen.style.background=himmel.verlauf(hoehen[0]);
   fen.classList.toggle('geteilt',!!vergleich);
-  const T=bandTeile,x=T.X(m);
-  T.cursor.setAttribute('x1',x);T.cursor.setAttribute('x2',x);
-  T.sonnen.forEach((c,i)=>{const a=hoehen[i];c.style.display=vergleich&&a>-1?'':'none';c.setAttribute('cx',x);c.setAttribute('cy',T.Y(a));});
+  const T=bandTeile;
   T.boden.setAttribute('fill',hoehen[0]>-4?'#55774F':'#2E4430');
-  // Sonne und Mond mittig unter der Uhr (Höhen in Grad; Sonne mit Lichtbrechung am Horizont)
-  const sonneDa=!vergleich&&hoehen[0]>-.83;
-  const mp=LU.einst.mond&&!vergleich?SunCalc.getMoonPosition(new Date(t),place.lat,place.lon):null,mondDa=!!mp&&mp.altitude>0;
-  const cx=BW/2,cy=T.zeichenY,v=sonneDa&&mondDa?T.zeichenR*.6:0;
-  T.sonne.style.display=sonneDa?'':'none';T.sonne.setAttribute('transform',`translate(${(cx-v).toFixed(1)} ${cy.toFixed(1)})`);
-  T.mond.style.display=mondDa?'':'none';T.mond.setAttribute('transform',`translate(${(cx+v).toFixed(1)} ${cy.toFixed(1)})`);
-  if(mondDa)mondForm(T.mondLicht,SunCalc.getMoonIllumination(new Date(t)),T.mondR);
-  himmel.zeichen={sonne:sonneDa,mond:mondDa,x:cx};
+  // Sonne(n) auf ihrer Bahn; unter dem Horizont verdeckt der Boden sie
+  tage.forEach((d,i)=>{
+    const p=SunCalc.getPosition(new Date(d===ymd?t:Z.wallToInstant(d,m,place.zone)),place.lat,place.lon),g=T.sonnen[i];
+    g.style.display=p.altitude>-10?'':'none';g.setAttribute('transform',`translate(${T.X(p.azimuth).toFixed(1)} ${T.Y(p.altitude).toFixed(1)})`);
+  });
+  if(LU.einst.mond&&!vergleich){
+    const mp=SunCalc.getMoonPosition(new Date(t),place.lat,place.lon);
+    T.mond.style.display=mp.altitude>-10?'':'none';
+    T.mond.setAttribute('transform',`translate(${T.X(mp.azimuth).toFixed(1)} ${T.Y(mp.altitude).toFixed(1)})`);
+    mondForm(T.mondLicht,SunCalc.getMoonIllumination(new Date(t)),T.mondR);
+  }else T.mond.style.display='none';
 };
 
 /* Jahresband in Sonne: Tageslicht über das Jahr, antippen wählt den Tag */
