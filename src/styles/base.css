@@ -2,21 +2,21 @@
 :root{
   --bg:#F2F5F4; --flaeche:#FFFFFF; --flaeche-2:#E4EAE8; --tinte:#1D2B28; --leise:#4E605A; --linie:#C3D0CC;
   --akzent:#13756B; --akzent-hell:#DCEFEA; --akzent-text:#0E5F57; --auf-akzent:#FFFFFF;
-  --stunde:#B03A48; --minute:#1E5EA6; --sekunde:#3C4A46; --stunde-hell:rgba(176,58,72,.18); --minute-hell:rgba(30,94,166,.20);
+  --stunde:#B03A48; --minute:#1E5EA6; --sekunde:#3C4A46; --stunde-hell:rgba(226,140,152,.26); --minute-hell:rgba(122,168,220,.28);
   --falsch-bg:#E6EBE9; --falsch-text:#6B7874; --zifferblatt:#FFFFFF; --fenster-neutral:#E7EDEB;
   /* Uhr in Pastell: Minutenring dunkler (Himmelblau), Zifferblatt heller (Elfenbein) */
   --ring:#D3E3F3; --ring-hell:#E9F2FB; --ring-rand:#9AB4CF; --blatt:#FBF3DF; --blatt-hell:#FFFDF6; --blatt-rand:#CDBB92;
-  --uhr-schatten:rgba(25,45,70,.30); --leuchten:#FFC21F; --zahl-matt:#8A9692; --sektor:#F8D9C4; --sektor-rand:#E0A47E; --schatten:rgba(20,40,35,.13); --rand:1.5px;
+  --uhr-schatten:rgba(25,45,70,.30); --stunde-zahl:#A33F4E; --stunde-leuchten:#E5455D; --minute-leuchten:#2F86F0; --lob-leuchten:rgba(255,206,84,.95); --zahl-matt:#8A9692; --sektor:#FCE5D4; --sektor-rand:#E9C2A4; --schatten:rgba(20,40,35,.13); --rand:1.5px;
   --fs-ans:22px; --fs-txt:18px; --fs-kopf:20px; --fs-dig:34px; --fs-worte:20px; --fs-klein:15px; --fs-cap:12.5px; --h-ans:52px; --h-btn:44px; --gap:8px; --r:12px;
 }
 html[data-schema="kontrast"]{
   --bg:#FFFFFF; --flaeche:#FFFFFF; --flaeche-2:#FFFFFF; --tinte:#000000; --leise:#1A1A1A; --linie:#000000;
   --akzent:#00564D; --akzent-hell:#D7F0EA; --akzent-text:#00463F; --stunde:#9A0010; --minute:#00379A;
-  --falsch-bg:#EDEDED; --falsch-text:#4A4A4A; --fenster-neutral:#F2F2F2; --ring:#FFFFFF; --ring-hell:#FFFFFF; --ring-rand:#000000; --blatt:#FFFFFF; --blatt-hell:#FFFFFF; --blatt-rand:#000000; --zahl-matt:#6E6E6E; --rand:2.5px; --schatten:rgba(0,0,0,.25);
+  --falsch-bg:#EDEDED; --falsch-text:#4A4A4A; --fenster-neutral:#F2F2F2; --ring:#FFFFFF; --ring-hell:#FFFFFF; --ring-rand:#000000; --blatt:#FFFFFF; --blatt-hell:#FFFFFF; --blatt-rand:#000000; --stunde-zahl:#8E0012; --stunde-leuchten:#C8001A; --minute-leuchten:#0050D0; --zahl-matt:#6E6E6E; --rand:2.5px; --schatten:rgba(0,0,0,.25);
 }
 *{box-sizing:border-box;font-weight:400;font-synthesis:none}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--tinte);
-  font-family:Ziffern,Andika,sans-serif;line-height:1.25;touch-action:manipulation;-webkit-text-size-adjust:100%;
+  font-family:Grund,sans-serif;line-height:1.25;touch-action:manipulation;-webkit-text-size-adjust:100%;
   -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
 [hidden]{display:none!important}
 p{margin:0}

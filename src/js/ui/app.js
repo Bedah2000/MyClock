@@ -59,12 +59,9 @@ LU.setzeOrt=function(ort){
 let lobTimer=null;
 LU.lob=function(text){
   const l=$('lob');$('lob-text').textContent=text;l.classList.remove('an');void l.offsetWidth;
-  for(const i of LU.qa('i',l))i.remove();
-  const farben=['#E8B52D','#E96579','#467FC1','#5CAA89','#A87AC0'];
-  for(let k=0;k<26;k++){const i=document.createElement('i');const w=k/26*Math.PI*2,r=38+Math.random()*16;
-    i.style.background=farben[k%5];i.style.setProperty('--dx',(Math.cos(w)*r)+'%');i.style.setProperty('--dy',(Math.sin(w)*r)+'%');
-    i.style.setProperty('--rot',(Math.random()*540-270)+'deg');i.style.animationDelay=(Math.random()*.15)+'s';l.appendChild(i);}
-  l.classList.add('an');clearTimeout(lobTimer);lobTimer=setTimeout(()=>l.classList.remove('an'),1500);
+  // statt Konfetti: die Uhr leuchtet kurz auf
+  const u=$('uhr');u.classList.remove('lob-leuchten');void u.getBoundingClientRect();u.classList.add('lob-leuchten');
+  l.classList.add('an');clearTimeout(lobTimer);lobTimer=setTimeout(()=>{l.classList.remove('an');u.classList.remove('lob-leuchten');},1500);
 };
 
 /* ---------- Bereich ---------- */

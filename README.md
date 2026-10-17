@@ -72,10 +72,11 @@ Der Knopf „Vollbild“ erscheint nur, wenn der Rahmen Vollbild erlaubt.
 ## Zifferblatt
 
 - Die Zeiger laufen über die Zahlen wie bei einer echten Uhr.
-- **Aussehen:** Minutenring in hellem Pastellblau, Zifferblatt in hellerem Elfenbein, beide mit schmalem Rand, feiner Lichtkante und weichem Schatten; das Zifferblatt liegt leicht über dem Ring, die Uhr leicht über dem Himmel. Im Farbschema „Kontrast“ bleiben beide weiß mit schwarzem Rand.
+- **Aussehen:** Minutenring in hellem Pastellblau, Zifferblatt in hellerem Elfenbein, beide mit schmalem Rand, feiner Lichtkante und weichem Schatten; das Zifferblatt liegt leicht über dem Ring, die Uhr leicht über dem Himmel. Stundenbereich und vergangene Zeit in Pastelltönen. Im Farbschema „Kontrast“ bleiben Ring und Zifferblatt weiß mit schwarzem Rand.
+- **Lob:** Die Uhr leuchtet kurz warm auf, dazu erscheint das Lob über der Uhr.
 - Die Minutenzahlen stehen mittig im Minutenring, in natürlicher Breite (nicht gestaucht). Das Innenblatt ist dafür etwas kleiner (93 %). Die Stundenzahlen sind etwas größer als die Minutenzahlen. Bei „alle Minuten“ begrenzen die 60 Zahlen am Umfang der Ringmitte die Größe.
-- **Ziffern:** „Lernuhr Schulziffern“, eigens gezeichnet wie mit dem Stift geschrieben, nach deutscher Schreibweise: offene 4, 1 mit Aufstrich ohne Fuß, 7 mit Querstrich, 9 mit gerader Unterlänge. Dieselben Ziffern stehen in der Digitalanzeige, auf den Antworten und im Ziffernfeld; sie sind so hoch wie die Großbuchstaben der Textschrift.
-- **Hervorheben:** Die aktuelle Stundenzahl und die aktuelle Minutenzahl (im 5-Minuten-Raster die zuletzt erreichte) erscheinen etwas größer und leuchten warm. Alle anderen Zahlen treten grau und blass zurück.
+- **Schrift:** Playwrite DE Grund (deutsche Grundschrift) für alle Texte und Ziffern: offene 4, 1 mit Aufstrich, Ziffern wie geschrieben. Auf dem Zifferblatt sind die Ziffern mit einem feinen Strich in ihrer Farbe etwas kräftiger. Die Stundenzahlen sind gedämpft rot wie der Stundenzeiger, die Minutenzahlen blau wie der Minutenzeiger.
+- **Hervorheben:** Die aktuelle Stundenzahl und die aktuelle Minutenzahl (im 5-Minuten-Raster die zuletzt erreichte) werden etwa 5 % größer und leuchten in ihrer eigenen, aufgehellten Farbe. Alle anderen Zahlen treten grau und blass zurück.
 
 `npm run pruefen` rastert die Minutenzahlen pixelgenau und prüft in beiden Schriften, dass keine Zahl eine andere berührt, alle mittig im Ring liegen und keine gestaucht ist.
 
@@ -99,7 +100,7 @@ Bei Schwer gibt es zuerst den Minutenteil, dann die Stunde. Die Minutenteile ste
 
 ```
 src/        index.html, styles/, js/core/ (Fachlogik aus der Vorlage), js/vendor/ (SunCalc), js/ui/, scorm/
-scripts/    build.mjs, test-logik.mjs, pruefen.mjs, pruefen-webkit.mjs, pruef-app.mjs, schulziffern.py
+scripts/    build.mjs, test-logik.mjs, pruefen.mjs, pruefen-webkit.mjs, pruef-app.mjs
 dist/       erzeugt (nicht im Repository, enthält die eingebettete Schrift)
 docs/       plan/ (freigegebener Plan), bestand/ (Bilder der Vorlage), screens/, Prüfberichte
 vorlage/    scorm.js und imsmanifest.xml der Vorlage (index.html mit lizenzierten Dateien nur lokal, wird nicht gebraucht)
@@ -113,8 +114,7 @@ Alles, was in die App eingebettet wird, ist frei nutzbar oder eigene Arbeit und 
 
 | Datei | Inhalt | Lizenz |
 |---|---|---|
-| `andika-400.woff2` | Andika 6.101 Regular, lateinischer Teilsatz (Google Fonts, über `@fontsource/andika@5.3.0`), unverändert. Schrift von SIL International für Leseanfänger: einstöckiges a und g wie in der Schulschrift, I, l und 1 gut unterscheidbar. | SIL Open Font License 1.1, `andika-OFL.txt` |
-| `schulziffern-400.woff2`, `schulziffern-600.woff2` | Lernuhr Schulziffern Regular und SemiBold, nur 0–9: eigene Zeichnung als Federstriche, `scripts/schulziffern.py` erzeugt beide Dateien | Teil dieses Projekts |
+| `playwrite-de-grund-400.woff2` | Playwrite DE Grund 1.003 Regular, lateinischer Teilsatz (Google Fonts, über `@fontsource/playwrite-de-grund@5.3.0`), unverändert. Schrift von TypeTogether nach der deutschen Grundschrift. | SIL Open Font License 1.1, `playwrite-OFL.txt` |
 | `bilder/sonne.svg`, `bilder/mond.svg` | einfache eigene Zeichnungen als Platzhalter | Teil dieses Projekts |
 
 ### Eigene Bilder für Sonne und Mond

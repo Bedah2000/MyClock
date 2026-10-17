@@ -27,6 +27,7 @@
 #dock .zeile>.b-stufe{flex:1.3 1 0}
 #dock .zeile>.b-anzeige{flex:1 1 0}
 #dock .zeile>.b-seit{flex:0 0 auto;display:flex;align-items:center}
+#seit .h,#seit .m{white-space:nowrap}
 #app[data-lage="hoch"] .spalte{display:none}
 #app[data-lage="quer"] #dock{display:none}
 
@@ -128,6 +129,7 @@
 .b-tage{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
 #dock .b-tage{grid-template-columns:repeat(4,minmax(0,1fr));flex:2 1 0}
 #dock .b-tage button{padding:.1em .2em;gap:.15em}
+#dock .b-tage .cap{font-size:var(--fs-klein)}
 .b-fakten dl{margin:0;display:flex;flex-direction:column}
 .b-fakten dl>div{display:flex;justify-content:space-between;align-items:baseline;gap:.5em;padding:.28em 0;border-bottom:1px solid var(--linie)}
 .b-fakten dl>div:last-child{border-bottom:0}

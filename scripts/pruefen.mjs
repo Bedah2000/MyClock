@@ -436,11 +436,11 @@ async function paketePruefen(browser) {
     pruefe('pakete', `${p.datei}.zip: gültiges Manifest (SCORM 1.2), Dateien vollständig, Titel „${pr.titel}“`, pr.ok && dateienDa && pr.titel === p.titel && !ids.has(pr.id), pr.grund || '');
     ids.add(pr.id);
     // Nur frei lizenzierte Dateien eingebettet: jede data-URI ist genau eine Datei aus src/assets
-    const frei = new Set(['andika-400.woff2', 'schulziffern-400.woff2', 'schulziffern-600.woff2'].map(n => path.join(ROOT, 'src', 'assets', n))
+    const frei = new Set(['playwrite-de-grund-400.woff2'].map(n => path.join(ROOT, 'src', 'assets', n))
       .concat(fs.readdirSync(path.join(ROOT, 'src', 'assets', 'bilder')).map(n => path.join(ROOT, 'src', 'assets', 'bilder', n))).map(f => fs.readFileSync(f).toString('base64')));
     const html = z['index.html'].toString('utf8'), eingebettet = [...html.matchAll(/data:[a-z0-9+\/.-]+;base64,([A-Za-z0-9+\/=]+)/g)].map(m => m[1]);
     const fremd = eingebettet.filter(b => !frei.has(b)).length;
-    pruefe('pakete', `${p.datei}: nur freie Schriften und Bilder eingebettet (${eingebettet.length} Dateien)`, eingebettet.length >= 5 && fremd === 0 && !/Bayerndruck|METACOM/i.test(html), fremd ? `${fremd} unbekannte Datei(en)` : '');
+    pruefe('pakete', `${p.datei}: nur freie Schriften und Bilder eingebettet (${eingebettet.length} Dateien)`, eingebettet.length >= 3 && fremd === 0 && !/Bayerndruck|METACOM/i.test(html), fremd ? `${fremd} unbekannte Datei(en)` : '');
     // Start im Rahmen mit SCORM-API
     const fehler = []; const hdl = e => fehler.push(e.message); page.on('pageerror', hdl);
     await page.goto(`${BASIS}/rahmen.html?api=1&src=/paket/${p.datei}/index.html`);

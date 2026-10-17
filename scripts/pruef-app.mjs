@@ -75,7 +75,7 @@ export const IM_APP = () => {
     },
     // Minutenzahlen: Glyphen pixelgenau gerastert (4 px je Einheit), mit Sicherheitsrand. Keine Zahl berührt eine andere, alle liegen
     // im Minutenring, mittig (Tintenmitte höchstens 0,8 Einheiten neben der Ringmitte) und ungestaucht.
-    minutenring(rand = .25) {
+    minutenring(rand = .5) { // .25 Strich der Ziffern (0,5 breit) + .25 Abstand
       const p = [], K = LU.uhr.K, rin = 100 * K + .9 * K, rout = 116.4 - .6, S = 4, N = 234 * S;
       const cv = document.createElement('canvas'); cv.width = cv.height = N; const c = cv.getContext('2d', { willReadFrequently: true });
       for (const id of ['minutenzahlen', 'alleminuten']) {

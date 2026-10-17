@@ -59,7 +59,7 @@ function baueBand(ymd,vergleich,beschriften){
   el('circle',{r,fill:'#2F3A52',stroke:'#E3ECF7','stroke-width':1.5},teile.mond);
   teile.mondLicht=el('path',{fill:'#FFF2B5'},teile.mond);teile.mondR=r;
   if(beschriften){
-    const ly=hy+boden/2,txt=(x,s,anchor)=>{const t=el('text',{x,y:ly,'font-size':fs,fill:'#FFFFFF','text-anchor':anchor,'dominant-baseline':'central','font-family':'Ziffern,Andika,sans-serif'},svg);t.textContent=s;return t;};
+    const ly=hy+boden/2,txt=(x,s,anchor)=>{const t=el('text',{x,y:ly,'font-size':fs,fill:'#FFFFFF','text-anchor':anchor,'dominant-baseline':'central','font-family':'Grund,sans-serif'},svg);t.textContent=s;return t;};
     if(vergleich){txt(padX,'Sommer: gelb','start');txt(BW-padX,'Winter: weiß gestrichelt','end');}
     else{const s=Z.solar(ymd,LU.s.place);
       if(s.sunrise&&s.sunset){txt(X(s.riseMinute),Z.clock(s.sunrise,LU.zone()),'middle');txt(X(s.setMinute),Z.clock(s.sunset,LU.zone()),'middle');}
@@ -113,7 +113,7 @@ himmel.jahr=function(){
     const n=Z.daysInYear(year),jan=year+'-01-01';
     for(let d=0;d<n;d+=2){const s=Z.solar(Z.shiftDate(jan,d),LU.s.place),lo=s.alwaysUp?0:s.riseMinute,hi=s.alwaysUp?1440:s.setMinute;
       el('rect',{x:(d/n*w).toFixed(1),y:(lo/1440*bh).toFixed(1),width:(2*w/n+.4).toFixed(1),height:Math.max(0,(hi-lo)/1440*bh).toFixed(1),fill:'#F5D77D'},svg);}
-    if(!hoch)['J','F','M','A','M','J','J','A','S','O','N','D'].forEach((b,i)=>{const t=el('text',{x:((Z.dayOfYear(`${year}-${Z.pad(i+1)}-15`)-1)/n*w).toFixed(1),y:bh+fs*.7,'font-size':fs,'text-anchor':'middle','dominant-baseline':'central',fill:'currentColor','font-family':'Ziffern,Andika,sans-serif'},svg);t.textContent=b;});
+    if(!hoch)['J','F','M','A','M','J','J','A','S','O','N','D'].forEach((b,i)=>{const t=el('text',{x:((Z.dayOfYear(`${year}-${Z.pad(i+1)}-15`)-1)/n*w).toFixed(1),y:bh+fs*.7,'font-size':fs,'text-anchor':'middle','dominant-baseline':'central',fill:'currentColor','font-family':'Grund,sans-serif'},svg);t.textContent=b;});
     el('line',{id:'jahr-marke',y1:-2,y2:bh+2,stroke:'#E8473A','stroke-width':4},svg);
   }
   const n=Z.daysInYear(year),x=((Z.dayOfYear(p.ymd)-.5)/n*w).toFixed(1);

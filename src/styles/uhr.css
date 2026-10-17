@@ -14,24 +14,24 @@ html[data-schema="kontrast"] #uhr .kante{display:none}
 #uhr .s-blatt-1{stop-color:var(--blatt-hell)}
 #uhr .s-blatt-2{stop-color:var(--blatt)}
 #uhr .f-schattenfarbe{flood-color:var(--uhr-schatten)}
-#uhr .f-leuchtfarbe{flood-color:var(--leuchten)}
-#uhr .s-hof-1{stop-color:var(--leuchten);stop-opacity:.75}
-#uhr .s-hof-2{stop-color:var(--leuchten);stop-opacity:.32}
-#uhr .s-hof-3{stop-color:var(--leuchten);stop-opacity:0}
-#uhr .sektor{fill:var(--sektor);stroke:var(--sektor-rand);stroke-width:.8}
+
+#uhr .sektor{fill:var(--sektor);stroke:var(--sektor-rand);stroke-width:.6}
 #uhr .verg-h{fill:var(--stunde-hell)}
 #uhr .verg-m{fill:var(--minute-hell)}
 #uhr .strich{stroke:#97A6A1;stroke-width:.75;stroke-linecap:round}
 #uhr .strich.gross{stroke:var(--tinte);stroke-width:1.8}
-/* Ziffern: Lernuhr Schulziffern SemiBold; Grundlinie setzt das Skript */
-#uhr text{font-family:Ziffern,Andika,sans-serif;font-weight:600;text-anchor:middle}
-#uhr .minutenzahlen text{fill:var(--minute)}
-#uhr .stundenzahlen text{fill:var(--tinte)}
+/* Ziffern: Playwrite DE Grund, mit einem Strich in der eigenen Farbe etwas kräftiger; Grundlinie setzt das Skript.
+   Farben wie die Zeiger: Stunden gedämpftes Rot, Minuten Blau */
+#uhr text{font-family:Grund,sans-serif;text-anchor:middle;stroke-width:.5;stroke-linejoin:round;paint-order:stroke}
+#uhr .minutenzahlen text{fill:var(--minute);stroke:var(--minute)}
+#uhr .stundenzahlen text{fill:var(--stunde-zahl);stroke:var(--stunde-zahl)}
 /* Hervorheben: die anderen Zahlen treten grau und blass zurück */
-#uhr text.matt{fill:var(--zahl-matt);opacity:.6}
+#uhr text.matt{fill:var(--zahl-matt);stroke:var(--zahl-matt);opacity:.6}
 #uhr text.weg{visibility:hidden}
-#uhr .hof{fill:url(#g-hof)}
+/* Hervorheben: die Zahl leuchtet in ihrer eigenen, aufgehellten Farbe */
 #uhr text.leuchtet{filter:url(#f-leuchten)}
+#uhr .stundenzahlen text.leuchtet{fill:var(--stunde-leuchten);stroke:var(--stunde-leuchten)}
+#uhr .minutenzahlen text.leuchtet{fill:var(--minute-leuchten);stroke:var(--minute-leuchten)}
 /* Zeiger über den Zahlen: spitz zulaufend, leichter Schatten mit fester Lichtrichtung (Filter am nicht gedrehten Elternelement) */
 #zeiger-gruppe{filter:drop-shadow(.6px 1.4px 1.2px rgba(0,0,0,.28))}
 #uhr .z-stunde{fill:var(--stunde)}
@@ -52,11 +52,12 @@ html[data-schema="kontrast"] #uhr .kante{display:none}
 #lob.an{animation:lob 1.4s ease-out both;visibility:visible}
 .lob-scheibe{width:62%;height:62%;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 40px rgba(0,0,0,.18)}
 #lob-text{font-size:calc(var(--uhr-d,500px)*.12);color:var(--akzent-text);text-align:center;line-height:1.05}
-#lob i{position:absolute;top:50%;left:50%;width:2.2%;height:3.4%;border-radius:2px;animation:konfetti 1.4s ease-out both}
 @keyframes lob{0%{opacity:0;transform:scale(.85)}15%{opacity:1;transform:scale(1.03)}25%{transform:scale(1)}80%{opacity:1}100%{opacity:0;visibility:hidden}}
-@keyframes konfetti{0%{transform:translate(-50%,-50%) rotate(0);opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--rot));opacity:0}}
+/* Lob: die Uhr leuchtet kurz warm auf */
+#uhr.lob-leuchten{animation:uhr-leuchten 1.4s ease-out}
+@keyframes uhr-leuchten{0%{filter:drop-shadow(0 0 0 rgba(255,206,84,0))}22%{filter:drop-shadow(0 0 calc(var(--uhr-d,500px)*.045) var(--lob-leuchten))}100%{filter:drop-shadow(0 0 0 rgba(255,206,84,0))}}
 @media (prefers-reduced-motion:reduce){
   #lob.an{animation:lob-ruhig 1.4s linear both}
-  #lob i{display:none}
+  #uhr.lob-leuchten{animation:none}
   @keyframes lob-ruhig{0%{opacity:0}15%{opacity:1}80%{opacity:1}100%{opacity:0;visibility:hidden}}
 }

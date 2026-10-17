@@ -12,13 +12,13 @@ const f=n=>n.toFixed(2);
 const uhr={};LU.uhr=uhr;
 /* Innenblatt verkleinert, damit die Minutenzahlen im Ring größer werden können (ausgemessen mit den Umrissen der Ziffern). */
 const K=.93;uhr.K=K;
-const R_STUNDE=70,HV=1.18;
+const R_STUNDE=70,HV=1.05;
 /* Minutenring: von der Außenkante des Innenblatts bis zur Innenkante des Rings; alle Minutenzahlen stehen mittig darin, ungestaucht. */
 const R_INNEN=100*K+.9*K,R_AUSSEN=116.4-.6,R_MITTE=(R_INNEN+R_AUSSEN)/2;uhr.RING={innen:R_INNEN,aussen:R_AUSSEN,mitte:R_MITTE};
-/* Ziffern (Lernuhr Schulziffern SemiBold): Ziffernhöhe und Breiten (Anteil am Geviert), Schriftgrößen für Stunden (innen),
+/* Ziffern (Playwrite DE Grund): Ziffernhöhe und Breiten (Anteil am Geviert), Schriftgrößen für Stunden (innen),
    5er-Minuten und alle Minuten, Faktor für die 5er bei allen Minuten. Größen pixelgenau ausgemessen
    (npm run pruefen prüft Abstand und Lage im Ring). */
-const S={dh:.72,adv:[.536,.398,.569,.555,.579,.569,.56,.565,.565,.546],stunde:23,m5:17.6,alle:8.4,x5:1.06};
+const S={dh:.935,adv:[.793,.468,.689,.696,.709,.696,.749,.565,.696,.749],stunde:18,m5:13,alle:6,x5:1.06};
 uhr.S=S;
 const breite=n=>String(n).split('').reduce((b,z)=>b+S.adv[+z],0);
 let stundenText=[],minText=[],alleText=[];
@@ -72,22 +72,21 @@ uhr.zeichne=function(sicht){
   // Stundenbereich
   const h12=Math.floor(ganz/60)%12;
   $('sektor').setAttribute('d',sicht.bereich?keil(h12*30,30,0,95):'');
-  // Hervorheben: aktuelle Zahl etwas größer und leuchtend (warmer Hof und Schein), alle anderen grau und blass
+  // Hervorheben: aktuelle Zahl etwa 5 % größer und in ihrer eigenen Farbe leuchtend, alle anderen grau und blass
   const ringe=$('ringe'),fokus=$('mfokus');ringe.replaceChildren();fokus.replaceChildren();
   const hv=!!sicht.hervorheben,cur=h12||12,mm=ganz%60;
   stundenText.forEach((t,i)=>{const an=hv&&i+1===cur;t.setAttribute('font-size',f(S.stunde*(an?HV:1)));
     t.setAttribute('y',f(+P((i+1)*30,R_STUNDE)[1]+S.stunde*(an?HV:1)*S.dh/2));
     t.classList.toggle('matt',hv&&!an);t.classList.toggle('leuchtet',an);
-    if(an&&sicht.stunden){const [x,y]=P((i+1)*30,R_STUNDE);el('circle',{cx:f(x),cy:f(y),r:19,class:'hof'},ringe);}});
+  });
   // Minuten: im 5er-Ring die zuletzt erreichte Zahl, bei allen Minuten die genaue
   const m5=Math.floor(mm/5)*5;
   const zeigMin=sicht.alleMinuten?mm:(sicht.minuten?m5:null);
   minText.forEach((t,i)=>{t.classList.toggle('matt',hv&&i*5!==m5);t.classList.toggle('weg',hv&&i*5===zeigMin&&!sicht.alleMinuten);});
   alleText.forEach((t,i)=>{t.classList.toggle('matt',hv&&i!==mm);t.classList.toggle('weg',hv&&i===zeigMin&&!!sicht.alleMinuten);});
   if(hv&&zeigMin!=null){
-    const [x,y]=P(zeigMin*6,R_MITTE),fs=S.m5*(sicht.alleMinuten?1:1.1);
-    el('circle',{cx:f(x),cy:f(y),r:f(fs*S.dh*1.25),class:'hof'},fokus);
-    zahl(zeigMin,x,y,fs,fokus).classList.add('leuchtet');
+    const [x,y]=P(zeigMin*6,R_MITTE);
+    zahl(zeigMin,x,y,S.m5*HV,fokus).classList.add('leuchtet');
   }
   // Vergangene Zeit
   const v=sicht.vergangen;
