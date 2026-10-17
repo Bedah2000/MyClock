@@ -16,14 +16,17 @@ zeigen.vorlesen=function(e){
   LU.sprache.sprich(text,e&&e.currentTarget);
 };
 
-/* Zufallszeit im Schritt der Stufe, am selben Tag; die Zeiger fahren kurz dorthin */
+/* Zufallszeit im Schritt der Stufe. Die Zeiger laufen nur vorwärts: das Ziel liegt in den nächsten 12 Stunden,
+   so ist jede Zeigerstellung genau einmal erreichbar (außer der aktuellen). */
 zeigen.zufall=function(zufall=Math.random){
   LU.stoppeAlles();LU.s.start=null;
-  const schritt=A.STEP[LU.einst.stufe]||60,jetzt=Math.round(LU.wandMinuten())%1440,wahl=[];
-  for(let t=0;t<1440;t+=schritt)if(t%720!==jetzt%720)wahl.push(t);
-  const ziel=wahl[Math.min(wahl.length-1,Math.floor(zufall()*wahl.length))];
-  const zielZeit=Z.wallToInstant(LU.ymd(),ziel,LU.zone());
-  LU.animiere({art:'gehe',von:LU.s.instant,ziel:zielZeit,dauer:900});
+  const schritt=A.STEP[LU.einst.stufe]||60,jetzt=LU.wandMinuten(),stellung=Math.round(jetzt)%720,wahl=[];
+  for(let t=0;t<1440;t+=schritt){const d=((t-jetzt)%1440+1440)%1440;if(d>0&&d<=720&&t%720!==stellung)wahl.push([t,d]);}
+  const [ziel,d]=wahl[Math.min(wahl.length-1,Math.floor(zufall()*wahl.length))];
+  const tag=jetzt+d>=1440?Z.shiftDate(LU.ymd(),1):LU.ymd();
+  let zielZeit=Z.wallToInstant(tag,ziel,LU.zone());
+  if(!(zielZeit>LU.s.instant))zielZeit=LU.s.instant+d*Z.MIN; // Sicherheit bei Zeitumstellung
+  LU.animiere({art:'gehe',von:LU.s.instant,ziel:zielZeit,dauer:Math.round(500+d/720*900)});
   LU.neu();
   return ziel;
 };

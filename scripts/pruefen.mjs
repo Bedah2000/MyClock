@@ -209,7 +209,12 @@ async function geraetPruefen(browser, geraet) {
   // Zufall im Schritt der Stufe
   await f.tap('[data-stufe="quarter"]');
   const zeiten = [];
-  for (let i = 0; i < 4; i++) { await f.tap('#zufall'); await pause(1100); zeiten.push(await f.evaluate(() => Math.round(LU.wandMinuten()))); }
+  const vorwaerts = [];
+  for (let i = 0; i < 4; i++) {
+    const vor = await f.evaluate(() => LU.s.instant); await f.tap('#zufall'); await pause(1600);
+    const [m, nach] = await f.evaluate(() => [Math.round(LU.wandMinuten()), LU.s.instant]); zeiten.push(m); vorwaerts.push(nach > vor && nach - vor <= 12 * 3600e3 + 1000);
+  }
+  pruefe(geraet.name, 'Zufall: Zeiger laufen nur vorwärts (höchstens 12 Stunden)', vorwaerts.every(Boolean), vorwaerts.join(','));
   pruefe(geraet.name, 'Zufall: neue Uhrzeit im Viertelstunden-Schritt', zeiten.every(t => t % 15 === 0) && new Set(zeiten).size > 1, zeiten.map(t => String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0')).join(', '));
   // Stufe merkt sich Änderungen, Anzeige-Hilfen bleiben
   const vorher = await f.evaluate(() => [LU.s.hilfen.bereich, LU.s.hilfen.worte]);

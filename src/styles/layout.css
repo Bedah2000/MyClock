@@ -99,10 +99,15 @@
 .b-paar{display:flex;align-items:center;gap:var(--gap)}
 .zeitkarte{flex:1 1 0;text-align:center;font-size:var(--fs-ans);background:var(--flaeche);border:var(--rand) solid var(--linie);border-radius:var(--r);padding:.15em 0;font-variant-numeric:tabular-nums}
 .pfeil{width:calc(var(--fs-ans)*1.2);height:calc(var(--fs-ans)*.6);flex:none;fill:none;stroke:var(--tinte);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-.frage{font-size:var(--fs-kopf);line-height:1.2;text-align:center}
+/* Quiz: die Frage steht als Karte direkt über den Antworten und ist größer als diese */
+.frage{font-size:calc(var(--fs-ans)*1.2);line-height:1.2;text-align:center}
+#dock .frage{font-size:calc(var(--fs-ans)*1.05)}
+.b-frage.kompakt .frage,#dock .b-frage.kompakt .frage{font-size:var(--fs-kopf)}
+.spalte .b-frage.kompakt{padding:.3em .6em}
+.spalte .b-frage{background:var(--flaeche);border:var(--rand) solid var(--linie);border-radius:calc(var(--r)*1.4);padding:.55em .7em .5em;margin-bottom:calc(var(--gap)*.5)}
 .rueckmeldung{font-size:var(--fs-txt);color:var(--leise);text-align:center;min-height:1.2em;margin-top:.2em}
 .rueckmeldung.gut{color:var(--akzent-text)}
-.frage.loesung{font-size:var(--fs-ans);color:var(--akzent-text)}
+.frage.loesung{color:var(--akzent-text)}
 #dock .frage,#dock .rueckmeldung{text-align:left}
 .b-antworten{display:flex;flex-direction:column;gap:var(--gap)}
 #dock .b-antworten{display:grid;grid-template-columns:1fr 1fr}
@@ -137,8 +142,12 @@
 #dock .b-nochmal button{width:auto;flex-direction:row}
 
 /* ---- Sonne ---- */
+/* Sonne: Ort und Datum als Überschrift, Fakten und Mond als Karten; Bedienbeschriftungen kleiner */
 .ort{font-size:var(--fs-txt);color:var(--leise)}
-.datum{font-size:var(--fs-kopf);line-height:1.2}
+.datum{font-size:calc(var(--fs-kopf)*1.2);line-height:1.2}
+.spalte .b-ort,.spalte .b-fakten,.spalte .b-mond{background:var(--flaeche);border:var(--rand) solid var(--linie);border-radius:calc(var(--r)*1.4);padding:.45em .7em}
+.b-tage .cap,.b-tagspiel .cap{font-size:var(--fs-klein)}
+.b-schnell>button{font-size:var(--fs-klein)}
 #dock .b-ort{display:flex;flex-direction:column;justify-content:center}
 .b-tage{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
 #dock .b-tage{grid-template-columns:repeat(4,minmax(0,1fr));flex:2 1 0}

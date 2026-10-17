@@ -24,7 +24,7 @@ const SLOTS={
   quiz:{
     kopf:{links:[],mitte:['digital']},
     quer:{links:{oben:['b-fortschritt','b-kontext','b-paar'],unten:['b-kacheln-vor','b-nochmal']},
-          rechts:{oben:['b-bereiche','b-frage'],unten:['b-antworten','b-eingabe','b-ziffern','b-kacheln-nach','b-stunden','b-satzknoepfe','b-vorlesen2','b-weiter','b-pause']}},
+          rechts:{oben:['b-bereiche'],unten:['b-frage','b-antworten','b-eingabe','b-ziffern','b-kacheln-nach','b-stunden','b-satzknoepfe','b-vorlesen2','b-weiter','b-pause']}},
     hoch:[['b-fortschritt','b-frage','b-nochmal'],['b-kontext','b-paar','b-satz'],
           ['b-antworten','b-eingabe','b-ziffern','b-kacheln-nach','b-kacheln-vor','b-stunden'],
           ['b-satzknoepfe','b-vorlesen2','b-weiter','b-pause']]

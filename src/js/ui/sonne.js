@@ -81,8 +81,10 @@ sonne.zeichne=function(){
   $('b-mond').hidden=!LU.einst.mond||v;
   if(LU.einst.mond&&!v){
     const mp=SunCalc.getMoonPosition(new Date(s.instant),place.lat,place.lon),ill=SunCalc.getMoonIllumination(new Date(s.instant)),lt=Z.lunar(ymd,place);
-    $('mond-text').textContent=Z.phaseName(ill.phase)+', '+(mp.altitude>0?'über':'unter')+' dem Horizont'+
-      (LU.G&&LU.G.hoch?'':'\nAufgang '+(lt.rise?Z.clock(lt.rise,place.zone):'keiner')+' · Untergang '+(lt.set?Z.clock(lt.set,place.zone):'keiner'));
+    // Zeilen: Phase, Stand, Auf- und Untergang (Zahl und Wort bleiben zusammen)
+    const nb=s=>s.replace(/ /g,'\u00a0');
+    $('mond-text').textContent=Z.phaseName(ill.phase)+(LU.G&&LU.G.hoch?', ':'\n')+(mp.altitude>0?'über':'unter')+' dem Horizont'+
+      (LU.G&&LU.G.hoch?'':'\n'+nb('Aufgang '+(lt.rise?Z.clock(lt.rise,place.zone):'keiner'))+' · '+nb('Untergang '+(lt.set?Z.clock(lt.set,place.zone):'keiner')));
   }
   // Vergleich
   const vb=$('b-vergleich');vb.hidden=!v;
