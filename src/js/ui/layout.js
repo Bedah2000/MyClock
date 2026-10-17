@@ -11,23 +11,28 @@ const TYP={
 };
 LU.TYP=TYP;
 
-/* Blöcke je Bereich: quer in Spalten (oben / unten), hoch in Zeilen des Docks. */
+/* Blöcke je Bereich: quer in Kopfzeile (links / Mitte) und Spalten (oben / unten), hoch in Kopfzeile und Zeilen des Docks.
+   Quer steht die Bereichswahl rechts oben; in Zeigen steht die Stufe in der Kopfzeile und die Digitalzeit groß links oben. */
+const KOPF_HOCH={links:['b-bereiche'],mitte:['digital']};
 const SLOTS={
   zeigen:{
-    quer:{links:{oben:['b-worte'],unten:['b-anzeige','b-sprechweise','b-seit','b-aktionen','b-transport']},
-          rechts:{oben:['b-stufe'],unten:['b-hilfen']}},
+    kopf:{links:[],mitte:['b-stufe']},
+    quer:{links:{oben:['digital','b-worte','b-seit'],unten:['b-aktionen','b-transport']},
+          rechts:{oben:['b-bereiche'],unten:['b-anzeige','b-sprechweise','b-hilfen']}},
     hoch:[['b-worte','b-sprechweise'],['b-transport','b-aktionen','b-seit'],['b-stufe','b-anzeige'],['b-hilfen']]
   },
   quiz:{
+    kopf:{links:[],mitte:['digital']},
     quer:{links:{oben:['b-fortschritt','b-kontext','b-paar'],unten:['b-kacheln-vor','b-nochmal']},
-          rechts:{oben:['b-frage'],unten:['b-antworten','b-eingabe','b-ziffern','b-kacheln-nach','b-stunden','b-satzknoepfe','b-vorlesen2','b-weiter','b-pause']}},
+          rechts:{oben:['b-bereiche','b-frage'],unten:['b-antworten','b-eingabe','b-ziffern','b-kacheln-nach','b-stunden','b-satzknoepfe','b-vorlesen2','b-weiter','b-pause']}},
     hoch:[['b-fortschritt','b-frage','b-nochmal'],['b-kontext','b-paar','b-satz'],
           ['b-antworten','b-eingabe','b-ziffern','b-kacheln-nach','b-kacheln-vor','b-stunden'],
           ['b-satzknoepfe','b-vorlesen2','b-weiter','b-pause']]
   },
   sonne:{
+    kopf:{links:[],mitte:['digital']},
     quer:{links:{oben:['b-ort'],unten:['b-tage','b-schnell','b-tagspiel']},
-          rechts:{oben:['b-fakten','b-mond','b-vergleich'],unten:['b-jahr']}},
+          rechts:{oben:['b-bereiche','b-fakten','b-mond','b-vergleich'],unten:['b-jahr']}},
     hoch:[['b-ort','b-tage'],['b-schnell','b-tagspiel'],['b-fakten','b-vergleich'],['b-mond'],['b-jahr']]
   }
 };
@@ -110,7 +115,9 @@ LU.layout=function(erzwingen){
 /* Blöcke an ihren Platz hängen. DOM-Knoten werden verschoben, nicht kopiert: Zustand bleibt erhalten. */
 LU.platziere=function(){
   const ablage=$('ablage'),hoch=LU.G&&LU.G.hoch,slot=SLOTS[LU.s.bereich];
-  for(const el of LU.qa('.spalte>.oben,.spalte>.unten'))while(el.firstChild)ablage.appendChild(el.firstChild);
+  for(const el of LU.qa('.spalte>.oben,.spalte>.unten,#kopf>.kopf-links,#kopf>.kopf-mitte'))while(el.firstChild)ablage.appendChild(el.firstChild);
+  const kopf=hoch?KOPF_HOCH:slot.kopf;
+  for(const teil of ['links','mitte'])for(const id of kopf[teil])$('kopf').querySelector('.kopf-'+teil).appendChild($(id));
   const dock=$('dock');
   for(const z of LU.qa('.zeile',dock))while(z.firstChild){const c=z.firstChild;if(c.classList&&c.classList.contains('block'))ablage.appendChild(c);else z.removeChild(c);}
   dock.replaceChildren();

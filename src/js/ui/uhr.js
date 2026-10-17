@@ -85,8 +85,9 @@ uhr.zeichne=function(sicht){
   minText.forEach((t,i)=>{t.classList.toggle('matt',hv&&i*5!==m5);t.classList.toggle('weg',hv&&i*5===zeigMin&&!sicht.alleMinuten);});
   alleText.forEach((t,i)=>{t.classList.toggle('matt',hv&&i!==mm);t.classList.toggle('weg',hv&&i===zeigMin&&!!sicht.alleMinuten);});
   if(hv&&zeigMin!=null){
-    const [x,y]=P(zeigMin*6,R_MITTE);
-    zahl(zeigMin,x,y,S.m5*HV,fokus).classList.add('leuchtet');
+    // so groß wie die Zahl darunter, nur etwa 5 % größer
+    const [x,y]=P(zeigMin*6,R_MITTE),fs=(sicht.alleMinuten?S.alle*(zeigMin%5?1:S.x5):S.m5)*HV;
+    zahl(zeigMin,x,y,fs,fokus).classList.add('leuchtet');
   }
   // Vergangene Zeit
   const v=sicht.vergangen;

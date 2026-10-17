@@ -41,20 +41,14 @@
   <symbol id="i-hervorheben" viewBox="0 0 24 24"><text x="6.5" y="14.5" text-anchor="middle" dominant-baseline="central" font-size="9" opacity=".5" font-family="Grund,sans-serif">8</text><text x="15" y="12.5" text-anchor="middle" dominant-baseline="central" font-size="17" font-family="Grund,sans-serif">9</text></symbol>
   <symbol id="i-minutenzeiger" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 13.5 12 4.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="12" r="1.8"/></symbol>
   <symbol id="i-einrasten" viewBox="0 0 24 24"><path d="M5 14v6M12 13v7M19 14v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M8.6 3.5h6.8L12 9.5z"/></symbol>
-  <symbol id="i-vollbild" viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-einstellungen" viewBox="0 0 24 24"><path d="M12 2.8l1.6 2.2 2.7-.6.9 2.6 2.6.9-.6 2.7 2.2 1.6-2.2 1.6.6 2.7-2.6.9-.9 2.6-2.7-.6L12 21.2l-1.6-2.2-2.7.6-.9-2.6-2.6-.9.6-2.7L2.6 12l2.2-1.6-.6-2.7 2.6-.9.9-2.6 2.7.6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
 </svg>
 
 <header id="kopf">
-  <div id="bereiche" class="seg" role="group" aria-label="Bereich wählen">
-    <button type="button" data-bereich="zeigen">Zeigen</button>
-    <button type="button" data-bereich="quiz">Quiz</button>
-    <button type="button" data-bereich="sonne"><img class="symbol" src="{{BILD_SONNE}}" alt="">Sonne</button>
-  </div>
-  <div id="bereich-name" class="bereich-name" hidden></div>
-  <div id="digital" aria-label="Uhrzeit digital"><span id="digital-zeit">09:00</span><span id="kopf-satz" class="satz" hidden></span></div>
+  <div class="kopf-links"></div>
+  <div class="kopf-mitte"></div>
   <div class="kopf-rechts">
-    <button type="button" id="vollbild" class="leise nurikon" aria-label="Vollbild" hidden><svg class="ik"><use href="#i-vollbild"/></svg></button>
+    <button type="button" id="vollbild" class="leise" hidden>Vollbild</button>
     <button type="button" id="einstellungen" class="leise nurikon" aria-label="Einstellungen für die Lehrkraft"><svg class="ik"><use href="#i-einstellungen"/></svg></button>
   </div>
 </header>
@@ -130,6 +124,16 @@
 <section id="blatt-dock" class="blatt" aria-label="Einstellungen" hidden></section>
 
 <div id="ablage" hidden>
+  <!-- Bereichswahl und Digitalanzeige: quer rechts oben bzw. links oben (Zeigen), hoch in der Kopfzeile -->
+  <div class="b-bereiche" id="b-bereiche" data-lehrkraft>
+    <div id="bereiche" class="seg" role="group" aria-label="Bereich wählen">
+      <button type="button" data-bereich="zeigen">Zeigen</button>
+      <button type="button" data-bereich="quiz">Quiz</button>
+      <button type="button" data-bereich="sonne"><img class="symbol" src="{{BILD_SONNE}}" alt="">Sonne</button>
+    </div>
+    <div id="bereich-name" class="bereich-name" hidden></div>
+  </div>
+  <div id="digital" aria-label="Uhrzeit digital"><span id="digital-zeit">09:00</span><span id="kopf-satz" class="satz" hidden></span></div>
   <!-- ===== Zeigen ===== -->
   <div class="block b-worte" id="b-worte" data-teil="zeigen sonne">
     <div class="wort-zeile" data-form="sued"><span class="wort-tag">süddeutsch</span><span class="wort-text"></span></div>

@@ -4,14 +4,28 @@
 
 /* Kopfleiste: nur Lehrkraft */
 #kopf{display:flex;align-items:center;gap:var(--gap);z-index:3}
+#kopf>.kopf-links,#kopf>.kopf-rechts{flex:1 1 0;min-width:0;display:flex;align-items:center;gap:var(--gap)}
+#kopf>.kopf-rechts{justify-content:flex-end}
+#kopf>.kopf-mitte{flex:0 1 auto;min-width:0;display:flex;justify-content:center;align-items:center}
+#kopf .b-stufe .titel{display:none}
+#kopf .b-stufe .seg>button{font-size:var(--fs-txt);padding:.1em .55em;white-space:nowrap}
+.b-bereiche{display:flex;align-items:center}
 #bereiche{flex:none}
+.spalte #bereiche{flex:1 1 auto}
+.spalte #bereiche button{flex:1 1 auto;padding:.15em .35em;white-space:nowrap}
+/* Zeigen quer: Digitalzeit groß links oben, darunter die Uhrzeit in Worten als Karte */
+.spalte #digital{display:flex;justify-content:center;align-items:center;padding:.15em 0}
+.spalte #digital-zeit{font-size:calc(var(--fs-dig)*1.55)}
+.spalte .b-worte{background:var(--flaeche);border:var(--rand) solid var(--linie);border-radius:calc(var(--r)*1.4);padding:.9em .7em;align-items:center;text-align:center}
+.spalte .b-worte .wort-zeile{align-items:center}
+.spalte .b-worte .wort-text{font-size:calc(var(--fs-worte)*1.1)}
 #bereiche button{padding:.15em .7em}
 .bereich-name{font-size:var(--fs-txt);color:var(--leise);padding:0 .4em}
 #digital{flex:1 1 auto;display:flex;justify-content:center;align-items:center;min-width:0}
 #digital-zeit{font-size:var(--fs-dig);line-height:1;letter-spacing:.02em;font-variant-numeric:tabular-nums}
 #kopf-satz{font-size:var(--fs-worte);min-height:calc(var(--h-btn) - 4px);padding:.1em .6em;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:clip}
 #digital.aus #digital-zeit{visibility:hidden}
-.kopf-rechts{flex:none;display:flex;gap:var(--gap)}
+
 
 /* Spalten links und rechts der Uhr */
 .spalte{display:flex;flex-direction:column;gap:var(--gap);z-index:2}
