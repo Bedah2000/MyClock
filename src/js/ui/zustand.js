@@ -29,6 +29,13 @@ LU.STUFEN_STANDARD={
 };
 const STUFEN_KEY='lernuhr-stufen';
 LU.stufenHilfen=JSON.parse(JSON.stringify(LU.STUFEN_STANDARD));
+/* Hilfen im Quiz: eigene Auswahl je Lernstufe. Stundenbereich und Hervorheben verraten die Lösung und sind
+   deshalb aus; nach Fehlern helfen sie ohnehin automatisch. */
+LU.HILFEN_QUIZ=['stunden','minuten','alleMinuten','bereich','hervorheben','minutenzeiger'];
+const Q=(m,a)=>({stunden:true,minuten:m,alleMinuten:a,bereich:false,hervorheben:false,minutenzeiger:true});
+LU.QUIZ_STANDARD={full:Q(false,false),half:Q(false,false),quarter:Q(true,false),five:Q(true,false),any:Q(false,true)};
+const QUIZ_KEY='lernuhr-quizhilfen';
+LU.quizHilfen=JSON.parse(JSON.stringify(LU.QUIZ_STANDARD));
 
 const heute=Z.parts(Date.now(),'Europe/Berlin').ymd;
 LU.s={
@@ -50,6 +57,10 @@ LU.laden=function(){
     const raw=window.localStorage&&localStorage.getItem(STUFEN_KEY);
     if(raw){const v=JSON.parse(raw);for(const st in LU.stufenHilfen)if(v[st])for(const k of LU.HILFEN_STUFE)if(typeof v[st][k]==='boolean')LU.stufenHilfen[st][k]=v[st][k];}
   }catch(e){}
+  try{
+    const raw=window.localStorage&&localStorage.getItem(QUIZ_KEY);
+    if(raw){const v=JSON.parse(raw);for(const st in LU.quizHilfen)if(v[st])for(const k of LU.HILFEN_QUIZ)if(typeof v[st][k]==='boolean')LU.quizHilfen[st][k]=v[st][k];}
+  }catch(e){}
 };
 LU.stufenSpeichern=function(){try{localStorage.setItem(STUFEN_KEY,JSON.stringify(LU.stufenHilfen));}catch(e){}};
 /* Stufe wählen: gilt für Zeigen (Zufall, Einrasten, Hilfen) und Quiz (Lernstufe). */
@@ -68,7 +79,17 @@ LU.schalteHilfe=function(k){
   if(k==='minutenzeiger'&&!h.minutenzeiger&&!LU.einst.stundenzeiger)h.minutenzeiger=true;
   if(LU.HILFEN_STUFE.includes(k)){const st=LU.stufenHilfen[LU.einst.stufe];for(const x of LU.HILFEN_STUFE)st[x]=h[x];LU.stufenSpeichern();}
 };
-LU.stufenZuruecksetzen=function(){LU.stufenHilfen=JSON.parse(JSON.stringify(LU.STUFEN_STANDARD));LU.stufenSpeichern();LU.setzeStufe(LU.einst.stufe);};
+LU.stufenZuruecksetzen=function(){LU.stufenHilfen=JSON.parse(JSON.stringify(LU.STUFEN_STANDARD));LU.stufenSpeichern();
+  LU.quizHilfen=JSON.parse(JSON.stringify(LU.QUIZ_STANDARD));LU.quizSpeichern();LU.setzeStufe(LU.einst.stufe);};
+LU.quizSpeichern=function(){try{localStorage.setItem(QUIZ_KEY,JSON.stringify(LU.quizHilfen));}catch(e){}};
+LU.quizHilfeAn=k=>!!LU.quizHilfen[LU.einst.stufe][k];
+LU.schalteQuizHilfe=function(k){
+  const h=LU.quizHilfen[LU.einst.stufe];h[k]=!h[k];
+  if(k==='minuten'&&h.minuten)h.alleMinuten=false;
+  if(k==='alleMinuten'&&h.alleMinuten)h.minuten=false;
+  if(k==='minutenzeiger'&&!h.minutenzeiger&&!LU.einst.stundenzeiger)h.minutenzeiger=true;
+  LU.quizSpeichern();
+};
 LU.speichern=function(){
   try{localStorage.setItem(GERAET_KEY,JSON.stringify({layout:LU.einst.layout,schema:LU.einst.schema,ton:LU.einst.ton,lob:LU.einst.lob}));}catch(e){}
 };

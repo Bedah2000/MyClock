@@ -8,6 +8,16 @@
 .bl-reiter{display:flex;flex-direction:column;gap:var(--gap)}
 .bl-reiter [role=tab][aria-selected="true"]{background:var(--akzent-hell);border-color:var(--akzent);border-width:3px}
 .bl-reiter #blatt-fertig{margin-top:auto}
+/* Hilfen im Quiz */
+.bl-quizhilfen{display:flex;flex-direction:column;gap:calc(var(--gap)/2);margin-top:calc(var(--gap)*.5)}
+.bl-hilfen-gitter{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--gap)/2)}
+#blatt-links .bl-hilfen-gitter .hilfe{flex-direction:row;justify-content:flex-start;gap:.45em;padding:.1em .5em;text-align:left}
+#blatt-links .bl-hilfen-gitter .hilfe .ik{width:1.7em;height:1.7em}
+#blatt-links.schmal .bl-hilfen-gitter .hilfe{flex-direction:column;justify-content:center;gap:.05em;padding:.15em .2em;text-align:center}
+#blatt-links.schmal .bl-hilfen-gitter .hilfe .ik{width:1.5em;height:1.5em}
+#blatt-dock .bl-hilfen-gitter{grid-template-columns:repeat(6,minmax(0,1fr))}
+#blatt-dock .bl-hilfen-gitter .hilfe .ik{width:1.4em;height:1.4em}
+#blatt-dock .bl-quizhilfen .titel{display:none}
 #blatt-dock .bl-reiter{flex-direction:row}
 #blatt-dock .bl-reiter button{flex:1 1 0;min-width:0}
 #blatt-dock .bl-reiter #blatt-fertig{margin-top:0}

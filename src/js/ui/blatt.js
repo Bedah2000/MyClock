@@ -22,6 +22,21 @@ function zeile(name,optionen,aktuell,setze,opt={}){
 const quizAendern=(k)=>v=>{if(LU.einst[k]===v)return;if(k==='stufe'){LU.setzeStufe(v);return;}LU.einst[k]=v;LU.quiz.neu();};
 const geraet=(k)=>v=>{LU.einst[k]=v;LU.speichern();if(k==='schema')document.documentElement.dataset.schema=v;if(k==='layout')LU.layout(true);};
 
+/* Hilfen auf der Uhr fürs Quiz: quer unter den Reitern, hoch unter den Quiz-Einstellungen */
+const QUIZHILFEN=[['stunden','i-stundenzahlen','Stundenzahlen'],['minuten','i-minutenzahlen','Minutenzahlen'],['alleMinuten','i-alleminuten','Alle Minuten'],
+  ['bereich','i-bereich','Stundenbereich'],['hervorheben','i-hervorheben','Hervorheben'],['minutenzeiger','i-minutenzeiger','Minutenzeiger']];
+function quizHilfen(){
+  const box=document.createElement('div');box.id='bl-quizhilfen';box.className='block bl-quizhilfen voll';
+  const t=document.createElement('p');t.className='titel klein';t.textContent='Hilfen auf der Uhr';box.appendChild(t);
+  const g=document.createElement('div');g.className='bl-hilfen-gitter';g.setAttribute('role','group');g.setAttribute('aria-label','Hilfen im Quiz');
+  for(const [k,ik,name] of QUIZHILFEN){
+    const b=document.createElement('button');b.type='button';b.className='hilfe';b.dataset.quizhilfe=k;b.setAttribute('aria-pressed',String(LU.quizHilfeAn(k)));
+    b.innerHTML=`<svg class="ik"><use href="#${ik}"/></svg><span class="cap">${name}</span>`;
+    LU.tippen(b,()=>{LU.schalteQuizHilfe(k);blatt.zeichne();LU.neu();});g.appendChild(b);
+  }
+  box.appendChild(g);return box;
+}
+
 function inhalt(reiter){
   const E=LU.einst,hoch=LU.G.hoch,teile=[];
   if(reiter==='quiz'){
@@ -112,8 +127,13 @@ blatt.zeichne=function(){
   blatt.platziere();
   for(const b of LU.qa('#bl-reiter [data-reiter]'))b.setAttribute('aria-selected',String(b.dataset.reiter===LU.s.blatt.reiter));
   const box=$('bl-inhalt');box.replaceChildren();
+  const alt=$('bl-quizhilfen');if(alt)alt.remove();
   if(LU.s.blatt.ort){zonen();for(const t of ortInhalt())box.appendChild(t);}
   else for(const t of inhalt(LU.s.blatt.reiter))box.appendChild(t);
+  if(!LU.s.blatt.ort&&LU.s.blatt.reiter==='quiz'){
+    const qh=quizHilfen();
+    if(LU.G.hoch)box.appendChild(qh);else $('bl-reiter').insertBefore(qh,$('blatt-fertig'));
+  }
 };
 
 blatt.binden=function(){

@@ -76,6 +76,8 @@ async function warteBis(f, fn, arg) { await f.waitForFunction(fn, arg, { timeout
 async function schritt(ctx, name, { bild = true } = {}) {
   const { page, f, geraet, uhren } = ctx;
   await pause(120);
+  // Einblend-Animationen (Blatt 0,22 s) abwarten, damit Messung und Bild den Endzustand zeigen
+  await f.evaluate(() => Promise.all(document.getAnimations().filter(a => a.playState === 'running' && a.effect && a.effect.getTiming().iterations !== Infinity).map(a => a.finished.catch(() => {}))));
   const lay = await f.evaluate(() => __pruef.layout());
   pruefe(geraet.name, `${name}: kein Scrollen, nichts ragt heraus`, lay.length === 0, lay.slice(0, 4).join('; '));
   const gr = await f.evaluate(p => __pruef.groessen(p), geraet.profil);
@@ -255,6 +257,15 @@ async function geraetPruefen(browser, geraet) {
 
   // Quiz: Start, Lauf, leicht mit Fehlversuchen, ganze Runde
   await f.tap('#bereiche [data-bereich="quiz"]');
+  // Quiz-Knopf öffnet jedes Mal die Quiz-Einstellungen, mit den Hilfen auf der Uhr
+  const qe = await f.evaluate(() => [LU.s.blatt && LU.s.blatt.reiter, document.querySelectorAll('[data-quizhilfe]').length, !!document.getElementById('bl-quizhilfen') && __pruef.sichtbar(document.getElementById('bl-quizhilfen'))]);
+  pruefe(geraet.name, 'Quiz-Knopf öffnet die Quiz-Einstellungen mit den Hilfen auf der Uhr', qe[0] === 'quiz' && qe[1] === 6 && qe[2], qe.join(' / '));
+  await schritt(ctx, 'quiz-einstellungen');
+  await f.tap('[data-quizhilfe="hervorheben"]'); await pause(150);
+  const hv = await f.evaluate(() => [LU.quizHilfen[LU.einst.stufe].hervorheben, document.querySelector('[data-quizhilfe="hervorheben"]').getAttribute('aria-pressed'), document.querySelectorAll('#stundenzahlen text.leuchtet').length]);
+  await f.tap('[data-quizhilfe="hervorheben"]');
+  pruefe(geraet.name, 'Quiz-Hilfe Hervorheben lässt sich einschalten (Zahl leuchtet) und wieder aus', hv[0] === true && hv[1] === 'true' && hv[2] === 1 && await f.evaluate(() => !LU.quizHilfen[LU.einst.stufe].hervorheben), hv.join(' / '));
+  await f.tap('#blatt-fertig');
   await schritt(ctx, 'quiz-start');
   await f.tap('#weiter'); await pause(500);
   await schritt(ctx, 'quiz-lauf');
@@ -361,7 +372,7 @@ async function geraetPruefen(browser, geraet) {
 
   if (geraet.name === 'escreen') {
     // Fernlesetest: Bild auf 25 % verkleinert
-    await f.tap('#bereiche [data-bereich="quiz"]');
+    await f.tap('#bereiche [data-bereich="quiz"]'); await f.tap('#blatt-fertig');
     await f.evaluate(() => { LU.einst.antworten = 'leicht'; LU.einst.aufgabe = 'zahlen'; LU.einst.stufe = 'quarter'; LU.quiz.neu(); LU.neu(); });
     await f.tap('#weiter'); await schnell(f); await warteBis(f, () => LU.s.quiz.phase === 'frage');
     const voll = path.join(SCREENS, 'escreen-fernlesetest-voll.png');
@@ -374,7 +385,7 @@ async function geraetPruefen(browser, geraet) {
 
   // Hoch- und Querformat wechseln ohne Zustandsverlust
   if (geraet.name === 'ipad-hoch') {
-    await f.tap('#bereiche [data-bereich="quiz"]');
+    await f.tap('#bereiche [data-bereich="quiz"]'); await f.tap('#blatt-fertig');
     await f.evaluate(() => { LU.einst.antworten = 'leicht'; LU.einst.aufgabe = 'zahlen'; LU.einst.stufe = 'half'; LU.quiz.neu(); LU.neu(); });
     await f.tap('#weiter'); await schnell(f); await warteBis(f, () => LU.s.quiz.phase === 'frage');
     const falsch = await f.evaluate(() => [...document.querySelectorAll('.antwort')].map(b => +b.dataset.v).find(v => v !== LU.s.quiz.antwort));
@@ -408,7 +419,7 @@ async function speicherGesperrt(browser) {
   await page.goto(`${BASIS}/rahmen.html?vollbild=0&src=/lernuhr.html`);
   const f = await appFrame(page);
   pruefe('speicher', 'Vollbild-Knopf fehlt, wenn der Rahmen kein Vollbild erlaubt', await f.evaluate(() => document.getElementById('vollbild').hidden));
-  await f.tap('#bereiche [data-bereich="quiz"]'); await f.tap('#weiter'); await schnell(f);
+  await f.tap('#bereiche [data-bereich="quiz"]'); await f.tap('#blatt-fertig'); await f.tap('#weiter'); await schnell(f);
   await warteBis(f, () => LU.s.quiz.phase === 'frage');
   await antworteRichtig(f); await warteBis(f, () => LU.s.quiz.phase === 'gut1');
   await f.evaluate(() => LU.blatt.oeffnen()); await f.locator('.bl-reiter button', { hasText: 'Gerät' }).tap();

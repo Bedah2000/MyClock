@@ -103,7 +103,8 @@ LU.layout=function(erzwingen){
     for(const id of ['links','rechts','blatt-links','blatt-rechts'])$(id).classList.toggle('schmal',G.links.w<300*s);
     setze($('entsperren'),{x:G.rechts.x,y:G.rechts.y,w:G.rechts.w,h:Math.round(t.hBtn*s*2.4)});
   }else{
-    setze($('dock'),G.dock);setze($('blatt-dock'),G.dock);
+    // Einstellungsblatt hoch: vom Horizontband bis unten, nie über der Uhr
+    setze($('dock'),G.dock);setze($('blatt-dock'),{x:G.dock.x,y:G.band.y,w:G.dock.w,h:G.dock.y+G.dock.h-G.band.y});
     setze($('entsperren'),{x:G.dock.x,y:G.dock.y,w:G.dock.w,h:Math.round(t.hBtn*s*2.4)});
   }
   LU.platziere();

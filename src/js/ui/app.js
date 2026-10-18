@@ -94,7 +94,9 @@ LU.zeichne=function(){
   // Uhr
   // Im Quiz verraten Stundenbereich und Hervorheben die Lösung: dort nur als Hilfe nach zwei Fehlversuchen
   const quiz=b==='quiz';
-  const sicht={stunden:h.stunden,minuten:h.minuten,alleMinuten:h.alleMinuten,bereich:(!quiz&&h.bereich)||!!a.bereich,hervorheben:(!quiz&&h.hervorheben)||!!a.hervorheben,minutenzeiger:h.minutenzeiger,vergangen:null};
+  // Quiz: eigene Hilfen je Lernstufe (Quiz-Einstellungen), nach Fehlern zusätzlich die automatische Hilfe
+  const q=quiz?LU.quizHilfen[E.stufe]:h;
+  const sicht={stunden:q.stunden,minuten:q.minuten,alleMinuten:q.alleMinuten,bereich:q.bereich||!!a.bereich,hervorheben:q.hervorheben||!!a.hervorheben,minutenzeiger:q.minutenzeiger||!E.stundenzeiger,vergangen:null};
   if(b==='zeigen'&&s.start!=null)sicht.vergangen={startWand:Z.parts(s.start,LU.zone()).minutes,min:(s.instant-s.start)/Z.MIN};
   if(b==='quiz'&&s.quiz&&s.quiz.start!=null&&(a.vergangen||(s.quiz.phase==='lauf'&&E.dauerZeigen)))
     sicht.vergangen={startWand:Z.parts(s.quiz.start,LU.zone()).minutes,min:(s.instant-s.quiz.start)/Z.MIN};
@@ -116,7 +118,8 @@ function start(){
   LU.uhr.aufbauen();LU.uhr.binden();
   LU.zeigen.binden();LU.quiz.binden();LU.sonne.binden();LU.blatt.binden();
   LU.setzeStufe(LU.einst.stufe);LU.quiz.neu();
-  for(const k of LU.qa('#bereiche [data-bereich]'))LU.tippen(k,()=>LU.wechsle(k.dataset.bereich));
+  // Quiz: jedes Mal direkt in die Quiz-Einstellungen, damit die Lehrkraft die Runde festlegt
+  for(const k of LU.qa('#bereiche [data-bereich]'))LU.tippen(k,()=>{LU.wechsle(k.dataset.bereich);if(k.dataset.bereich==='quiz')LU.blatt.oeffnen();});
   for(const b of LU.qa('.b-vorlesen button'))b.addEventListener('pointerdown',()=>LU.entsperreMedien());
   // Vollbild nur, wenn der Rahmen es erlaubt
   const vb=$('vollbild'),erlaubt=!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);

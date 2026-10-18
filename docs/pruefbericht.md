@@ -1,8 +1,8 @@
 # Prüfbericht
 
-Automatisch erzeugt von `scripts/pruefen.mjs` am 17.10.2026, 14:26:13 mit Chromium 141.0.7390.37 und Touch-Emulation. Die App läuft jeweils in einem iframe unter einer 48 px hohen Leiste als Nachbildung des mebis-Rahmens.
+Automatisch erzeugt von `scripts/pruefen.mjs` am 18.10.2026, 10:03:23 mit Chromium 141.0.7390.37 und Touch-Emulation. Die App läuft jeweils in einem iframe unter einer 48 px hohen Leiste als Nachbildung des mebis-Rahmens.
 
-**331 von 331 Prüfungen bestanden.**
+**344 von 344 Prüfungen bestanden.**
 
 ## escreen
 
@@ -18,15 +18,20 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 17.10.2026, 14:26:13 mit Chromi
 | ✅ | Hervorheben: andere Zahlen grau und blass (4:23 → Stunde 4, Minute 20) | 11 / 4 / 11 / 20 / 0.6 |
 | ✅ | Minutenring: Zahlen mittig, ungestaucht, ohne Berührung |  |
 | ✅ | Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit |  |
-| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(342) rotate(348) rotate(348) |
-| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.0 min, ▶▶ 16.0 min, danach ◀ 15.4 |
+| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(12) rotate(18) rotate(18) |
+| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.0 min, ▶▶ 16.2 min, danach ◀ 15.7 |
 | ✅ | Zufall: Zeiger laufen nur vorwärts (höchstens 12 Stunden) | true,true,true,true |
-| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 11:00, 22:30, 03:00, 06:45 |
+| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 13:00, 19:45, 07:00, 12:45 |
 | ✅ | Stufe merkt sich geänderte Hilfen; Worte und Digital bleiben gleich | [[false,true],[true,true,"quarter"]] |
 | ✅ | Touch: Minutenzeiger von 9:00 um eine Viertelstunde gezogen | 09:15 |
 | ✅ | Touch: kein Scrollen oder Zoomen beim Ziehen |  |
 | ✅ | Touch: zweiter Finger löst nichts aus | Stufe blieb any |
 | ✅ | Einrasten: Loslassen bei etwa 9:17 ergibt 9:15 | 09:15 |
+| ✅ | Quiz-Knopf öffnet die Quiz-Einstellungen mit den Hilfen auf der Uhr | quiz / 6 / true |
+| ✅ | quiz-einstellungen: kein Scrollen, nichts ragt heraus |  |
+| ✅ | quiz-einstellungen: Mindestgrößen |  |
+| ✅ | quiz-einstellungen: Schüler-Bedienung in den unteren zwei Dritteln |  |
+| ✅ | Quiz-Hilfe Hervorheben lässt sich einschalten (Zahl leuchtet) und wieder aus | true / true / 1 |
 | ✅ | quiz-start: kein Scrollen, nichts ragt heraus |  |
 | ✅ | quiz-start: Mindestgrößen |  |
 | ✅ | quiz-start: Schüler-Bedienung in den unteren zwei Dritteln |  |
@@ -122,7 +127,7 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 17.10.2026, 14:26:13 mit Chromi
 | ✅ | sonne-vergleich: Schüler-Bedienung in den unteren zwei Dritteln |  |
 | ✅ | Sonne: Uhrzeit und Sonnenstand gekoppelt (Mittag hoch, Nacht dunkel) | 64° hoch / untergegangen |
 | ✅ | Sonne: Antippen im Jahresband wählt ein Datum | 2026-06-25 |
-| ✅ | Uhr in 22 Schritten an derselben Stelle (500,100,600,600) | 500,100,600,600 |
+| ✅ | Uhr in 23 Schritten an derselben Stelle (500,100,600,600) | 500,100,600,600 |
 | ✅ | Uhr 75 % der Höhe (Zifferblatt 60 %) |  |
 | ✅ | Ziffernhöhe: Stunden 41.3 px, Minuten 32.1 px (vorher 23.3 px), alle Minuten 14.9 px | alle Minuten sind durch 60 Zahlen am Umfang begrenzt |
 | ✅ | Fernlesetest: Bild auf 25 % gespeichert (Sichtprüfung im Bericht) | docs/screens/escreen-fernlesetest-25prozent.png |
@@ -142,11 +147,15 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 17.10.2026, 14:26:13 mit Chromi
 | ✅ | Hervorheben: andere Zahlen grau und blass (4:23 → Stunde 4, Minute 20) | 11 / 4 / 11 / 20 / 0.6 |
 | ✅ | Minutenring: Zahlen mittig, ungestaucht, ohne Berührung |  |
 | ✅ | Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit |  |
-| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(24) rotate(24) rotate(24) |
-| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.0 min, ▶▶ 15.8 min, danach ◀ 15.2 |
+| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(60) rotate(66) rotate(66) |
+| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.0 min, ▶▶ 15.7 min, danach ◀ 15.2 |
 | ✅ | Zufall: Zeiger laufen nur vorwärts (höchstens 12 Stunden) | true,true,true,true |
-| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 15:30, 19:15, 22:30, 10:15 |
+| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 11:00, 16:15, 19:00, 04:30 |
 | ✅ | Stufe merkt sich geänderte Hilfen; Worte und Digital bleiben gleich | [[false,true],[true,true,"quarter"]] |
+| ✅ | Quiz-Knopf öffnet die Quiz-Einstellungen mit den Hilfen auf der Uhr | quiz / 6 / true |
+| ✅ | quiz-einstellungen: kein Scrollen, nichts ragt heraus |  |
+| ✅ | quiz-einstellungen: Mindestgrößen |  |
+| ✅ | Quiz-Hilfe Hervorheben lässt sich einschalten (Zahl leuchtet) und wieder aus | true / true / 1 |
 | ✅ | quiz-start: kein Scrollen, nichts ragt heraus |  |
 | ✅ | quiz-start: Mindestgrößen |  |
 | ✅ | quiz-lauf: kein Scrollen, nichts ragt heraus |  |
@@ -221,7 +230,7 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 17.10.2026, 14:26:13 mit Chromi
 | ✅ | sonne-vergleich: Mindestgrößen |  |
 | ✅ | Sonne: Uhrzeit und Sonnenstand gekoppelt (Mittag hoch, Nacht dunkel) | 64° hoch / untergegangen |
 | ✅ | Sonne: Antippen im Jahresband wählt ein Datum | 2026-06-25 |
-| ✅ | Uhr in 22 Schritten an derselben Stelle (259,79,482,482) | 259,79,482,482 |
+| ✅ | Uhr in 23 Schritten an derselben Stelle (259,79,482,482) | 259,79,482,482 |
 | ✅ | Ziffernhöhe: Stunden 33.1 px, Minuten 25.7 px (vorher 18.7 px), alle Minuten 11.9 px | alle Minuten sind durch 60 Zahlen am Umfang begrenzt |
 | ✅ | Keine Netzwerkanfragen außer Rahmen und App |  |
 | ✅ | Keine JavaScript-Fehler |  |
@@ -239,15 +248,19 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 17.10.2026, 14:26:13 mit Chromi
 | ✅ | Hervorheben: andere Zahlen grau und blass (4:23 → Stunde 4, Minute 20) | 11 / 4 / 11 / 20 / 0.6 |
 | ✅ | Minutenring: Zahlen mittig, ungestaucht, ohne Berührung |  |
 | ✅ | Zeigen: „Jetzt“ zeigt die aktuelle Uhrzeit |  |
-| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(36) rotate(36) rotate(42) |
-| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.0 min, ▶▶ 15.8 min, danach ◀ 15.2 |
+| ✅ | Sekundenzeiger springt auf die Minutenstriche | rotate(84) rotate(84) rotate(90) |
+| ✅ | Laufwerk: ▶ langsam, ▶▶ schnell, ◀ rückwärts | ▶ 1.1 min, ▶▶ 15.7 min, danach ◀ 15.2 |
 | ✅ | Zufall: Zeiger laufen nur vorwärts (höchstens 12 Stunden) | true,true,true,true |
-| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 13:30, 14:30, 17:15, 22:30 |
+| ✅ | Zufall: neue Uhrzeit im Viertelstunden-Schritt | 21:00, 03:15, 06:00, 10:45 |
 | ✅ | Stufe merkt sich geänderte Hilfen; Worte und Digital bleiben gleich | [[false,true],[true,true,"quarter"]] |
 | ✅ | Touch: Minutenzeiger von 9:00 um eine Viertelstunde gezogen | 09:15 |
 | ✅ | Touch: kein Scrollen oder Zoomen beim Ziehen |  |
 | ✅ | Touch: zweiter Finger löst nichts aus | Stufe blieb any |
 | ✅ | Einrasten: Loslassen bei etwa 9:17 ergibt 9:15 | 09:15 |
+| ✅ | Quiz-Knopf öffnet die Quiz-Einstellungen mit den Hilfen auf der Uhr | quiz / 6 / true |
+| ✅ | quiz-einstellungen: kein Scrollen, nichts ragt heraus |  |
+| ✅ | quiz-einstellungen: Mindestgrößen |  |
+| ✅ | Quiz-Hilfe Hervorheben lässt sich einschalten (Zahl leuchtet) und wieder aus | true / true / 1 |
 | ✅ | quiz-start: kein Scrollen, nichts ragt heraus |  |
 | ✅ | quiz-start: Mindestgrößen |  |
 | ✅ | quiz-lauf: kein Scrollen, nichts ragt heraus |  |
@@ -322,7 +335,7 @@ Automatisch erzeugt von `scripts/pruefen.mjs` am 17.10.2026, 14:26:13 mit Chromi
 | ✅ | sonne-vergleich: Mindestgrößen |  |
 | ✅ | Sonne: Uhrzeit und Sonnenstand gekoppelt (Mittag hoch, Nacht dunkel) | 64° hoch / untergegangen |
 | ✅ | Sonne: Antippen im Jahresband wählt ein Datum | 2026-06-25 |
-| ✅ | Uhr in 22 Schritten an derselben Stelle (107.5,76,545,545) | 107.5,76,545,545 |
+| ✅ | Uhr in 23 Schritten an derselben Stelle (107.5,76,545,545) | 107.5,76,545,545 |
 | ✅ | Ziffernhöhe: Stunden 37.5 px, Minuten 29.1 px (vorher 21.1 px), alle Minuten 13.5 px | alle Minuten sind durch 60 Zahlen am Umfang begrenzt |
 | ✅ | Drehen ins Querformat: Zustand bleibt erhalten | quer |
 | ✅ | Nach dem Drehen: kein Scrollen, nichts ragt heraus |  |
