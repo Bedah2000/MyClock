@@ -15,7 +15,7 @@ html[data-schema="kontrast"]{
   --falsch-bg:#EDEDED; --falsch-text:#4A4A4A; --fenster-neutral:#F2F2F2; --ring:#FFFFFF; --ring-hell:#FFFFFF; --ring-rand:#000000; --blatt:#FFFFFF; --blatt-hell:#FFFFFF; --blatt-rand:#000000; --stunde-zahl:#8E0012; --stunde-leuchten:#C8001A; --minute-leuchten:#0050D0; --zahl-matt:#6E6E6E; --stunde-kontur:#000000; --rand:2.5px; --schatten:rgba(0,0,0,.25);
 }
 *{box-sizing:border-box;font-weight:400;font-synthesis:none}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--tinte);
+html,body{margin:0;width:100%;height:100%;overflow-x:hidden;overflow-y:auto;background:var(--bg);color:var(--tinte);
   font-family:Grund,sans-serif;line-height:1.25;touch-action:manipulation;-webkit-text-size-adjust:100%;
   -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
 [hidden]{display:none!important}
@@ -58,3 +58,7 @@ button.ikon .ik{width:1.85em;height:1.85em}
 button.hilfe[aria-pressed="false"]{background:var(--flaeche)}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation-duration:.01ms!important}}
+
+/* Eine gemeinsame Seitenrolle statt verschachteltem Scrollen von html und body. */
+html{overflow-x:hidden;overflow-y:auto}
+body{overflow:visible}

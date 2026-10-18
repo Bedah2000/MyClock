@@ -97,7 +97,7 @@ LU.zeichne=function(){
   // Quiz: eigene Hilfen (Quiz-Einstellungen), nach Fehlern zusätzlich die automatische Hilfe
   const q=quiz?LU.quizHilfen:h;
   const sicht={stunden:q.stunden,minuten:q.minuten,alleMinuten:q.alleMinuten,bereich:q.bereich||!!a.bereich,hervorheben:q.hervorheben||!!a.hervorheben,
-    stundenzeiger:q.stundenzeiger!==false,minutenzeiger:q.minutenzeiger!==false||q.stundenzeiger===false,vergangen:null};
+    stundenzeiger:q.stundenzeiger!==false,minutenzeiger:q.minutenzeiger!==false,vergangen:null};
   if(b==='zeigen'&&s.start!=null)sicht.vergangen={startWand:Z.parts(s.start,LU.zone()).minutes,min:(s.instant-s.start)/Z.MIN};
   if(b==='quiz'&&s.quiz&&s.quiz.start!=null&&(a.vergangen||(s.quiz.phase==='lauf'&&E.dauerZeigen)))
     sicht.vergangen={startWand:Z.parts(s.quiz.start,LU.zone()).minutes,min:(s.instant-s.quiz.start)/Z.MIN};
@@ -136,8 +136,6 @@ function start(){
     const upd=()=>{const t=(document.fullscreenElement||document.webkitFullscreenElement)?'Vollbild beenden':'Vollbild';vb.querySelector('.txt').textContent=t;vb.setAttribute('aria-label',t);};
     document.addEventListener('fullscreenchange',upd);document.addEventListener('webkitfullscreenchange',upd);
   }
-  const zurueck=()=>{if(window.scrollX||window.scrollY)window.scrollTo(0,0);const a=$('app');if(a.scrollTop||a.scrollLeft){a.scrollTop=0;a.scrollLeft=0;}};
-  window.addEventListener('scroll',zurueck,{passive:true});$('app').addEventListener('scroll',zurueck,{passive:true});
   const neuLayout=()=>LU.layout();
   window.addEventListener('resize',neuLayout);
   window.addEventListener('orientationchange',()=>setTimeout(neuLayout,150));

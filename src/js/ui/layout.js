@@ -19,8 +19,8 @@ LU.TYP=TYP;
 const SLOTS={
   zeigen:{
     kopf:{links:['b-bereiche'],mitte:[]},
-    quer:{links:{oben:['digital','b-worte','b-sprechweise','b-legende','b-seit'],unten:['b-aktionen','b-transport']},
-          rechts:{oben:['b-stufe'],unten:['b-hilfen']}},
+    quer:{links:{oben:['digital','b-worte','b-sprechweise','b-legende','b-seit'],unten:['b-aktionen','b-transport','b-stufe']},
+          rechts:{oben:[],unten:['b-hilfen']}},
     hoch:[{titel:'Uhrzeit',ids:['digital','b-worte']},{titel:'Sprechweise',ids:['b-sprechweise']},{titel:'',ids:['b-legende','b-seit']},
           {titel:'Bedienen',ids:['b-aktionen','b-transport']},{titel:'Lernstufe',ids:['b-stufe']},{titel:'Hilfen',ids:['b-hilfen']}]
   },
@@ -52,7 +52,7 @@ function geometrie(W,H,profil,bereich){
   else s=hoch?Math.min(W/760,H/952):Math.min(W/1000,H/652);
   s=Math.max(1,Math.min(s,1.45));
   const g=Math.round(t.gap*s+4);
-  const T=Math.round((t.hBtn+10)*s);
+  const T=Math.round((t.hBtn+10)*s)+(W<680?Math.round(t.hBtn*s+2*g):0);
   const G={hoch,s,g,T,W,H,sonne};
   if(!hoch){
     const B=Math.round(H*(profil==='tafel'?.10:.085)),mTop=Math.round(H*.02);
@@ -116,19 +116,22 @@ LU.profil=function(W,H){
 
 let letzte='';
 LU.layout=function(erzwingen){
-  const W=document.documentElement.clientWidth||window.innerWidth,H=document.documentElement.clientHeight||window.innerHeight;
+  const W=document.documentElement.clientWidth||window.innerWidth,viewportH=document.documentElement.clientHeight||window.innerHeight;
+  // Mindesthöhe der Arbeitsfläche: bei wenig Platz scrollt die gesamte Ansicht.
+  // Keine negativen Uhr-, Dock- oder Einstellungsflächen bei starkem Browserzoom.
+  const H=Math.max(viewportH,W<680?1000:600);
   const profil=LU.profil(W,H),schluessel=[W,H,profil,LU.s.bereich,LU.einst.schema].join('|');
   if(!erzwingen&&schluessel===letzte)return;
   const G=geometrie(W,H,profil,LU.s.bereich),t=TYP[profil],s=G.s;letzte=schluessel;LU.G=G;
-  const app=$('app');app.dataset.profil=profil;app.dataset.lage=G.hoch?'hoch':'quer';
-  app.classList.toggle('eng',W<640*s); // sehr schmal: Bereichsknöpfe dürfen zweizeilig werden
+  const app=$('app');app.style.minHeight=H+'px';app.dataset.profil=profil;app.dataset.lage=G.hoch?'hoch':'quer';
+  app.classList.toggle('eng',W<680*s); // sehr schmal: Bereichsknöpfe dürfen zweizeilig werden
   const root=document.documentElement.style;
   const px=v=>Math.round(v*s)+'px';
   root.setProperty('--fs-ans',px(t.ans));root.setProperty('--fs-txt',px(t.txt));root.setProperty('--fs-kopf',px(t.kopf));
   root.setProperty('--fs-dig',px(t.dig));root.setProperty('--fs-worte',px(t.worte));root.setProperty('--fs-klein',px(t.klein));root.setProperty('--fs-cap',px(t.cap));root.setProperty('--h-ans',px(t.hAns));
   root.setProperty('--h-btn',px(t.hBtn));root.setProperty('--gap',px(t.gap));root.setProperty('--r',px(t.r));
   root.setProperty('--uhr-d',G.uhr.w+'px');
-  const kopf=$('kopf');setze(kopf,{x:G.g,y:0,w:W-2*G.g,h:G.T});
+  const kopf=$('kopf');setze(kopf,{x:G.g,y:0,w:W-2*G.g,h:W<680?G.T-(t.hBtn*s+2*G.g):G.T});
   setze($('fenster'),G.fenster);$('fenster').style.borderRadius=Math.round(t.r*1.5*s)+'px';
   setze($('uhr'),G.uhr);setze($('lob'),G.uhr);setze($('band'),G.band);
   for(const id of ['links','rechts','dock']){$(id).hidden=!G[id];setze($(id),G[id]);}

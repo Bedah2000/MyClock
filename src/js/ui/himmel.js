@@ -73,7 +73,7 @@ function baueDiagramm(ymd,vergleich){
   const css=getComputedStyle(document.documentElement);
   const fs=parseFloat(css.getPropertyValue('--fs-txt'))||18,fk=parseFloat(css.getPropertyValue('--fs-klein'))||15;
   const lh=fs*1.2,pad=Math.round(Math.max(8,fs*.55));
-  const G=LU.G,boden=Math.round(lh*3+pad*1.4),hy=BH-boden,oben=G&&G.titel?Math.round(G.titel.y+G.titel.h-G.fenster.y+4):pad;
+  const G=LU.G,boden=Math.round(lh*(vergleich?5:3)+pad*1.4),hy=BH-boden,oben=G&&G.titel?Math.round(G.titel.y+G.titel.h-G.fenster.y+4):pad;
   const r=Math.round(Math.max(8,Math.min(22,Math.min(BW,BH)*.034)));
   const year=ymd.slice(0,4),tage=vergleich?[year+'-06-21',year+'-12-21']:[ymd],pl=LU.s.place;
   // gleicher Höhenmaßstab das ganze Jahr: Sommer und Winter bleiben vergleichbar
@@ -107,22 +107,22 @@ function baueDiagramm(ymd,vergleich){
     text(X(az),yR,n,{farbe:'#DCE8D2'});
   }
   // Auf- und Untergang: Marke am Horizont, darunter Wort und Uhrzeit (Wort nur ohne Vergleich)
-  const marke=(az,zeit,wort,farbe)=>{
+  const marke=(az,zeit,wort,farbe,reihe=0)=>{
     const x=X(az),w=Math.max(LU.textEm(wort||'')*fs,LU.textEm(zeit)*fs)/2+2,xt=Math.max(w+2,Math.min(BW-w-2,x));
     el('path',{d:`M${(x-r*.55).toFixed(1)} ${hy+r*.75}L${x.toFixed(1)} ${hy+1}L${(x+r*.55).toFixed(1)} ${hy+r*.75}Z`,fill:farbe},svg);
     if(wort){text(xt,hy+pad*.5+lh*.95,wort);text(xt,hy+pad*.5+lh*1.95,zeit);}
-    else text(xt,hy+pad*.5+lh*.95,zeit);
+    else text(xt,hy+pad*.5+lh*(.95+reihe),zeit,{farbe});
   };
   tage.forEach((d,i)=>{
     const so=Z.solar(d,pl),farbe=!vergleich||i===0?'#FFE27A':'#FFFFFF';
     if(!so.sunrise||!so.sunset)return;
     const az=t=>SunCalc.getPosition(new Date(t),pl.lat,pl.lon).azimuth;
-    marke(az(so.sunrise),Z.clock(so.sunrise,pl.zone),vergleich?'':'Aufgang',farbe);
-    marke(az(so.sunset),Z.clock(so.sunset,pl.zone),vergleich?'':'Untergang',farbe);
+    marke(az(so.sunrise),Z.clock(so.sunrise,pl.zone),vergleich?'':'Aufgang',farbe,i);
+    marke(az(so.sunset),Z.clock(so.sunset,pl.zone),vergleich?'':'Untergang',farbe,i);
   });
   // Vergleich: Legende der beiden Bahnen in der mittleren Zeile des Bodens
   if(vergleich){
-    const strich=fk*1.8,luft=fk*.5,abst=fk*1.4,yl=hy+pad*.5+lh*1.95-fk*.35;
+    const strich=fk*1.8,luft=fk*.5,abst=fk*1.4,yl=hy+pad*.5+lh*3.2-fk*.35;
     const breite=L=>L.map(([t])=>strich+luft+LU.textEm(t)*fk);
     let L=[['Sommer, 21. Juni','#FFE27A','none'],['Winter, 21. Dezember','#FFFFFF',`${r*.9} ${r*.7}`]];
     if(breite(L).reduce((a,b)=>a+b,0)+abst>BW-2*pad)L=[['Sommer','#FFE27A','none'],['Winter','#FFFFFF',`${r*.9} ${r*.7}`]]; // schmal: ohne Datum

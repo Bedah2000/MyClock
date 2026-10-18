@@ -57,7 +57,7 @@ LU.laden=function(){
     const raw=window.localStorage&&localStorage.getItem(QUIZ_KEY);
     if(raw){const v=JSON.parse(raw);for(const k of LU.HILFEN_QUIZ)if(typeof v[k]==='boolean')LU.quizHilfen[k]=v[k];}
   }catch(e){}
-  for(const h of [LU.s.hilfen,LU.quizHilfen]){if(h.minuten&&h.alleMinuten)h.minuten=false;if(!h.stundenzeiger&&!h.minutenzeiger)h.stundenzeiger=h.minutenzeiger=true;}
+  for(const h of [LU.s.hilfen,LU.quizHilfen]){if(h.minuten&&h.alleMinuten)h.minuten=false;}
 };
 LU.hilfenSpeichern=function(){try{localStorage.setItem(HILFEN_KEY,JSON.stringify(LU.s.hilfen));}catch(e){}};
 /* Stufe wählen: gilt für Zeigen (Zufall, Einrasten) und Quiz (Lernstufe). Die Hilfen bleiben, wie sie sind. */
@@ -66,14 +66,11 @@ LU.setzeStufe=function(st){
   const neu=LU.einst.stufe!==st;LU.einst.stufe=st;
   if(neu&&LU.quiz&&LU.s.quiz)LU.quiz.neu();
 };
-/* Umschalten mit Regeln: 5er-Minuten und alle Minuten schließen sich aus; ein Zeiger bleibt immer sichtbar
-   (wird der letzte ausgeblendet, erscheint der andere). */
+/* Nur die beiden Minutenzahlen-Ringe schließen sich aus. Zeiger sind unabhängig schaltbar. */
 function schalte(h,k){
   h[k]=!h[k];
   if(k==='minuten'&&h.minuten)h.alleMinuten=false;
   if(k==='alleMinuten'&&h.alleMinuten)h.minuten=false;
-  if(k==='stundenzeiger'&&!h.stundenzeiger&&!h.minutenzeiger)h.minutenzeiger=true;
-  if(k==='minutenzeiger'&&!h.minutenzeiger&&!h.stundenzeiger)h.stundenzeiger=true;
 }
 LU.schalteHilfe=function(k){schalte(LU.s.hilfen,k);LU.hilfenSpeichern();};
 LU.hilfenZuruecksetzen=function(){Object.assign(LU.s.hilfen,LU.HILFEN_STANDARD);LU.hilfenSpeichern();
