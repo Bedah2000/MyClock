@@ -6,25 +6,43 @@ const LU=window.LU,$=LU.$,Z=LU.Z;
 const blatt={};LU.blatt=blatt;
 let zeigTimer=null;
 
+/* Breite eines Textes in em (Schrift der App), für Mindestbreiten von Knöpfen */
+let mess=null;
+LU.textEm=function(t){
+  if(!mess){mess=document.createElement('canvas').getContext('2d');}
+  mess.font='100px Grund,sans-serif';return mess.measureText(t).width/100;
+};
+/* Einstellungszeile: Bezeichnung in eigener Zeile, darunter die Wahlknöpfe. Die Knöpfe sind mindestens so breit wie
+   ihr längstes Wort und brechen bei Platzmangel in die nächste Zeile um; die Schrift bleibt gleich groß.
+   optionen: [wert, text, beispiel?] */
 function zeile(name,optionen,aktuell,setze,opt={}){
-  const lang=optionen.some(o=>String(o[1]).length>7),lange=optionen.reduce((n,o)=>n+String(o[1]).length+2,0)>22;
-  const z=document.createElement('div');z.className='ezeile'+(opt.oben?' oben':'')+(opt.voll?' voll':'')+(lange?' lange':'');
+  const z=document.createElement('div');z.className='ezeile'+(opt.voll?' voll':'')+(opt.drittel?' drittel':'');
   const n=document.createElement('div');n.className='name';
   if(opt.bild){const i=document.createElement('img');i.className='symbol';i.src=$('bild-mond').src;i.alt='';n.appendChild(i);}
   n.appendChild(document.createTextNode(name));z.appendChild(n);
-  const box=document.createElement('div');
-  box.className=opt.wahl?'wahl'+(optionen.length===2||lang?' zwei':'')+(optionen.length===5?' fuenf':''):'seg';
+  const box=document.createElement('div');box.className='optionen';
   box.setAttribute('role','group');box.setAttribute('aria-label',name);
-  for(const [wert,text] of optionen){const b=document.createElement('button');b.type='button';b.textContent=text;b.setAttribute('aria-pressed',String(wert===aktuell));
+  let breit=0;
+  for(const [,text,bsp] of optionen){
+    for(const w of String(text).split(/[\s\u00ad]+/))breit=Math.max(breit,LU.textEm(w));
+    if(bsp)for(const w of bsp.split(/\s+/))breit=Math.max(breit,LU.textEm(w)*.84); // Beispiel in kleinerer Schrift
+  }
+  box.style.setProperty('--min',(breit+.75).toFixed(2)+'em');
+  for(const [wert,text,bsp] of optionen){const b=document.createElement('button');b.type='button';b.dataset.wert=String(wert);
+    if(bsp){b.classList.add('mit-bsp');const t=document.createElement('span');t.className='name';t.textContent=text;const e=document.createElement('span');e.className='bsp';e.textContent=bsp;b.append(t,e);}
+    else b.textContent=text;
+    b.setAttribute('aria-pressed',String(wert===aktuell));
     LU.tippen(b,()=>{setze(wert);blatt.zeichne();LU.neu();});box.appendChild(b);}
   z.appendChild(box);return z;
 }
+LU.SPRECHWEISEN=[['sued','Süddeutsch','„Viertel drei“'],['hoch','Hochdeutsch','„Viertel nach zwei“']];
 const quizAendern=(k)=>v=>{if(LU.einst[k]===v)return;if(k==='stufe'){LU.setzeStufe(v);return;}LU.einst[k]=v;LU.quiz.neu();};
 const geraet=(k)=>v=>{LU.einst[k]=v;LU.speichern();if(k==='schema')document.documentElement.dataset.schema=v;if(k==='layout')LU.layout(true);};
 
 /* Hilfen auf der Uhr fürs Quiz: quer unter den Reitern, hoch unter den Quiz-Einstellungen */
-const QUIZHILFEN=[['stunden','i-stundenzahlen','Stundenzahlen'],['minuten','i-minutenzahlen','Minutenzahlen'],['alleMinuten','i-alleminuten','Alle Minuten'],
-  ['bereich','i-bereich','Stundenbereich'],['hervorheben','i-hervorheben','Hervorheben'],['minutenzeiger','i-minutenzeiger','Minutenzeiger']];
+const QUIZHILFEN=[['stunden','i-stundenzahlen','Stunden\u00adzahlen'],['minuten','i-minutenzahlen','Minuten\u00adzahlen'],['alleMinuten','i-alleminuten','Alle Minuten'],
+  ['bereich','i-bereich','Stunden\u00adbereich'],['hervorheben','i-hervorheben','Hervor\u00adheben'],['stundenzeiger','i-stundenzeiger','Stunden\u00adzeiger'],
+  ['minutenzeiger','i-minutenzeiger','Minuten\u00adzeiger'],['erklaerung','i-erklaerung','Zeiger erklären']];
 function quizHilfen(){
   const box=document.createElement('div');box.id='bl-quizhilfen';box.className='block bl-quizhilfen voll';
   const t=document.createElement('p');t.className='titel klein';t.textContent='Hilfen auf der Uhr';box.appendChild(t);
@@ -40,22 +58,21 @@ function quizHilfen(){
 function inhalt(reiter){
   const E=LU.einst,hoch=LU.G.hoch,teile=[];
   if(reiter==='quiz'){
-    teile.push(zeile('Lernstufe',Object.entries(hoch?LU.STUFEN_KURZ:{full:'volle',half:'halbe',quarter:'Viertel',five:'5 Min.',any:'alle'}),E.stufe,quizAendern('stufe'),{oben:true,wahl:true,voll:true}));
-    teile.push(zeile('Antworten',[['leicht','Leicht'],['schwer','Schwer']],E.antworten,quizAendern('antworten')));
-    teile.push(zeile('Aufgabe',[['zahlen','Zahlen'],['worte','Worte']],E.aufgabe,quizAendern('aufgabe')));
-    teile.push(zeile('Sprechweise',[['sued','Süddeutsch'],['hoch','Hochdeutsch']],E.sprechweise,quizAendern('sprechweise'),{oben:!hoch,voll:hoch}));
+    teile.push(zeile('Lernstufe',Object.entries(LU.STUFEN_KNOPF),E.stufe,quizAendern('stufe'),{voll:true}));
+    teile.push(zeile('Antworten',[['leicht','Antwort auswählen'],['schwer','Antwort eingeben']],E.antworten,quizAendern('antworten'),{drittel:true}));
+    teile.push(zeile('Aufgabe',[['zahlen','Zahlen'],['worte','Worte']],E.aufgabe,quizAendern('aufgabe'),{drittel:true}));
+    teile.push(zeile('Sprechweise',LU.SPRECHWEISEN,E.sprechweise,quizAendern('sprechweise'),{drittel:true}));
   }else if(reiter==='runde'){
     teile.push(zeile('Aufgaben je Runde',[[3,'3'],[5,'5'],[8,'8']],E.runde,quizAendern('runde')));
-    teile.push(zeile('Tempo',[['langsam','Langsam'],['mittel','Mittel'],['schnell','Schnell']],E.tempoAblauf,v=>{E.tempoAblauf=v;},{oben:!hoch}));
+    teile.push(zeile('Tempo',[['langsam','Langsam'],['mittel','Mittel'],['schnell','Schnell']],E.tempoAblauf,v=>{E.tempoAblauf=v;}));
     teile.push(zeile('Zeitdauer beim Ablauf zeigen',[[false,'aus'],[true,'an']],E.dauerZeigen,v=>{E.dauerZeigen=v;}));
   }else if(reiter==='anzeige'){
     teile.push(zeile('Zeiger sperren',[[false,'aus'],[true,'an']],E.zeigerSperren,v=>{E.zeigerSperren=v;}));
-    teile.push(zeile('Stunden­zeiger',[[true,'an'],[false,'aus']],E.stundenzeiger,v=>{E.stundenzeiger=v;if(!v&&!LU.s.hilfen.minutenzeiger)LU.schalteHilfe('minutenzeiger');}));
-    teile.push(zeile('Sekunden­zeiger bei „Jetzt“',[[false,'aus'],[true,'an']],E.sekundenzeiger,v=>{E.sekundenzeiger=v;}));
-    teile.push(zeile('Himmel bei Zeigen und Quiz',[[true,'an'],[false,'aus']],E.himmel,v=>{E.himmel=v;}));
+    teile.push(zeile('Sekunden\u00adzeiger bei „Jetzt“',[[false,'aus'],[true,'an']],E.sekundenzeiger,v=>{E.sekundenzeiger=v;}));
+    teile.push(zeile('Himmel bei Lernuhr und Quiz',[[true,'an'],[false,'aus']],E.himmel,v=>{E.himmel=v;}));
   }else if(reiter==='sonne'){
     const orte=[['herrieden','Herrieden'],['ansbach','Ansbach'],['berlin','Berlin'],['hamburg','Hamburg'],['munich','München'],['eigen','Eigener Ort']];
-    teile.push(zeile('Ort',orte,E.ort,v=>{if(v==='eigen'){blatt.ortBearbeiten();return;}E.ort=v;LU.setzeOrt(Object.assign({},Z.places[v]));},{oben:true,wahl:true,voll:true}));
+    teile.push(zeile('Ort',orte,E.ort,v=>{if(v==='eigen'){blatt.ortBearbeiten();return;}E.ort=v;LU.setzeOrt(Object.assign({},Z.places[v]));},{voll:true}));
     teile.push(zeile('Mond',[[false,'aus'],[true,'an']],E.mond,v=>{E.mond=v;},{bild:true}));
     if(!hoch){const h=document.createElement('p');h.className='hinweis info';h.textContent='Zeiten gelten für freien Horizont. Berge, Häuser und Wetter sind nicht berücksichtigt. Sommer- und Winterzeit gelten für den gewählten Ort.';teile.push(h);}
   }else if(reiter==='geraet'){
@@ -64,9 +81,11 @@ function inhalt(reiter){
     teile.push(zeile('Ton',[[true,'an'],[false,'aus']],E.ton,geraet('ton')));
     teile.push(zeile('Lob',[['kurz','kurz'],['fanfare','Fanfare']],E.lob,geraet('lob')));
     teile.push(zeile('Bereichswahl',[[false,'frei'],[true,'gesperrt']],E.bereichSperre,v=>{E.bereichSperre=v;}));
-    const z=document.createElement('div');z.className='ezeile';const n=document.createElement('div');n.className='name';n.textContent='Hilfen der Stufen';
-    const b=document.createElement('button');b.type='button';b.textContent='zurücksetzen';LU.tippen(b,()=>{LU.stufenZuruecksetzen();b.textContent='zurückgesetzt';LU.neu();});
-    z.append(n,b);teile.push(z);
+    const z=document.createElement('div');z.className='ezeile';const n=document.createElement('div');n.className='name';n.textContent='Hilfen auf der Uhr (Lernuhr und Quiz)';
+    const o=document.createElement('div');o.className='optionen';o.style.setProperty('--min','8em');
+    const b=document.createElement('button');b.type='button';b.id='hilfen-zurueck';b.textContent='Zurücksetzen';
+    LU.tippen(b,()=>{LU.hilfenZuruecksetzen();b.textContent='zurückgesetzt';LU.neu();});
+    o.appendChild(b);z.append(n,o);teile.push(z);
   }
   return teile;
 }

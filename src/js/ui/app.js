@@ -84,7 +84,7 @@ LU.zeichne=function(){
   // Kopf
   for(const k of LU.qa('#bereiche [data-bereich]'))k.setAttribute('aria-pressed',String(k.dataset.bereich===b));
   $('bereiche').hidden=E.bereichSperre;$('bereich-name').hidden=!E.bereichSperre;
-  $('bereich-name').textContent={zeigen:'Zeigen',quiz:'Quiz',sonne:'Sonne'}[b];
+  $('bereich-name').textContent={zeigen:'Lernuhr',quiz:'Quiz',sonne:'Sonne & Mond'}[b];
   const digitalAn=b==='quiz'?LU.quiz.digitalSichtbar():h.digital;
   const satzAn=b==='quiz'&&!$('kopf-satz').hidden;
   $('digital').classList.toggle('aus',!digitalAn&&!satzAn);
@@ -94,14 +94,18 @@ LU.zeichne=function(){
   // Uhr
   // Im Quiz verraten Stundenbereich und Hervorheben die Lösung: dort nur als Hilfe nach zwei Fehlversuchen
   const quiz=b==='quiz';
-  // Quiz: eigene Hilfen je Lernstufe (Quiz-Einstellungen), nach Fehlern zusätzlich die automatische Hilfe
-  const q=quiz?LU.quizHilfen[E.stufe]:h;
-  const sicht={stunden:q.stunden,minuten:q.minuten,alleMinuten:q.alleMinuten,bereich:q.bereich||!!a.bereich,hervorheben:q.hervorheben||!!a.hervorheben,minutenzeiger:q.minutenzeiger||!E.stundenzeiger,vergangen:null};
+  // Quiz: eigene Hilfen (Quiz-Einstellungen), nach Fehlern zusätzlich die automatische Hilfe
+  const q=quiz?LU.quizHilfen:h;
+  const sicht={stunden:q.stunden,minuten:q.minuten,alleMinuten:q.alleMinuten,bereich:q.bereich||!!a.bereich,hervorheben:q.hervorheben||!!a.hervorheben,
+    stundenzeiger:q.stundenzeiger!==false,minutenzeiger:q.minutenzeiger!==false||q.stundenzeiger===false,vergangen:null};
   if(b==='zeigen'&&s.start!=null)sicht.vergangen={startWand:Z.parts(s.start,LU.zone()).minutes,min:(s.instant-s.start)/Z.MIN};
   if(b==='quiz'&&s.quiz&&s.quiz.start!=null&&(a.vergangen||(s.quiz.phase==='lauf'&&E.dauerZeigen)))
     sicht.vergangen={startWand:Z.parts(s.quiz.start,LU.zone()).minutes,min:(s.instant-s.quiz.start)/Z.MIN};
   app.classList.toggle('gesperrt',LU.zeigerGesperrt());
   LU.uhr.zeichne(sicht);
+  // Legende zu den Zeigern (Hilfe „Zeiger erklären“), nur für sichtbare Zeiger
+  const leg=$('b-legende');leg.hidden=b==='sonne'||!q.erklaerung;
+  leg.querySelector('[data-zeiger="h"]').hidden=!sicht.stundenzeiger;leg.querySelector('[data-zeiger="m"]').hidden=!sicht.minutenzeiger;
   // Himmel
   LU.himmel.zeichne(b==='sonne'||E.himmel,b==='sonne',b==='sonne'&&s.sonne.vergleich);
   // Bereich
@@ -129,7 +133,7 @@ function start(){
       const d=document,an=d.fullscreenElement||d.webkitFullscreenElement;
       try{if(an)(d.exitFullscreen||d.webkitExitFullscreen).call(d);else{const r=d.documentElement;(r.requestFullscreen||r.webkitRequestFullscreen).call(r);}}catch(e){}
     });
-    const upd=()=>{vb.textContent=(document.fullscreenElement||document.webkitFullscreenElement)?'Vollbild beenden':'Vollbild';};
+    const upd=()=>{const t=(document.fullscreenElement||document.webkitFullscreenElement)?'Vollbild beenden':'Vollbild';vb.querySelector('.txt').textContent=t;vb.setAttribute('aria-label',t);};
     document.addEventListener('fullscreenchange',upd);document.addEventListener('webkitfullscreenchange',upd);
   }
   const zurueck=()=>{if(window.scrollX||window.scrollY)window.scrollTo(0,0);const a=$('app');if(a.scrollTop||a.scrollLeft){a.scrollTop=0;a.scrollLeft=0;}};

@@ -10,39 +10,34 @@ const GERAET_KEY='lernuhr-geraet';
 LU.einst={
   stufe:'full', antworten:'leicht', aufgabe:'zahlen', sprechweise:'sued',
   runde:5, tempoAblauf:'mittel', dauerZeigen:false,
-  zeigerSperren:false, stundenzeiger:true, sekundenzeiger:true, himmel:true,
-  ort:'herrieden', mond:false, eigenerOrt:{lat:49.23,lon:10.5,zone:'Europe/Berlin'},
+  zeigerSperren:false, sekundenzeiger:true, himmel:true,
+  ort:'herrieden', mond:true, eigenerOrt:{lat:49.23,lon:10.5,zone:'Europe/Berlin'},
   layout:'auto', schema:'hell', ton:true, lob:'kurz', bereichSperre:false
 };
-LU.STUFEN={full:'volle Stunden',half:'halbe Stunden',quarter:'Viertelstunden',five:'5 Minuten',any:'alle Minuten'};
-LU.STUFEN_KURZ={full:'volle',half:'halbe',quarter:'Viertel',five:'5 Min.',any:'alle'};
+LU.STUFEN={full:'Volle Stunden',half:'Halbe Stunden',quarter:'Viertelstunden',five:'5 Minuten',any:'Alle Minuten'};
+/* Beschriftung der Knöpfe: „Viertelstunden“ darf in schmalen Knöpfen getrennt werden */
+LU.STUFEN_KNOPF=Object.assign({},LU.STUFEN,{quarter:'Viertel\u00adstunden'});
 LU.ZONEN=[['Europe/Berlin','Deutschland'],['Europe/London','London'],['America/New_York','New York'],['Asia/Tokyo','Tokio'],['Australia/Sydney','Sydney'],['UTC','UTC']];
 
-/* Stufen: jede bringt passende Hilfen auf der Uhr mit und merkt sich Änderungen (auf diesem Gerät). */
-LU.HILFEN_STUFE=['stunden','minuten','alleMinuten','bereich','hervorheben','minutenzeiger','einrasten'];
-LU.STUFEN_STANDARD={
-  full:   {stunden:true,minuten:false,alleMinuten:false,bereich:true, hervorheben:true, minutenzeiger:true,einrasten:true},
-  half:   {stunden:true,minuten:false,alleMinuten:false,bereich:true, hervorheben:false,minutenzeiger:true,einrasten:true},
-  quarter:{stunden:true,minuten:true, alleMinuten:false,bereich:false,hervorheben:false,minutenzeiger:true,einrasten:true},
-  five:   {stunden:true,minuten:true, alleMinuten:false,bereich:false,hervorheben:false,minutenzeiger:true,einrasten:true},
-  any:    {stunden:true,minuten:false,alleMinuten:true, bereich:false,hervorheben:false,minutenzeiger:true,einrasten:false}
-};
-const STUFEN_KEY='lernuhr-stufen';
-LU.stufenHilfen=JSON.parse(JSON.stringify(LU.STUFEN_STANDARD));
-/* Hilfen im Quiz: eigene Auswahl je Lernstufe. Stundenbereich und Hervorheben verraten die Lösung und sind
-   deshalb aus; nach Fehlern helfen sie ohnehin automatisch. */
-LU.HILFEN_QUIZ=['stunden','minuten','alleMinuten','bereich','hervorheben','minutenzeiger'];
-const Q=(m,a)=>({stunden:true,minuten:m,alleMinuten:a,bereich:false,hervorheben:false,minutenzeiger:true});
-LU.QUIZ_STANDARD={full:Q(false,false),half:Q(false,false),quarter:Q(true,false),five:Q(true,false),any:Q(false,true)};
+/* Hilfen auf der Uhr: gelten für alle Stufen. Beim ersten Start nur die Stundenzahlen und beide Zeiger;
+   alles andere blendet die Lehrkraft bei Bedarf ein. Die Auswahl merkt sich das Gerät. */
+LU.HILFEN_UHR=['stunden','minuten','alleMinuten','bereich','hervorheben','stundenzeiger','minutenzeiger','einrasten','erklaerung'];
+LU.HILFEN_STANDARD={digital:false,worte:false,stunden:true,minuten:false,alleMinuten:false,bereich:false,hervorheben:false,
+  stundenzeiger:true,minutenzeiger:true,einrasten:true,erklaerung:false};
+const HILFEN_KEY='lernuhr-hilfen';
+/* Hilfen im Quiz: eigene Auswahl, ebenfalls für alle Stufen. Stundenbereich und Hervorheben verraten die Lösung und
+   sind deshalb aus; nach Fehlern helfen sie ohnehin automatisch. */
+LU.HILFEN_QUIZ=['stunden','minuten','alleMinuten','bereich','hervorheben','stundenzeiger','minutenzeiger','erklaerung'];
+LU.QUIZ_STANDARD={stunden:true,minuten:false,alleMinuten:false,bereich:false,hervorheben:false,stundenzeiger:true,minutenzeiger:true,erklaerung:false};
 const QUIZ_KEY='lernuhr-quizhilfen';
-LU.quizHilfen=JSON.parse(JSON.stringify(LU.QUIZ_STANDARD));
+LU.quizHilfen=Object.assign({},LU.QUIZ_STANDARD);
 
 const heute=Z.parts(Date.now(),'Europe/Berlin').ymd;
 LU.s={
   bereich:'zeigen',
   place:Object.assign({},Z.places.herrieden),
-  instant:Z.wallToInstant(heute,540,'Europe/Berlin'),
-  hilfen:Object.assign({digital:true,worte:false},LU.stufenHilfen.full),
+  instant:Z.wallToInstant(heute,900,'Europe/Berlin'), // erster Start: 15 Uhr, beide Zeiger gut getrennt
+  hilfen:Object.assign({},LU.HILFEN_STANDARD),
   form:'sued', live:false, start:null,
   quiz:null, sonne:{vergleich:false}, blatt:null, autoHilfe:null, anim:null
 };
@@ -53,43 +48,39 @@ LU.laden=function(){
     const raw=window.localStorage&&localStorage.getItem(GERAET_KEY);
     if(raw){const v=JSON.parse(raw);for(const k of ['layout','schema','ton','lob'])if(k in v)LU.einst[k]=v[k];}
   }catch(e){/* Speicher gesperrt: Voreinstellungen gelten */}
+  // Hilfen (flach); ältere Speicherstände je Stufe haben keine flachen Werte und werden übergangen
   try{
-    const raw=window.localStorage&&localStorage.getItem(STUFEN_KEY);
-    if(raw){const v=JSON.parse(raw);for(const st in LU.stufenHilfen)if(v[st])for(const k of LU.HILFEN_STUFE)if(typeof v[st][k]==='boolean')LU.stufenHilfen[st][k]=v[st][k];}
+    const raw=window.localStorage&&localStorage.getItem(HILFEN_KEY);
+    if(raw){const v=JSON.parse(raw);for(const k in LU.HILFEN_STANDARD)if(typeof v[k]==='boolean')LU.s.hilfen[k]=v[k];}
   }catch(e){}
   try{
     const raw=window.localStorage&&localStorage.getItem(QUIZ_KEY);
-    if(raw){const v=JSON.parse(raw);for(const st in LU.quizHilfen)if(v[st])for(const k of LU.HILFEN_QUIZ)if(typeof v[st][k]==='boolean')LU.quizHilfen[st][k]=v[st][k];}
+    if(raw){const v=JSON.parse(raw);for(const k of LU.HILFEN_QUIZ)if(typeof v[k]==='boolean')LU.quizHilfen[k]=v[k];}
   }catch(e){}
+  for(const h of [LU.s.hilfen,LU.quizHilfen]){if(h.minuten&&h.alleMinuten)h.minuten=false;if(!h.stundenzeiger&&!h.minutenzeiger)h.stundenzeiger=h.minutenzeiger=true;}
 };
-LU.stufenSpeichern=function(){try{localStorage.setItem(STUFEN_KEY,JSON.stringify(LU.stufenHilfen));}catch(e){}};
-/* Stufe wählen: gilt für Zeigen (Zufall, Einrasten, Hilfen) und Quiz (Lernstufe). */
+LU.hilfenSpeichern=function(){try{localStorage.setItem(HILFEN_KEY,JSON.stringify(LU.s.hilfen));}catch(e){}};
+/* Stufe wählen: gilt für Zeigen (Zufall, Einrasten) und Quiz (Lernstufe). Die Hilfen bleiben, wie sie sind. */
 LU.setzeStufe=function(st){
   if(!A.STEP[st])return;
   const neu=LU.einst.stufe!==st;LU.einst.stufe=st;
-  for(const k of LU.HILFEN_STUFE)LU.s.hilfen[k]=LU.stufenHilfen[st][k];
-  if(LU.s.hilfen.minuten&&LU.s.hilfen.alleMinuten)LU.s.hilfen.minuten=false;
-  if(!LU.einst.stundenzeiger&&!LU.s.hilfen.minutenzeiger)LU.s.hilfen.minutenzeiger=true;
   if(neu&&LU.quiz&&LU.s.quiz)LU.quiz.neu();
 };
-LU.schalteHilfe=function(k){
-  const h=LU.s.hilfen;h[k]=!h[k];
+/* Umschalten mit Regeln: 5er-Minuten und alle Minuten schließen sich aus; ein Zeiger bleibt immer sichtbar
+   (wird der letzte ausgeblendet, erscheint der andere). */
+function schalte(h,k){
+  h[k]=!h[k];
   if(k==='minuten'&&h.minuten)h.alleMinuten=false;
   if(k==='alleMinuten'&&h.alleMinuten)h.minuten=false;
-  if(k==='minutenzeiger'&&!h.minutenzeiger&&!LU.einst.stundenzeiger)h.minutenzeiger=true;
-  if(LU.HILFEN_STUFE.includes(k)){const st=LU.stufenHilfen[LU.einst.stufe];for(const x of LU.HILFEN_STUFE)st[x]=h[x];LU.stufenSpeichern();}
-};
-LU.stufenZuruecksetzen=function(){LU.stufenHilfen=JSON.parse(JSON.stringify(LU.STUFEN_STANDARD));LU.stufenSpeichern();
-  LU.quizHilfen=JSON.parse(JSON.stringify(LU.QUIZ_STANDARD));LU.quizSpeichern();LU.setzeStufe(LU.einst.stufe);};
+  if(k==='stundenzeiger'&&!h.stundenzeiger&&!h.minutenzeiger)h.minutenzeiger=true;
+  if(k==='minutenzeiger'&&!h.minutenzeiger&&!h.stundenzeiger)h.stundenzeiger=true;
+}
+LU.schalteHilfe=function(k){schalte(LU.s.hilfen,k);LU.hilfenSpeichern();};
+LU.hilfenZuruecksetzen=function(){Object.assign(LU.s.hilfen,LU.HILFEN_STANDARD);LU.hilfenSpeichern();
+  Object.assign(LU.quizHilfen,LU.QUIZ_STANDARD);LU.quizSpeichern();};
 LU.quizSpeichern=function(){try{localStorage.setItem(QUIZ_KEY,JSON.stringify(LU.quizHilfen));}catch(e){}};
-LU.quizHilfeAn=k=>!!LU.quizHilfen[LU.einst.stufe][k];
-LU.schalteQuizHilfe=function(k){
-  const h=LU.quizHilfen[LU.einst.stufe];h[k]=!h[k];
-  if(k==='minuten'&&h.minuten)h.alleMinuten=false;
-  if(k==='alleMinuten'&&h.alleMinuten)h.minuten=false;
-  if(k==='minutenzeiger'&&!h.minutenzeiger&&!LU.einst.stundenzeiger)h.minutenzeiger=true;
-  LU.quizSpeichern();
-};
+LU.quizHilfeAn=k=>!!LU.quizHilfen[k];
+LU.schalteQuizHilfe=function(k){schalte(LU.quizHilfen,k);LU.quizSpeichern();};
 LU.speichern=function(){
   try{localStorage.setItem(GERAET_KEY,JSON.stringify({layout:LU.einst.layout,schema:LU.einst.schema,ton:LU.einst.ton,lob:LU.einst.lob}));}catch(e){}
 };

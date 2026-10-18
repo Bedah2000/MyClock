@@ -2,19 +2,29 @@
 #app{position:fixed;left:0;top:0;width:100%;height:100%;overflow:hidden}
 #kopf,#fenster,#band,#uhr,#lob,.spalte,#dock,.blatt,.entsperren{position:absolute}
 
-/* Kopfleiste: nur Lehrkraft */
-#kopf{display:flex;align-items:center;gap:var(--gap);z-index:3}
-#kopf>.kopf-links,#kopf>.kopf-rechts{flex:1 1 0;min-width:0;display:flex;align-items:center;gap:var(--gap)}
+/* Kopfleiste: links immer die Bereichswahl, in der Mitte (Quiz, Sonne) die Digitalzeit über der Uhr, rechts Einstellungen.
+   Die Mitte bleibt mittig, solange links genug Platz ist; sonst rückt sie nach rechts statt zu überlappen. */
+#kopf{display:grid;grid-template-columns:minmax(auto,1fr) auto minmax(auto,1fr);align-items:center;gap:var(--gap);z-index:3}
+#kopf>.kopf-links,#kopf>.kopf-rechts{min-width:0;display:flex;align-items:center;gap:var(--gap)}
 #kopf>.kopf-rechts{justify-content:flex-end}
-#kopf>.kopf-mitte{flex:0 1 auto;min-width:0;display:flex;justify-content:center;align-items:center}
-#kopf .b-stufe .titel{display:none}
-#kopf .b-stufe .seg>button{font-size:var(--fs-txt);padding:.1em .55em;white-space:nowrap}
+#kopf>.kopf-mitte{min-width:0;display:flex;justify-content:center;align-items:center}
 .b-bereiche{display:flex;align-items:center}
 #bereiche{flex:none}
-.spalte #bereiche{flex:1 1 auto}
-.spalte #bereiche button{flex:1 1 auto;padding:.15em .35em;white-space:nowrap}
-.spalte.schmal #bereiche button{font-size:var(--fs-klein);padding:.15em .2em}
-/* Zeigen quer: Digitalzeit groß links oben, darunter die Uhrzeit in Worten als Karte */
+#bereiche button{white-space:nowrap}
+/* sehr schmal: Bereichsknöpfe dürfen zweizeilig werden, Dock-Titel stehen über ihrer Zeile */
+#app.eng #kopf{grid-template-columns:minmax(0,1fr) auto auto}
+#app.eng #bereiche{flex:1 1 auto;min-width:0}
+#app.eng #bereiche button{white-space:normal;padding:.1em .35em;line-height:1.05}
+#app.eng #bereiche img.symbol,#app.eng #vollbild .txt{display:none}
+#app.eng #kopf #digital-zeit{font-size:calc(var(--fs-dig)*.8)}
+#vollbild .ik{width:1.1em;height:1.1em}
+#app:not(.eng) #vollbild .ik{display:none}
+#app.eng #dock .zeile.mit-titel{flex-wrap:wrap}
+#app.eng #dock .zeilen-titel{flex:0 0 100%}
+#app.eng #dock .zeile>.b-aktionen,#app.eng #dock .zeile>.b-transport{flex:1 1 100%}
+#app.eng #dock .b-hilfen{grid-template-columns:repeat(4,minmax(0,1fr))}
+/* Zeigen quer: Digitalzeit groß links oben, darunter die Uhrzeit in Worten als Karte. Ausgeblendet nimmt sie keinen Platz ein. */
+.spalte #digital.aus,#dock #digital.aus{display:none}
 .spalte #digital{display:flex;justify-content:center;align-items:center;padding:.15em 0}
 .spalte #digital-zeit{font-size:calc(var(--fs-dig)*1.55)}
 .spalte .b-worte{background:var(--flaeche);border:var(--rand) solid var(--linie);border-radius:calc(var(--r)*1.4);padding:.9em .7em;align-items:center;text-align:center}
@@ -24,7 +34,7 @@
 .spalte .b-worte:not(.einzeln) .wort-text{font-size:var(--fs-worte)}
 .spalte .b-worte:not(.einzeln) .wort-zeile+.wort-zeile{border-top:1px solid var(--linie);padding-top:.5em;align-self:stretch}
 .spalte .b-worte .wort-tag{font-size:var(--fs-klein)}
-#bereiche button{padding:.15em .7em}
+#bereiche button{padding:.15em .6em}
 .bereich-name{font-size:var(--fs-txt);color:var(--leise);padding:0 .4em}
 #digital{flex:1 1 auto;display:flex;justify-content:center;align-items:center;min-width:0}
 #digital-zeit{font-size:var(--fs-dig);line-height:1;letter-spacing:.02em;font-variant-numeric:tabular-nums}
@@ -32,23 +42,24 @@
 #digital.aus #digital-zeit{visibility:hidden}
 
 
-/* Spalten links und rechts der Uhr */
-.spalte{display:flex;flex-direction:column;gap:var(--gap);z-index:2}
-.spalte>.oben,.spalte>.unten{display:flex;flex-direction:column;gap:var(--gap);min-height:0}
+/* Spalten links und rechts der Uhr; Spalten und Dock scrollen senkrecht, falls der Platz nicht reicht (Zoom, kleine Fenster) */
+.spalte{display:flex;flex-direction:column;gap:var(--gap);z-index:2;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}
+.spalte>.oben,.spalte>.unten{display:flex;flex-direction:column;gap:var(--gap);flex:none}
 .spalte>.unten{margin-top:auto}
-#dock{display:flex;flex-direction:column;gap:var(--gap);z-index:2}
+#dock{display:flex;flex-direction:column;gap:var(--gap);z-index:2;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}
 #dock .zeile{display:flex;gap:var(--gap);align-items:stretch;flex:none}
-#dock .stapel{display:flex;flex-direction:column;gap:var(--gap);flex:1 1 0;min-width:0}
 #dock .zeile>.block{flex:1 1 0;min-width:0}
 #dock .zeile>.b-fortschritt,#dock .zeile>.b-nochmal,#dock .zeile>.b-vorlesen2{flex:0 0 auto}
-#dock .zeile>.b-transport{flex:1.25 1 0}
-#dock .zeile>.b-aktionen{flex:1 1 0}
-#dock .zeile>.b-stufe{flex:1.3 1 0}
-#dock .zeile>.b-anzeige{flex:1 1 0}
-#dock .zeile>.b-seit{flex:0 0 auto;display:flex;align-items:center}
+/* Dock in Zeigen: Zeilen mit Titel links, Gruppen durch Linien getrennt */
+#dock .zeile.mit-titel+.zeile.mit-titel{border-top:1px solid var(--linie);padding-top:var(--gap)}
+#dock .zeilen-titel{flex:0 0 5.4em;font-size:var(--fs-klein);color:var(--leise);line-height:1.15;align-self:center;hyphens:manual}
+#dock .zeile>#digital{flex:0 0 auto;padding:0 .3em}
+#dock #digital-zeit{font-size:calc(var(--fs-dig)*1.15)}
+#dock .zeile>.b-aktionen{flex:4 1 0}
+#dock .zeile>.b-transport{flex:5 1 0}
+#dock .zeile>.b-seit{flex:0 1 auto;display:flex;align-items:center}
+#dock .titel{display:none}
 #seit .h,#seit .m{white-space:nowrap}
-#app[data-lage="hoch"] .spalte{display:none}
-#app[data-lage="quer"] #dock{display:none}
 
 .block{min-width:0}
 .block>button{width:100%}
@@ -68,28 +79,44 @@
 #dock .wort-tag{min-width:5.6em}
 .seit{font-size:var(--fs-txt);color:var(--leise)}
 .seit .h{color:var(--stunde)} .seit .m{color:var(--minute)}
-/* Laufwerk wie beim Walkman */
+/* Laufwerk mit Beschriftung: in einer Reihe; in schmalen Spalten links zurück, Mitte Stopp, rechts vor (oben langsam, unten schnell) */
 .b-transport{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:calc(var(--gap)/2)}
-.b-transport button{padding:0}
-.b-transport .ik{width:1.7em;height:1.7em}
-.b-transport button[data-lauf="0"] .ik{width:1.35em;height:1.35em}
-.b-aktionen,.b-anzeige{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:calc(var(--gap)/2)}
+.b-transport .ik{width:1.6em;height:1.6em}
+.b-transport button[data-lauf="0"] .ik{width:1.3em;height:1.3em}
+.spalte.schmal .b-transport{grid-template-columns:minmax(0,1fr) minmax(3.4em,auto) minmax(0,1fr)}
+.spalte.schmal .b-transport [data-lauf="-1"]{grid-area:1/1}
+.spalte.schmal .b-transport [data-lauf="-2"]{grid-area:2/1}
+.spalte.schmal .b-transport [data-lauf="0"]{grid-area:1/2/3/3}
+.spalte.schmal .b-transport [data-lauf="1"]{grid-area:1/3}
+.spalte.schmal .b-transport [data-lauf="2"]{grid-area:2/3}
+.b-aktionen{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:calc(var(--gap)/2)}
+.spalte.schmal .b-aktionen{grid-template-columns:1fr 1fr}
+/* Lernstufe: volle Namen, Knöpfe brechen in die nächste Zeile um */
 .b-stufe{display:flex;flex-direction:column;gap:calc(var(--gap)/2)}
-.b-stufe .seg>button{flex:1 1 0;font-size:var(--fs-klein);padding:.1em .1em}
-.spalte.schmal .b-stufe .seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
-#dock .b-stufe .titel{display:none}
-.b-hilfen{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--gap)/2)}
-.spalte .b-hilfen .hilfe{flex-direction:row;justify-content:flex-start;text-align:left;gap:.45em;padding:.1em .5em}
-.spalte .b-hilfen .hilfe .cap{font-size:var(--fs-cap)}
-.spalte .b-hilfen .hilfe .ik{width:2em;height:2em}
-.spalte.schmal .b-hilfen{grid-template-columns:1fr}
-#dock .b-hilfen{grid-template-columns:repeat(7,minmax(0,1fr))}
-#dock button.hilfe .ik,#dock button.ikon .ik{width:1.6em;height:1.6em}
-#dock .b-sprechweise .lang{display:none}#dock .b-sprechweise .kurz{display:inline}
-#dock .zeile>.b-sprechweise{flex:0 0 auto}#dock .b-sprechweise>button{padding:.1em .7em}
-.spalte.schmal .b-schnell{display:grid;grid-template-columns:1fr 1fr}
-.spalte.schmal .b-fakten dl>div{flex-direction:column;align-items:flex-start;gap:.15em;padding:.3em 0;line-height:1.15}
-.spalte.schmal .b-fakten dd{text-align:left}
+.stufen{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,6.2em),1fr));gap:calc(var(--gap)/2);font-size:var(--fs-klein)}
+.stufen>button{font-size:inherit;padding:.1em .25em;line-height:1.1;hyphens:manual}
+/* Hilfen: Symbol links, Beschriftung rechts (darf umbrechen); an/aus nur über die Helligkeit der Fläche */
+.b-hilfen{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:calc(var(--gap)/2)}
+.b-hilfen>.titel{grid-column:1/-1}
+.b-hilfen .hilfe{flex-direction:row;justify-content:flex-start;text-align:left;gap:.35em;padding:.1em .4em}
+.b-hilfen .hilfe .ik{width:1.6em;height:1.6em}
+.spalte.schmal .b-hilfen .hilfe{padding:.1em .3em}
+.spalte.schmal .b-hilfen .hilfe .ik{width:1.4em;height:1.4em}
+#dock .b-hilfen{grid-template-columns:repeat(6,minmax(0,1fr))}
+#dock .b-hilfen .hilfe{flex-direction:column;justify-content:center;text-align:center;gap:.1em;padding:.15em .2em}
+#dock button.ikon .ik,#dock .b-hilfen .hilfe .ik{width:1.35em;height:1.35em}
+#dock button.ikon .cap,#dock .b-hilfen .cap{line-height:1}
+/* Sprechweise: volle Namen mit Beispiel */
+.b-sprechweise{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,7em),1fr));font-size:var(--fs-klein)}
+.b-sprechweise>button{flex-direction:column;gap:0;font-size:inherit;line-height:1.1;padding:.15em .3em}
+.bsp{font-size:var(--fs-cap)}
+/* Legende zu den Zeigern */
+.b-legende{display:flex;flex-direction:column;justify-content:center;gap:.3em}
+.leg-zeile{display:flex;align-items:center;gap:.5em;font-size:var(--fs-txt);line-height:1.2}
+.leg-zeiger{width:3.8em;height:1em;flex:none;overflow:visible}
+.spalte .b-legende{background:var(--flaeche);border:var(--rand) solid var(--linie);border-radius:calc(var(--r)*1.4);padding:.5em .7em}
+.spalte.schmal .b-fakten dl>div{flex-wrap:wrap;column-gap:.4em;row-gap:0;padding:.3em 0;line-height:1.15}
+.spalte.schmal .b-fakten dd{margin-left:auto}
 .spalte.schmal .karte .mini{width:calc(var(--fs-txt)*2)}
 
 /* ---- Quiz ---- */
@@ -151,20 +178,20 @@
 
 /* ---- Sonne ---- */
 /* Sonne: Ort und Datum als Überschrift, Fakten und Mond als Karten; Bedienbeschriftungen kleiner */
-.ort{font-size:var(--fs-txt);color:var(--leise)}
-.datum{font-size:calc(var(--fs-kopf)*1.2);line-height:1.2}
-.spalte .b-ort,.spalte .b-fakten,.spalte .b-mond{background:var(--flaeche);border:var(--rand) solid var(--linie);border-radius:calc(var(--r)*1.4);padding:.45em .7em}
-.spalte .b-ort{display:flex;flex-direction:column;gap:.15em}
-.spalte.schmal .datum{font-size:var(--fs-kopf)}
+.spalte .b-fakten,.spalte .b-mond{background:var(--flaeche);border:var(--rand) solid var(--linie);border-radius:calc(var(--r)*1.4);padding:.45em .7em}
+/* Ort und Datum oben links im Himmelsbild, mit Hinweis auf die schematische Darstellung */
+.himmel-titel{position:absolute;z-index:2;pointer-events:none;color:#FFFFFF;text-shadow:0 1px 3px rgba(10,30,60,.6),0 0 1px rgba(10,30,60,.6)}
+.himmel-titel .ort{font-size:var(--fs-txt);line-height:1.25}
+.himmel-titel .datum{font-size:calc(var(--fs-kopf)*1.2);line-height:1.2}
+.himmel-titel .schema{font-size:var(--fs-klein);line-height:1.35;opacity:.95}
 .spalte.schmal .b-mond{flex-direction:column;align-items:flex-start;gap:.25em;font-size:var(--fs-klein)}
 .spalte.schmal .b-mond img{height:1.3em}
 .spalte.schmal .karte p{font-size:var(--fs-klein)}
 .spalte.schmal .karte .mini{width:calc(var(--fs-txt)*1.4)}
 .b-tage .cap,.b-tagspiel .cap{font-size:var(--fs-klein)}
 .b-schnell>button{font-size:var(--fs-klein)}
-#dock .b-ort{display:flex;flex-direction:column;justify-content:center}
 .b-tage{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
-#dock .b-tage{grid-template-columns:repeat(4,minmax(0,1fr));flex:2 1 0}
+#dock .b-tage,#app[data-lage="hoch"] #links:not(.eng) .b-tage{grid-template-columns:repeat(4,minmax(0,1fr))}
 #dock .b-tage button{padding:.1em .2em;gap:.15em}
 #dock .b-tage .cap{font-size:var(--fs-klein)}
 .b-fakten dl{margin:0;display:flex;flex-direction:column}
@@ -179,7 +206,8 @@
 .b-mond img{height:1.6em}
 .b-mond p{white-space:pre-line;line-height:1.35}
 .b-vergleich{display:flex;flex-direction:column;gap:var(--gap)}
-#dock .b-vergleich{flex-direction:row}
+#dock .b-vergleich{flex-direction:row;flex-wrap:wrap}
+#dock .b-vergleich .karte{min-width:min(100%,14em)}
 .karte{display:flex;gap:var(--gap);align-items:stretch;background:var(--flaeche);border:var(--rand) solid var(--linie);border-radius:var(--r);padding:var(--gap);flex:1 1 0;min-width:0}
 .karte .mini{flex:none;width:calc(var(--fs-txt)*3.2);border-radius:calc(var(--r) - 4px);position:relative;overflow:hidden}
 .karte .mini i{position:absolute;left:50%;width:36%;aspect-ratio:1;border-radius:50%;background:#FFD84A;border:2px solid #7A5A10;transform:translate(-50%,-50%)}
@@ -188,4 +216,7 @@
 .karte p.l{color:var(--leise)}
 #jahr{display:block;width:100%;touch-action:none;margin-top:calc(var(--gap)/2)}
 .b-jahr{display:flex;flex-direction:column}
+.b-vgl button{gap:.5em;line-height:1.15}
+.b-vgl .ik{width:1.5em;height:1.5em}
+#dock .zeile>.b-tagspiel{flex:0 0 auto}
 #dock .b-jahr .titel{display:none}

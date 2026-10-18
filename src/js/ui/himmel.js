@@ -1,7 +1,10 @@
 /* Himmel hinter der Uhr und Horizontband darunter. Farbe folgt der Sonnenhöhe. Das Band zeigt den Himmel mit
    Blick nach Süden, auf den mittleren Bereich unter der Uhr verkleinert: Osten links, Süden in der Mitte, Westen rechts.
    Sonne und (optional) Mond laufen auf ihren Bahnen, gehen links auf, stehen mittags in der Mitte am höchsten und
-   verschwinden rechts hinter dem Boden. */
+   verschwinden rechts hinter dem Boden.
+   Im Bereich Sonne wird daraus ein großes Himmelsbild (Schema): Himmelsrichtung waagrecht (Norden am Rand, Osten,
+   Süden in der Mitte, Westen), Höhe über dem Horizont senkrecht, für das ganze Jahr im selben Maßstab. Auf- und
+   Untergang stehen mit Uhrzeit an ihrer Stelle am Horizont. Die Werte selbst kommen unverändert aus SunCalc. */
 (function(){
 'use strict';
 const LU=window.LU,$=LU.$,Z=LU.Z;
@@ -43,36 +46,92 @@ function sonnenZeichen(parent,r){
   return g;
 }
 
-function baueBand(ymd,vergleich,beschriften){
+/* Schmales Horizontband unter der Uhr (Lernuhr und Quiz) */
+function baueBand(ymd){
   const svg=$('band');svg.replaceChildren();
-  const fs=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fs-txt'))||20;
-  const boden=beschriften?Math.max(fs+10,BH*.4):Math.max(6,BH*.22),hy=BH-boden,oben=Math.max(3,BH*.05);
+  const boden=Math.max(6,BH*.22),hy=BH-boden,oben=Math.max(3,BH*.05);
   const r=Math.max(5,Math.min(BH*.12,(hy-oben)*.22)),cx=BW/2,halb=BW*.36;
   // Himmelsrichtung -> x (Süden = Mitte, Osten/Westen bei halber Breite des mittleren Bereichs), Höhe -> y
   const X=az=>cx+((az-180)/180)*halb,Y=a=>hy-(Math.min(a,MAXALT)/MAXALT)*(hy-oben-r*1.8);
   const teile={X,Y,hy,r};
-  const year=ymd.slice(0,4),tage=vergleich?[year+'-06-21',year+'-12-21']:[ymd];
-  const himmelG=el('g',{},svg); // Bahnen und Gestirne; der Boden darüber verdeckt alles unter dem Horizont
-  tage.forEach((d,i)=>{
-    let p='',an=false;
-    for(const [az,a] of himmel.bahn(d)){if(a>0){p+=(an?'L':'M')+X(az).toFixed(1)+' '+Y(a).toFixed(1);an=true;}else an=false;}
-    const sommer=!vergleich||i===0;
-    el('path',{d:p,fill:'none',stroke:sommer?'#FFE27A':'#FFFFFF','stroke-opacity':.85,'stroke-width':Math.max(2,BH*(sommer?.03:.04)),'stroke-linecap':'round','stroke-linejoin':'round','stroke-dasharray':sommer?'none':`${BH*.08} ${BH*.07}`},himmelG);
-  });
-  teile.sonnen=tage.map(()=>sonnenZeichen(himmelG,r));
+  const himmelG=el('g',{},svg); // Bahn und Gestirne; der Boden darüber verdeckt alles unter dem Horizont
+  let p='',an=false;
+  for(const [az,a] of himmel.bahn(ymd)){if(a>0){p+=(an?'L':'M')+X(az).toFixed(1)+' '+Y(a).toFixed(1);an=true;}else an=false;}
+  el('path',{d:p,fill:'none',stroke:'#FFE27A','stroke-opacity':.85,'stroke-width':Math.max(2,BH*.03),'stroke-linecap':'round','stroke-linejoin':'round'},himmelG);
+  teile.sonnen=[sonnenZeichen(himmelG,r)];
   teile.mond=el('g',{},himmelG);
   el('circle',{r,fill:'#2F3A52','fill-opacity':.6,stroke:'#E3ECF7','stroke-width':Math.max(1.2,r*.12)},teile.mond);
   teile.mondLicht=el('path',{fill:'#FFF2B5'},teile.mond);teile.mondR=r;
   teile.boden=el('rect',{x:0,y:hy,width:BW,height:boden,fill:'#55774F'},svg);
   el('line',{x1:0,x2:BW,y1:hy,y2:hy,stroke:'#E6EFD9','stroke-width':2},svg);
-  if(beschriften){
-    const ly=hy+boden/2,txt=(x,s,anchor)=>{const t=el('text',{x,y:ly,'font-size':fs,fill:'#FFFFFF','text-anchor':anchor,'dominant-baseline':'central','font-family':'Grund,sans-serif'},svg);t.textContent=s;return t;};
-    if(vergleich){txt(BW*.03,'Sommer: gelb','start');txt(BW*.97,'Winter: weiß gestrichelt','end');}
-    else{const so=Z.solar(ymd,LU.s.place),pl=LU.s.place;
-      if(so.sunrise&&so.sunset){
-        txt(X(SunCalc.getPosition(new Date(so.sunrise),pl.lat,pl.lon).azimuth),Z.clock(so.sunrise,LU.zone()),'middle');
-        txt(X(SunCalc.getPosition(new Date(so.sunset),pl.lat,pl.lon).azimuth),Z.clock(so.sunset,LU.zone()),'middle');}
-      txt(BW*.03,'Osten','start').setAttribute('fill','#DCE8D2');txt(BW*.97,'Westen','end').setAttribute('fill','#DCE8D2');}
+  bandTeile=teile;
+}
+
+/* Großes Himmelsbild im Bereich Sonne */
+function baueDiagramm(ymd,vergleich){
+  const svg=$('band');svg.replaceChildren();
+  const css=getComputedStyle(document.documentElement);
+  const fs=parseFloat(css.getPropertyValue('--fs-txt'))||18,fk=parseFloat(css.getPropertyValue('--fs-klein'))||15;
+  const lh=fs*1.2,pad=Math.round(Math.max(8,fs*.55));
+  const G=LU.G,boden=Math.round(lh*3+pad*1.4),hy=BH-boden,oben=G&&G.titel?Math.round(G.titel.y+G.titel.h-G.fenster.y+4):pad;
+  const r=Math.round(Math.max(8,Math.min(22,Math.min(BW,BH)*.034)));
+  const year=ymd.slice(0,4),tage=vergleich?[year+'-06-21',year+'-12-21']:[ymd],pl=LU.s.place;
+  // gleicher Höhenmaßstab das ganze Jahr: Sommer und Winter bleiben vergleichbar
+  const maxAlt=Math.max(...[year+'-06-21',year+'-12-21'].map(d=>Math.max(...himmel.bahn(d).map(p=>p[1]))));
+  const top=Math.max(30,maxAlt)*1.06;
+  const X=az=>pad+((az%360+360)%360)/360*(BW-2*pad),Y=a=>hy-(Math.min(a,top)/top)*(hy-oben-r*1.3);
+  const teile={X,Y,hy,r};
+  const text=(x,y,t,o={})=>{const e=el('text',Object.assign({x:x.toFixed(1),y:y.toFixed(1),'font-size':o.fs||fs,fill:o.farbe||'#FFFFFF','text-anchor':o.anker||'middle','font-family':'Grund,sans-serif'},o.attr||{}),svg);e.textContent=t;return e;};
+  const himmelG=el('g',{},svg);
+  // Bahnen (über Norden hinweg wird die Linie getrennt)
+  tage.forEach((d,i)=>{
+    let p='',an=false,xa=null;
+    for(const [az,a] of himmel.bahn(d)){
+      if(a>-1){const x=X(az),y=Y(a);p+=(an&&Math.abs(x-xa)<BW/2?'L':'M')+x.toFixed(1)+' '+y.toFixed(1);an=true;xa=x;}
+      else an=false;
+    }
+    const sommer=!vergleich||i===0;
+    el('path',{d:p,fill:'none',stroke:sommer?'#FFE27A':'#FFFFFF','stroke-opacity':.9,'stroke-width':Math.max(3,r*.32),'stroke-linecap':'round','stroke-linejoin':'round','stroke-dasharray':sommer?'none':`${r*.9} ${r*.7}`},himmelG);
+  });
+  teile.sonnen=tage.map(()=>sonnenZeichen(himmelG,r));
+  teile.mond=el('g',{},himmelG);
+  el('circle',{r,fill:'#2F3A52','fill-opacity':.6,stroke:'#E3ECF7','stroke-width':Math.max(1.2,r*.12)},teile.mond);
+  teile.mondLicht=el('path',{fill:'#FFF2B5'},teile.mond);teile.mondR=r;
+  // Boden mit Horizontlinie; verdeckt alles unter dem Horizont
+  teile.boden=el('rect',{x:0,y:hy,width:BW,height:boden,fill:'#55774F'},svg);
+  el('line',{x1:0,x2:BW,y1:hy,y2:hy,stroke:'#E6EFD9','stroke-width':2},svg);
+  // Himmelsrichtungen an ihrer Stelle
+  const yR=BH-pad*.7;
+  for(const [az,n] of [[90,'Osten'],[180,'Süden'],[270,'Westen']]){
+    el('line',{x1:X(az),x2:X(az),y1:hy,y2:hy+pad*.6,stroke:'#E6EFD9','stroke-width':2},svg);
+    text(X(az),yR,n,{farbe:'#DCE8D2'});
+  }
+  // Auf- und Untergang: Marke am Horizont, darunter Wort und Uhrzeit (Wort nur ohne Vergleich)
+  const marke=(az,zeit,wort,farbe)=>{
+    const x=X(az),w=Math.max(LU.textEm(wort||'')*fs,LU.textEm(zeit)*fs)/2+2,xt=Math.max(w+2,Math.min(BW-w-2,x));
+    el('path',{d:`M${(x-r*.55).toFixed(1)} ${hy+r*.75}L${x.toFixed(1)} ${hy+1}L${(x+r*.55).toFixed(1)} ${hy+r*.75}Z`,fill:farbe},svg);
+    if(wort){text(xt,hy+pad*.5+lh*.95,wort);text(xt,hy+pad*.5+lh*1.95,zeit);}
+    else text(xt,hy+pad*.5+lh*.95,zeit);
+  };
+  tage.forEach((d,i)=>{
+    const so=Z.solar(d,pl),farbe=!vergleich||i===0?'#FFE27A':'#FFFFFF';
+    if(!so.sunrise||!so.sunset)return;
+    const az=t=>SunCalc.getPosition(new Date(t),pl.lat,pl.lon).azimuth;
+    marke(az(so.sunrise),Z.clock(so.sunrise,pl.zone),vergleich?'':'Aufgang',farbe);
+    marke(az(so.sunset),Z.clock(so.sunset,pl.zone),vergleich?'':'Untergang',farbe);
+  });
+  // Vergleich: Legende der beiden Bahnen in der mittleren Zeile des Bodens
+  if(vergleich){
+    const strich=fk*1.8,luft=fk*.5,abst=fk*1.4,yl=hy+pad*.5+lh*1.95-fk*.35;
+    const breite=L=>L.map(([t])=>strich+luft+LU.textEm(t)*fk);
+    let L=[['Sommer, 21. Juni','#FFE27A','none'],['Winter, 21. Dezember','#FFFFFF',`${r*.9} ${r*.7}`]];
+    if(breite(L).reduce((a,b)=>a+b,0)+abst>BW-2*pad)L=[['Sommer','#FFE27A','none'],['Winter','#FFFFFF',`${r*.9} ${r*.7}`]]; // schmal: ohne Datum
+    const breiten=breite(L),ges=breiten.reduce((a,b)=>a+b,0)+abst;
+    let x=Math.max(pad,(BW-ges)/2);
+    L.forEach(([t,farbe,dash],i)=>{
+      el('line',{x1:x,x2:x+strich,y1:yl-fk*.3,y2:yl-fk*.3,stroke:farbe,'stroke-width':Math.max(3,r*.32),'stroke-linecap':'round','stroke-dasharray':dash},svg);
+      text(x+strich+luft,yl,t,{fs:fk,anker:'start'});x+=breiten[i]+abst;
+    });
   }
   bandTeile=teile;
 }
@@ -84,21 +143,21 @@ function mondForm(path,phase,r){
   path.setAttribute('d','M'+pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' L')+'Z');
 }
 
-/* an: Himmel sichtbar; beschriften: Zeiten im Band (Bereich Sonne) */
+/* an: Himmel sichtbar; beschriften: großes Himmelsbild mit Beschriftung (Bereich Sonne) */
 himmel.zeichne=function(an,beschriften,vergleich){
   const app=$('app');app.dataset.himmel=an?'an':'aus';
   if(!an||!BW)return;
   const t=LU.s.instant,ymd=LU.ymd(),place=LU.s.place,m=LU.wandMinuten();
   const key=[ymd,place.lat,place.lon,place.zone,BW,BH,beschriften,vergleich].join('|');
-  if(key!==bandKey){bandKey=key;baueBand(ymd,vergleich,beschriften);}
+  if(key!==bandKey){bandKey=key;if(beschriften)baueDiagramm(ymd,vergleich);else baueBand(ymd);}
   const year=ymd.slice(0,4),tage=vergleich?[year+'-06-21',year+'-12-21']:[ymd];
   const hoehen=tage.map(d=>d===ymd?himmel.sonnenhoehe(t):himmel.sonnenhoehe(Z.wallToInstant(d,m,place.zone)));
   const fen=$('fenster');
-  if(vergleich){fen.style.background=`${himmel.verlauf(hoehen[0])} left/50% 100% no-repeat,${himmel.verlauf(hoehen[1])} right/50% 100% no-repeat`;}
-  else fen.style.background=himmel.verlauf(hoehen[0]);
-  fen.classList.toggle('geteilt',!!vergleich);
+  // Vergleich: Taghimmel, damit beide Bahnen gut zu sehen sind (Tageshelligkeit zeigen die beiden Karten)
+  fen.style.background=himmel.verlauf(vergleich?25:hoehen[0]);
+  fen.classList.toggle('vergleich',!!vergleich);
   const T=bandTeile;
-  T.boden.setAttribute('fill',hoehen[0]>-4?'#55774F':'#2E4430');
+  T.boden.setAttribute('fill',vergleich||hoehen[0]>-4?'#55774F':'#2E4430');
   // Sonne(n) auf ihrer Bahn; unter dem Horizont verdeckt der Boden sie
   tage.forEach((d,i)=>{
     const p=SunCalc.getPosition(new Date(d===ymd?t:Z.wallToInstant(d,m,place.zone)),place.lat,place.lon),g=T.sonnen[i];

@@ -34,8 +34,9 @@ html[data-schema="kontrast"] #uhr .kante{display:none}
 #uhr .minutenzahlen text.leuchtet{fill:var(--minute-leuchten);stroke:var(--minute-leuchten)}
 /* Zeiger über den Zahlen: spitz zulaufend, leichter Schatten mit fester Lichtrichtung (Filter am nicht gedrehten Elternelement) */
 #zeiger-gruppe{filter:drop-shadow(.6px 1.4px 1.2px rgba(0,0,0,.28))}
-#uhr .z-stunde{fill:var(--stunde)}
-#uhr .z-minute{fill:var(--minute)}
+/* Beide Zeiger auch übereinander erkennbar: Stundenzeiger breit mit dunkler Kontur, Minutenzeiger schlank mit heller Kontur */
+#uhr .z-stunde,.leg-zeiger .z-stunde{fill:var(--stunde);stroke:var(--stunde-kontur);stroke-width:.8;stroke-linejoin:round;paint-order:stroke}
+#uhr .z-minute,.leg-zeiger .z-minute{fill:var(--minute);stroke:var(--zeiger-kontur);stroke-width:1.4;stroke-linejoin:round;paint-order:stroke}
 #uhr .zeiger-s line{stroke:var(--sekunde);stroke-width:1.1;stroke-linecap:round}
 #uhr .zeiger-s circle{fill:var(--sekunde)}
 #uhr .mitte{fill:var(--tinte)}

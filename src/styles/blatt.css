@@ -1,44 +1,42 @@
 /* Einstellungen: zwei Flügel neben der Uhr (quer) oder im Dock (hoch); nie über der Uhr */
-.blatt{z-index:5;background:var(--bg);display:flex;flex-direction:column;gap:var(--gap);
+.blatt{z-index:5;background:var(--bg);display:flex;flex-direction:column;gap:var(--gap);overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;
   border-radius:calc(var(--r) + 6px);box-shadow:0 0 0 1px var(--linie),0 12px 40px rgba(20,40,35,.16);padding:var(--gap);animation:blatt-ein .22s ease-out}
 #blatt-links{animation-name:blatt-links}
 @keyframes blatt-ein{from{transform:translateX(24px);opacity:0}to{transform:none;opacity:1}}
 @keyframes blatt-links{from{transform:translateX(-24px);opacity:0}to{transform:none;opacity:1}}
 .blatt h2{font-size:var(--fs-kopf);margin:0;font-weight:400}
-.bl-reiter{display:flex;flex-direction:column;gap:var(--gap)}
+.bl-reiter{display:flex;flex-direction:column;gap:var(--gap);flex:none}
+.bl-inhalt,.bl-zonen{flex:none}
 .bl-reiter [role=tab][aria-selected="true"]{background:var(--akzent-hell);border-color:var(--akzent);border-width:3px}
-.bl-reiter #blatt-fertig{margin-top:auto}
+/* quer: Reiter zweispaltig, darunter (im Quiz) die Hilfen, dann Fertig */
+#blatt-links .bl-reiter{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start}
+#blatt-links .bl-reiter>#blatt-fertig,#blatt-links .bl-reiter>.bl-quizhilfen{grid-column:1/-1}
 /* Hilfen im Quiz */
 .bl-quizhilfen{display:flex;flex-direction:column;gap:calc(var(--gap)/2);margin-top:calc(var(--gap)*.5)}
-.bl-hilfen-gitter{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--gap)/2)}
-#blatt-links .bl-hilfen-gitter .hilfe{flex-direction:row;justify-content:flex-start;gap:.45em;padding:.1em .5em;text-align:left}
-#blatt-links .bl-hilfen-gitter .hilfe .ik{width:1.7em;height:1.7em}
+.bl-hilfen-gitter{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:calc(var(--gap)/2)}
+#blatt-links .bl-hilfen-gitter .hilfe{flex-direction:row;justify-content:flex-start;gap:.35em;padding:.1em .4em;text-align:left}
+#blatt-links .bl-hilfen-gitter .hilfe .ik{width:1.6em;height:1.6em}
 #blatt-links.schmal .bl-hilfen-gitter .hilfe{flex-direction:column;justify-content:center;gap:.05em;padding:.15em .2em;text-align:center}
-#blatt-links.schmal .bl-hilfen-gitter .hilfe .ik{width:1.5em;height:1.5em}
-#blatt-dock .bl-hilfen-gitter{grid-template-columns:repeat(6,minmax(0,1fr))}
-#blatt-dock .bl-hilfen-gitter .hilfe .ik{width:1.4em;height:1.4em}
+#blatt-links.schmal .bl-hilfen-gitter .hilfe .ik{width:1.4em;height:1.4em}
+#blatt-dock .bl-hilfen-gitter{grid-template-columns:repeat(auto-fit,minmax(min(100%,5em),1fr))}
+#blatt-dock .bl-hilfen-gitter .hilfe .ik{width:1.35em;height:1.35em}
+#blatt-dock .bl-hilfen-gitter .cap{line-height:1}
 #blatt-dock .bl-quizhilfen .titel{display:none}
-#blatt-dock .bl-reiter{flex-direction:row}
-#blatt-dock .bl-reiter button{flex:1 1 0;min-width:0}
-#blatt-dock .bl-reiter #blatt-fertig{margin-top:0}
+#blatt-dock .bl-quizhilfen{margin-top:0}
+#blatt-dock .bl-reiter{display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
 .bl-inhalt{display:flex;flex-direction:column;gap:var(--gap);min-height:0}
-#blatt-dock .bl-inhalt{display:grid;grid-template-columns:1fr 1fr;align-content:start}
-#blatt-dock .bl-inhalt .voll{grid-column:1/-1}
-.ezeile{display:flex;align-items:center;gap:var(--gap);min-width:0}
-.ezeile>.name{flex:0 0 38%;font-size:var(--fs-txt);line-height:1.15;color:var(--tinte)}
-.ezeile>.seg{flex:1 1 0}
-.ezeile.oben{flex-direction:column;align-items:stretch;gap:calc(var(--gap)/2)}
-.ezeile.oben>.name{flex:none}
-.schmal .ezeile{flex-direction:column;align-items:stretch;gap:calc(var(--gap)/2)}
-.schmal .ezeile>.name{flex:none}
-.schmal .ezeile>.seg{flex:none}
-.schmal .ezeile.lange>.seg{flex-direction:column}
-.schmal .wahl{grid-template-columns:1fr 1fr}.schmal .wahl.zwei{grid-template-columns:1fr}
-.wahl{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
-.wahl.zwei{grid-template-columns:1fr 1fr}
-.wahl button[aria-pressed="true"]{background:var(--akzent);border-color:var(--akzent);color:var(--auf-akzent)}
-#blatt-dock .wahl{grid-template-columns:repeat(6,1fr)}
-#blatt-dock .wahl.fuenf{grid-template-columns:repeat(5,1fr)}
+/* hoch: Zeilen nebeneinander (halbe oder drittel Breite), schmal untereinander */
+#blatt-dock .bl-inhalt{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));align-content:start}
+#blatt-dock .bl-inhalt>*{grid-column:span 3}
+#blatt-dock .bl-inhalt>.drittel{grid-column:span 2}
+#blatt-dock .bl-inhalt>.voll,#blatt-dock.schmal .bl-inhalt>*{grid-column:1/-1}
+/* Einstellungszeile: Bezeichnung in eigener Zeile, die Wahlknöpfe darunter; zu breite Knöpfe rutschen in die nächste Zeile */
+.ezeile{display:flex;flex-direction:column;align-items:stretch;gap:calc(var(--gap)/2);min-width:0}
+.ezeile>.name{font-size:var(--fs-txt);line-height:1.2;color:var(--tinte);hyphens:manual}
+.optionen{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--min,5em)),1fr));gap:calc(var(--gap)/2);font-size:var(--fs-txt)}
+.optionen>button{font-size:inherit;padding:.15em .25em;line-height:1.15;hyphens:manual}
+.optionen>button.mit-bsp{flex-direction:column;gap:0}
+.optionen .bsp{font-size:var(--fs-klein)}
 .koord{display:flex;gap:var(--gap)}
 .koord .feld{min-height:var(--h-ans)}
 .koord .feld{gap:.2em;padding:.25em .3em}

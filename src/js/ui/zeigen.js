@@ -1,4 +1,4 @@
-/* Bereich Zeigen: Laufwerk, Zufallszeit, Jetzt, vergangene Zeit, Stufe mit passenden Hilfen,
+/* Bereich Zeigen: Laufwerk, andere Uhrzeit (Zufall), Jetzt, Startzeit merken (vergangene Zeit), Lernstufe, Hilfen,
    Anzeige (digital, in Worten, Vorlesen auf Tipp) */
 (function(){
 'use strict';
@@ -40,7 +40,7 @@ zeigen.binden=function(){
   LU.tippen($('zufall'),()=>zeigen.zufall());
   LU.tippen($('jetzt'),()=>{LU.stoppeAlles();LU.s.instant=Date.now();LU.liveStart();LU.neu();});
   LU.tippen($('start-fest'),()=>{LU.s.start=LU.s.start==null?LU.s.instant:null;LU.neu();});
-  for(const b of LU.qa('#b-hilfen [data-hilfe],#b-anzeige [data-hilfe]'))LU.tippen(b,()=>{LU.schalteHilfe(b.dataset.hilfe);LU.neu();});
+  for(const b of LU.qa('#b-hilfen [data-hilfe]'))LU.tippen(b,()=>{LU.schalteHilfe(b.dataset.hilfe);LU.neu();});
   for(const b of LU.qa('[data-stufe]'))LU.tippen(b,()=>{LU.setzeStufe(b.dataset.stufe);LU.neu();});
   for(const b of LU.qa('#b-sprechweise [data-form]'))LU.tippen(b,()=>{LU.s.form=b.dataset.form;LU.neu();});
   LU.tippen($('vorlesen'),zeigen.vorlesen);
@@ -52,7 +52,7 @@ zeigen.zeichne=function(){
   for(const b of LU.qa('[data-lauf]'))b.setAttribute('aria-pressed',String(Number(b.dataset.lauf)===taste));
   $('jetzt').setAttribute('aria-pressed',String(s.live));
   $('start-fest').setAttribute('aria-pressed',String(s.start!=null));
-  for(const b of LU.qa('#b-hilfen [data-hilfe],#b-anzeige [data-hilfe]'))b.setAttribute('aria-pressed',String(!!h[b.dataset.hilfe]));
+  for(const b of LU.qa('#b-hilfen [data-hilfe]'))b.setAttribute('aria-pressed',String(!!h[b.dataset.hilfe]));
   for(const b of LU.qa('[data-stufe]'))b.setAttribute('aria-pressed',String(b.dataset.stufe===LU.einst.stufe));
   for(const b of LU.qa('#b-sprechweise [data-form]'))b.setAttribute('aria-pressed',String(b.dataset.form===s.form));
   $('b-sprechweise').hidden=!h.worte;
@@ -69,7 +69,7 @@ zeigen.zeichne=function(){
     seit.replaceChildren();
     if(min<0){seit.textContent='vor der Startzeit';}
     else{
-      if(!LU.G.hoch)seit.append('seit '+LU.hm(s.start)+' · ');
+      seit.append('seit '+LU.hm(s.start)+' · ');
       const x=document.createElement('span');x.className='h';x.textContent=Math.floor(min/60)+' Std.';
       const y=document.createElement('span');y.className='m';y.textContent=(min%60)+' Min.';
       seit.append(x,' ',y);

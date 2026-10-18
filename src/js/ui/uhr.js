@@ -57,11 +57,11 @@ function keil(a0,grad,r0,r1){
 
 /* sicht: welche Hilfen gerade gelten (Bereich und Quiz-Hilfe entscheiden mit). */
 uhr.zeichne=function(sicht){
-  const m=LU.wandMinuten(),ganz=Math.floor(m+1e-6),E=LU.einst;
+  const m=LU.wandMinuten(),ganz=Math.floor(m+1e-6),E=LU.einst;uhr.sicht=sicht;
   $('zeiger-h').setAttribute('transform',`rotate(${f((m%720)*.5)})`);
   $('zeiger-m').setAttribute('transform',`rotate(${f((m%60)*6)})`);
   $('zeiger-s').setAttribute('transform',`rotate(${(LU.teile().second%60)*6})`);
-  $('zeiger-h').style.display=E.stundenzeiger?'':'none';
+  $('zeiger-h').style.display=sicht.stundenzeiger!==false?'':'none';
   $('zeiger-m').style.display=sicht.minutenzeiger!==false?'':'none';
   $('zeiger-s').style.display=E.sekundenzeiger&&LU.s.live?'':'none';
   $('stundenzahlen').style.display=sicht.stunden?'':'none';
@@ -117,8 +117,9 @@ function greife(e){
   if(e.pointerType==='mouse'&&e.button!==0)return;
   const {rho,winkel}=lokal(e);
   if(rho<10||rho>117)return;
-  const m=LU.wandMinuten(),E=LU.einst;
-  const dm=LU.s.hilfen.minutenzeiger!==false?winkelAbstand(winkel,(m%60)*6):999,dh=E.stundenzeiger?winkelAbstand(winkel,(m%720)*.5):999;
+  const m=LU.wandMinuten(),v=uhr.sicht||{};
+  // nur sichtbare Zeiger lassen sich greifen
+  const dm=v.minutenzeiger!==false?winkelAbstand(winkel,(m%60)*6):999,dh=v.stundenzeiger!==false?winkelAbstand(winkel,(m%720)*.5):999;
   const TOL=26;let zeiger=null;
   if(dm<=TOL&&dh<=TOL)zeiger=rho>62*K?'m':'h';
   else if(dm<=TOL)zeiger='m';else if(dh<=TOL)zeiger='h';

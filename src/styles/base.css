@@ -6,13 +6,13 @@
   --falsch-bg:#E6EBE9; --falsch-text:#6B7874; --zifferblatt:#FFFFFF; --fenster-neutral:#E7EDEB;
   /* Uhr in Pastell: Minutenring dunkler (Himmelblau), Zifferblatt heller (Elfenbein) */
   --ring:#D3E3F3; --ring-hell:#E9F2FB; --ring-rand:#9AB4CF; --blatt:#FBF3DF; --blatt-hell:#FFFDF6; --blatt-rand:#CDBB92;
-  --uhr-schatten:rgba(25,45,70,.30); --stunde-zahl:#A33F4E; --stunde-leuchten:#E5455D; --minute-leuchten:#2F86F0; --lob-leuchten:rgba(255,206,84,.95); --zahl-matt:#8A9692; --sektor:#FCE5D4; --sektor-rand:#E9C2A4; --schatten:rgba(20,40,35,.13); --rand:1.5px;
+  --uhr-schatten:rgba(25,45,70,.30); --stunde-kontur:#6E1C28; --zeiger-kontur:#FFFFFF; --stunde-zahl:#A33F4E; --stunde-leuchten:#E5455D; --minute-leuchten:#2F86F0; --lob-leuchten:rgba(255,206,84,.95); --zahl-matt:#8A9692; --sektor:#FCE5D4; --sektor-rand:#E9C2A4; --schatten:rgba(20,40,35,.13); --rand:1.5px;
   --fs-ans:22px; --fs-txt:18px; --fs-kopf:20px; --fs-dig:34px; --fs-worte:20px; --fs-klein:15px; --fs-cap:12.5px; --h-ans:52px; --h-btn:44px; --gap:8px; --r:12px;
 }
 html[data-schema="kontrast"]{
   --bg:#FFFFFF; --flaeche:#FFFFFF; --flaeche-2:#FFFFFF; --tinte:#000000; --leise:#1A1A1A; --linie:#000000;
   --akzent:#00564D; --akzent-hell:#D7F0EA; --akzent-text:#00463F; --stunde:#9A0010; --minute:#00379A;
-  --falsch-bg:#EDEDED; --falsch-text:#4A4A4A; --fenster-neutral:#F2F2F2; --ring:#FFFFFF; --ring-hell:#FFFFFF; --ring-rand:#000000; --blatt:#FFFFFF; --blatt-hell:#FFFFFF; --blatt-rand:#000000; --stunde-zahl:#8E0012; --stunde-leuchten:#C8001A; --minute-leuchten:#0050D0; --zahl-matt:#6E6E6E; --rand:2.5px; --schatten:rgba(0,0,0,.25);
+  --falsch-bg:#EDEDED; --falsch-text:#4A4A4A; --fenster-neutral:#F2F2F2; --ring:#FFFFFF; --ring-hell:#FFFFFF; --ring-rand:#000000; --blatt:#FFFFFF; --blatt-hell:#FFFFFF; --blatt-rand:#000000; --stunde-zahl:#8E0012; --stunde-leuchten:#C8001A; --minute-leuchten:#0050D0; --zahl-matt:#6E6E6E; --stunde-kontur:#000000; --rand:2.5px; --schatten:rgba(0,0,0,.25);
 }
 *{box-sizing:border-box;font-weight:400;font-synthesis:none}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--tinte);
@@ -40,8 +40,6 @@ button:disabled{cursor:default;opacity:1}
 .seg{display:flex;gap:2px;padding:2px;background:var(--flaeche-2);border-radius:calc(var(--r) + 4px);min-width:0}
 html[data-schema="kontrast"] .seg{border:var(--rand) solid var(--linie)}
 .seg>button{flex:1 1 auto;min-width:0;background:transparent;border-color:transparent;min-height:var(--h-btn);padding:.1em .15em}
-.kurz{display:none}
-.schmal .lang{display:none}.schmal .kurz{display:inline}
 .seg>button[aria-pressed="true"]{background:var(--akzent);border-color:var(--akzent);color:var(--auf-akzent);box-shadow:0 1px 3px rgba(0,0,0,.18)}
 
 /* Symbole (SVG-Sprite) */
