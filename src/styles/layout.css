@@ -1,5 +1,5 @@
 /* Feste Geometrie: layout.js setzt left/top/width/height in px. Nichts hier verändert die Uhr. */
-#app{position:fixed;left:0;top:0;width:100%;height:100%;overflow:hidden}
+#app{position:relative;width:100%;height:100%;overflow:hidden}
 #kopf,#fenster,#band,#uhr,#lob,.spalte,#dock,.blatt,.entsperren{position:absolute}
 
 /* Kopfleiste: links immer die Bereichswahl, in der Mitte (Quiz, Sonne) die Digitalzeit über der Uhr, rechts Einstellungen.
@@ -220,3 +220,30 @@
 .b-vgl .ik{width:1.5em;height:1.5em}
 #dock .zeile>.b-tagspiel{flex:0 0 auto}
 #dock .b-jahr .titel{display:none}
+
+/* Schmale Ansicht: Navigation zuerst, darunter die übrigen Kopfaktionen.
+   Lange Beschriftungen brechen um; jede Fläche bleibt motorisch bedienbar. */
+@media (max-width:679px){
+  #app.eng #kopf{display:flex;flex-wrap:wrap;align-content:flex-start;height:auto!important}
+  #kopf>.kopf-links{flex:1 0 100%}
+  #kopf>.kopf-mitte{flex:1 1 0}
+  #kopf>.kopf-rechts{flex:0 0 auto;margin-left:auto}
+  #kopf .b-bereiche{width:100%}
+  #app.eng #dock .b-hilfen{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #blatt-dock .bl-reiter{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #dock .wort-zeile{flex-direction:column;align-items:flex-start}
+  #dock .b-fakten dl{grid-template-columns:1fr}
+  #dock .b-transport{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #dock .b-aktionen{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+#kopf #digital.aus{display:none}
+@media (max-width:679px){
+ #app[data-bereich="sonne"] #links .b-tage{grid-template-columns:1fr}
+ #app[data-bereich="sonne"] #links .b-schnell{flex-direction:column}
+ #app[data-bereich="sonne"] #links .b-vgl button{flex-direction:column;overflow-wrap:anywhere}
+}
+/* Datumsaktionen: Symbol und ausgeschriebene Richtung passen auch in schmale Spalten. */
+.b-tage button{min-width:0;flex-direction:column;gap:.1em}
+.b-tage .cap{max-width:100%;overflow-wrap:break-word}
+#digital-zeit{line-height:1.35}

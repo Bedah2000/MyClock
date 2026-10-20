@@ -52,6 +52,7 @@ zeigen.zeichne=function(){
   for(const b of LU.qa('[data-lauf]'))b.setAttribute('aria-pressed',String(Number(b.dataset.lauf)===taste));
   $('jetzt').setAttribute('aria-pressed',String(s.live));
   $('start-fest').setAttribute('aria-pressed',String(s.start!=null));
+  $('start-fest').querySelector('.cap').textContent=s.start==null?'Startzeit merken':'Startzeit gemerkt';
   for(const b of LU.qa('#b-hilfen [data-hilfe]'))b.setAttribute('aria-pressed',String(!!h[b.dataset.hilfe]));
   for(const b of LU.qa('[data-stufe]'))b.setAttribute('aria-pressed',String(b.dataset.stufe===LU.einst.stufe));
   for(const b of LU.qa('#b-sprechweise [data-form]'))b.setAttribute('aria-pressed',String(b.dataset.form===s.form));
