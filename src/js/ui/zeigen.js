@@ -5,7 +5,8 @@
 const LU=window.LU,$=LU.$,Z=LU.Z,W=LU.W,A=LU.A;
 const zeigen={};LU.zeigen=zeigen;
 const TEMPO={1:1,2:15}; // Minuten pro Sekunde: ▶ und ▶▶
-/* Lernstufe und Hilfen sind beim Start eingeklappt, damit neben der Uhr wenig steht; der Knopf nennt den Stand. */
+/* Lernstufe und Hilfen sind beim Start eingeklappt, damit neben der Uhr wenig steht; der Knopf nennt den Stand.
+   Es ist immer nur eines offen, so passt die Liste ohne Scrollen neben die Uhr. */
 const auf={stufe:false,hilfen:false};
 
 zeigen.worte=function(form){
@@ -46,8 +47,8 @@ zeigen.binden=function(){
   for(const b of LU.qa('[data-stufe]'))LU.tippen(b,()=>{LU.setzeStufe(b.dataset.stufe);LU.neu();});
   for(const b of LU.qa('#b-sprechweise [data-form]'))LU.tippen(b,()=>{LU.s.form=b.dataset.form;LU.neu();});
   LU.tippen($('vorlesen'),zeigen.vorlesen);
-  LU.tippen($('stufe-auf'),()=>{auf.stufe=!auf.stufe;LU.neu();});
-  LU.tippen($('hilfen-auf'),()=>{auf.hilfen=!auf.hilfen;LU.neu();});
+  LU.tippen($('stufe-auf'),()=>{auf.stufe=!auf.stufe;if(auf.stufe)auf.hilfen=false;LU.neu();});
+  LU.tippen($('hilfen-auf'),()=>{auf.hilfen=!auf.hilfen;if(auf.hilfen)auf.stufe=false;LU.neu();});
 };
 
 zeigen.zeichne=function(){

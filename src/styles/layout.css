@@ -22,7 +22,6 @@
 #app.eng #dock .zeile.mit-titel{flex-wrap:wrap}
 #app.eng #dock .zeilen-titel{flex:0 0 100%}
 #app.eng #dock .zeile>.b-aktionen,#app.eng #dock .zeile>.b-transport{flex:1 1 100%}
-#app.eng #dock .hilfen-liste{grid-template-columns:repeat(4,minmax(0,1fr))}
 /* Zeigen quer: Digitalzeit groß links oben, darunter die Uhrzeit in Worten als Karte. Ausgeblendet nimmt sie keinen Platz ein. */
 .spalte #digital.aus,#dock #digital.aus{display:none}
 .spalte #digital{display:flex;justify-content:center;align-items:center;padding:.15em 0}
@@ -65,7 +64,7 @@
 .block>button{width:100%}
 .block.seg>button{width:auto}
 .titel{font-size:var(--fs-kopf);line-height:1.2}
-.titel.klein{font-size:var(--fs-txt);color:var(--leise)}
+.titel.klein{font-size:var(--fs-klein);color:var(--leise);padding:0 .5em}
 #dock .nur-spalte{display:none}
 
 /* ---- Zeigen ---- */
@@ -93,29 +92,22 @@
 .spalte.schmal .b-aktionen{grid-template-columns:1fr 1fr}
 /* Lernstufe: volle Namen, Knöpfe brechen in die nächste Zeile um */
 .b-stufe{display:flex;flex-direction:column;gap:calc(var(--gap)/2)}
-.stufen{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,6.2em),1fr));gap:calc(var(--gap)/2);font-size:var(--fs-klein)}
+.stufen{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,6.2em),1fr));font-size:var(--fs-klein)}
 .stufen>button{font-size:inherit;padding:.1em .25em;line-height:1.1;hyphens:manual}
 /* Hilfen: Symbol links, Beschriftung rechts (darf umbrechen); an = gefüllt wie alle gewählten Knöpfe */
 .b-hilfen{display:flex;flex-direction:column;gap:calc(var(--gap)/2)}
-.hilfen-liste{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:calc(var(--gap)/2)}
 /* Aufklappknopf für Lernstufe und Hilfen: Name links, Stand rechts, Pfeil dreht sich beim Öffnen */
 button.klapp{justify-content:flex-start;text-align:left;gap:.45em;padding:.2em .7em}
 button.klapp .wert{margin-left:auto;min-width:0;font-size:var(--fs-klein);color:var(--leise);text-align:right}
 button.klapp .ik{width:.75em;height:.75em;transition:transform .15s}
 button.klapp[aria-expanded="true"] .ik{transform:rotate(90deg)}
-/* Dock: offen steht der Knopf schmal links neben seinen Schaltern, so wird das Dock nicht höher als bisher */
-#dock .b-stufe,#dock .b-hilfen{flex-direction:row;align-items:stretch}
-#dock .stufen,#dock .hilfen-liste{flex:1 1 0;min-width:0}
-#dock button.klapp[aria-expanded="true"]{flex:0 0 6.4em;width:auto;flex-direction:column;justify-content:center;text-align:center;gap:.15em;padding:.2em .3em}
-#dock button.klapp[aria-expanded="true"] .wert{display:none}
-.b-hilfen .hilfe{flex-direction:row;justify-content:flex-start;text-align:left;gap:.35em;padding:.1em .4em}
-.b-hilfen .hilfe .ik{width:1.6em;height:1.6em}
-.spalte.schmal .b-hilfen .hilfe{padding:.1em .3em}
-.spalte.schmal .b-hilfen .hilfe .ik{width:1.4em;height:1.4em}
-#dock .hilfen-liste{grid-template-columns:repeat(6,minmax(0,1fr))}
-#dock .b-hilfen .hilfe{flex-direction:column;justify-content:center;text-align:center;gap:.1em;padding:.15em .2em}
-#dock button.ikon .ik,#dock .b-hilfen .hilfe .ik{width:1.35em;height:1.35em}
-#dock button.ikon .cap,#dock .b-hilfen .cap{line-height:1}
+/* Dock: beide Aufklappknöpfe stehen nebeneinander in einer Zeile, die offene Liste darunter über die ganze Breite */
+#dock .zeile.klappzeile{flex-wrap:wrap}
+#dock .b-stufe,#dock .b-hilfen{display:contents}
+#dock button.klapp{flex:1 1 0;width:auto;min-width:0}
+#dock .stufen,#dock .hilfen-liste{flex:0 0 100%;order:1}
+#dock button.ikon .ik{width:1.35em;height:1.35em}
+#dock button.ikon .cap{line-height:1}
 /* Sprechweise: volle Namen mit Beispiel */
 .b-sprechweise{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,7em),1fr));font-size:var(--fs-klein)}
 .b-sprechweise>button{flex-direction:column;gap:0;font-size:inherit;line-height:1.1;padding:.15em .3em}
@@ -135,18 +127,19 @@ button.klapp[aria-expanded="true"] .ik{transform:rotate(90deg)}
 .b-fortschritt i.fertig{background:var(--akzent);border-color:var(--akzent)}
 .b-fortschritt i.jetzt{border:3px solid var(--akzent)}
 #dock .b-fortschritt{flex:none;justify-content:flex-start}
-.b-kontext p{font-size:var(--fs-txt);color:var(--leise);text-align:center;line-height:1.3;white-space:pre-line}
+.b-kontext p{font-size:var(--fs-klein);color:var(--leise);text-align:center;line-height:1.3;white-space:pre-line}
 .b-kontext p.hilfe{color:var(--akzent-text)}
 #dock .b-kontext p{text-align:left}
 .b-paar{display:flex;align-items:center;gap:var(--gap)}
 .zeitkarte{flex:1 1 0;text-align:center;font-size:var(--fs-ans);background:var(--flaeche);border:var(--rand) solid var(--linie);border-radius:var(--r);padding:.15em 0;font-variant-numeric:tabular-nums}
 .pfeil{width:calc(var(--fs-ans)*1.2);height:calc(var(--fs-ans)*.6);flex:none;fill:none;stroke:var(--tinte);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 /* Quiz: die Frage steht als Karte direkt über den Antworten und ist größer als diese */
-.frage{font-size:calc(var(--fs-ans)*1.2);line-height:1.2;text-align:center}
+.frage{font-size:calc(var(--fs-ans)*1.35);line-height:1.15;text-align:center}
 #dock .frage{font-size:calc(var(--fs-ans)*1.05)}
 .b-frage.kompakt .frage,#dock .b-frage.kompakt .frage{font-size:var(--fs-kopf)}
 .spalte .b-frage.kompakt{padding:.3em .6em}
-.spalte .b-frage{background:var(--flaeche);border:var(--rand) solid var(--linie);border-radius:calc(var(--r)*1.4);padding:.55em .7em .5em;margin-bottom:calc(var(--gap)*.5)}
+/* Die Frage ist Überschrift, kein Knopf: ohne Rahmen und Fläche, deutlich größer als die Antworten */
+.spalte .b-frage{padding:.2em .2em .4em}
 .rueckmeldung{font-size:var(--fs-txt);color:var(--leise);text-align:center;min-height:1.2em;margin-top:.35em;line-height:1.35}
 .rueckmeldung.gut{color:var(--akzent-text)}
 #pause .ik{width:1.7em;height:1.7em}

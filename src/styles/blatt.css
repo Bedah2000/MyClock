@@ -10,17 +10,13 @@
 .bl-reiter [role=tab][aria-selected="true"]{background:var(--akzent-hell);border-color:var(--akzent);border-width:3px}
 /* quer: Reiter zweispaltig, darunter (im Quiz) die Hilfen, dann Fertig */
 #blatt-links .bl-reiter{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start}
+/* „Fertig“ steht oben, wie in jedem Einstellungsblatt; die Reiter stehen dreispaltig, damit die Hilfen-Liste darunter passt */
+#blatt-links .bl-reiter>#blatt-fertig{order:-1}
+#blatt-links .bl-reiter{grid-template-columns:repeat(3,minmax(0,1fr))}
+#blatt-links.schmal .bl-reiter [role=tab]{padding:.1em .1em}
 #blatt-links .bl-reiter>#blatt-fertig,#blatt-links .bl-reiter>.bl-quizhilfen{grid-column:1/-1}
 /* Hilfen im Quiz */
 .bl-quizhilfen{display:flex;flex-direction:column;gap:calc(var(--gap)/2);margin-top:calc(var(--gap)*.5)}
-.bl-hilfen-gitter{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:calc(var(--gap)/2)}
-#blatt-links .bl-hilfen-gitter .hilfe{flex-direction:row;justify-content:flex-start;gap:.35em;padding:.1em .4em;text-align:left}
-#blatt-links .bl-hilfen-gitter .hilfe .ik{width:1.6em;height:1.6em}
-#blatt-links.schmal .bl-hilfen-gitter .hilfe{flex-direction:column;justify-content:center;gap:.05em;padding:.15em .2em;text-align:center}
-#blatt-links.schmal .bl-hilfen-gitter .hilfe .ik{width:1.4em;height:1.4em}
-#blatt-dock .bl-hilfen-gitter{grid-template-columns:repeat(auto-fit,minmax(min(100%,5em),1fr))}
-#blatt-dock .bl-hilfen-gitter .hilfe .ik{width:1.35em;height:1.35em}
-#blatt-dock .bl-hilfen-gitter .cap{line-height:1}
 #blatt-dock .bl-quizhilfen .titel{display:none}
 #blatt-dock .bl-quizhilfen{margin-top:0}
 #blatt-dock .bl-reiter{display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
@@ -32,8 +28,8 @@
 #blatt-dock .bl-inhalt>.voll,#blatt-dock.schmal .bl-inhalt>*{grid-column:1/-1}
 /* Einstellungszeile: Bezeichnung in eigener Zeile, die Wahlknöpfe darunter; zu breite Knöpfe rutschen in die nächste Zeile */
 .ezeile{display:flex;flex-direction:column;align-items:stretch;gap:calc(var(--gap)/2);min-width:0}
-.ezeile>.name{font-size:var(--fs-txt);line-height:1.2;color:var(--tinte);hyphens:manual}
-.optionen{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--min,5em)),1fr));gap:calc(var(--gap)/2);font-size:var(--fs-txt)}
+.ezeile>.name{font-size:var(--fs-klein);line-height:1.2;color:var(--leise);padding:0 .5em;hyphens:manual}
+.optionen{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--min,5em)),1fr));font-size:var(--fs-txt)}
 .optionen>button{font-size:inherit;padding:.15em .25em;line-height:1.15;hyphens:manual}
 .optionen>button.mit-bsp{flex-direction:column;gap:0}
 .optionen .bsp{font-size:var(--fs-klein)}
@@ -60,3 +56,9 @@
 .schiene span{font-size:var(--fs-txt);color:var(--leise);pointer-events:none}
 .schiene .knopf{position:absolute;left:4px;top:4px;width:calc(var(--h-btn) - 8px);height:calc(var(--h-btn) - 8px);border-radius:50%;background:var(--akzent);touch-action:none;cursor:grab;box-shadow:0 1px 4px rgba(0,0,0,.3)}
 .schiene .knopf::after{content:"";position:absolute;left:38%;top:30%;width:28%;height:40%;border-right:3px solid #fff;border-top:3px solid #fff;transform:rotate(45deg);transform-origin:60% 50%;box-sizing:border-box}
+
+/* hoch: die zweizeiligen Sprechweise-Knöpfe etwas niedriger, damit das Blatt mit der Hilfen-Liste ohne Scrollen passt */
+#blatt-dock .optionen>button.mit-bsp{min-height:calc(var(--h-btn) - 8px);line-height:1.05}
+#blatt-dock .bl-inhalt{row-gap:calc(var(--gap)/2)}
+/* „Zurücksetzen“ ist eine Aktion, keine Auswahl: als Knopf mit Rand, nicht als Feld der Schiene */
+#hilfen-zurueck{background:var(--flaeche);border-color:var(--knopf-rand)}

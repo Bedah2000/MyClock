@@ -1,7 +1,7 @@
 /* Grundlagen: Farben, Schrift, Bedienelemente. Größen kommen als Variablen aus layout.js. */
 :root{
   --bg:#F2F5F4; --flaeche:#FFFFFF; --flaeche-2:#E4EAE8; --tinte:#1D2B28; --leise:#4E605A; --linie:#C3D0CC;
-  --akzent:#13756B; --akzent-hell:#DCEFEA; --akzent-text:#0E5F57; --auf-akzent:#FFFFFF; --knopf-rand:#80918C;
+  --akzent:#13756B; --akzent-hell:#DCEFEA; --akzent-text:#0E5F57; --auf-akzent:#FFFFFF; --knopf-rand:#80918C; --schalter-aus:#80918C;
   --stunde:#B03A48; --minute:#1E5EA6; --sekunde:#3C4A46; --stunde-hell:rgba(226,140,152,.26); --minute-hell:rgba(122,168,220,.28);
   --falsch-bg:#E6EBE9; --falsch-text:#6B7874; --zifferblatt:#FFFFFF; --fenster-neutral:#E7EDEB;
   /* Uhr in Pastell: Minutenring dunkler (Himmelblau), Zifferblatt heller (Elfenbein) */
@@ -10,7 +10,7 @@
   --fs-ans:22px; --fs-txt:18px; --fs-kopf:20px; --fs-dig:34px; --fs-worte:20px; --fs-klein:15px; --fs-cap:12.5px; --h-ans:52px; --h-btn:44px; --gap:8px; --r:12px;
 }
 html[data-schema="kontrast"]{
-  --bg:#FFFFFF; --flaeche:#FFFFFF; --flaeche-2:#FFFFFF; --tinte:#000000; --leise:#1A1A1A; --linie:#000000; --knopf-rand:#000000;
+  --bg:#FFFFFF; --flaeche:#FFFFFF; --flaeche-2:#FFFFFF; --tinte:#000000; --leise:#1A1A1A; --linie:#000000; --knopf-rand:#000000; --schalter-aus:#5A5A5A;
   --akzent:#00564D; --akzent-hell:#D7F0EA; --akzent-text:#00463F; --stunde:#9A0010; --minute:#00379A;
   --falsch-bg:#EDEDED; --falsch-text:#4A4A4A; --fenster-neutral:#F2F2F2; --ring:#FFFFFF; --ring-hell:#FFFFFF; --ring-rand:#000000; --blatt:#FFFFFF; --blatt-hell:#FFFFFF; --blatt-rand:#000000; --stunde-zahl:#8E0012; --stunde-leuchten:#C8001A; --minute-leuchten:#0050D0; --zahl-matt:#6E6E6E; --stunde-kontur:#000000; --rand:2.5px; --schatten:rgba(0,0,0,.25);
 }
@@ -32,12 +32,17 @@ button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--akzent);ou
 button.primaer{background:var(--akzent);border-color:var(--akzent);color:var(--auf-akzent)}
 button.leise{background:transparent}
 button.gross{font-size:var(--fs-ans);min-height:var(--h-ans)}
-button[aria-pressed="true"]:not(.schalter){background:var(--akzent);border-color:var(--akzent);color:var(--auf-akzent)}
+button[aria-pressed="true"]:not(.schalter):not(.hilfe){background:var(--akzent);border-color:var(--akzent);color:var(--auf-akzent)}
 button:disabled{cursor:default;opacity:1}
 .sym{width:.9em;height:.9em;fill:currentColor;flex:none}
 
 /* Segmentierter Schalter */
 .seg{display:flex;gap:2px;padding:2px;background:var(--flaeche-2);border-radius:calc(var(--r) + 4px);min-width:0}
+/* Einfachauswahl (Lernstufe, Einstellungen): dieselbe Form wie die Bereichswahl, eine graue Schiene mit gefülltem Feld für die Wahl */
+.optionen,.stufen{gap:2px;padding:2px;background:var(--flaeche-2);border-radius:calc(var(--r) + 4px)}
+.optionen>button,.stufen>button{background:transparent;border-color:transparent}
+.optionen>button[aria-pressed="true"],.stufen>button[aria-pressed="true"]{box-shadow:0 1px 3px rgba(0,0,0,.18)}
+html[data-schema="kontrast"] .optionen,html[data-schema="kontrast"] .stufen{border:var(--rand) solid var(--linie)}
 html[data-schema="kontrast"] .seg{border:var(--rand) solid var(--linie)}
 .seg>button{flex:1 1 auto;min-width:0;background:transparent;border-color:transparent;min-height:var(--h-btn);padding:.1em .15em}
 .seg>button[aria-pressed="true"]{background:var(--akzent);border-color:var(--akzent);color:var(--auf-akzent);box-shadow:0 1px 3px rgba(0,0,0,.18)}
@@ -48,11 +53,31 @@ html[data-schema="kontrast"] .seg{border:var(--rand) solid var(--linie)}
 button.nurikon{padding:.1em .45em;min-width:var(--h-btn)}
 button.nurikon .ik{width:1.5em;height:1.5em}
 /* Symbol mit kleiner Beschriftung darunter */
-button.ikon,button.hilfe{flex-direction:column;gap:.1em;padding:.15em .2em;line-height:1.05}
-button.ikon .cap,button.hilfe .cap{font-size:var(--fs-cap);hyphens:manual;overflow-wrap:break-word;max-width:100%}
+button.ikon{flex-direction:column;gap:.1em;padding:.15em .2em;line-height:1.05}
+button.ikon .cap{font-size:var(--fs-cap);hyphens:manual;overflow-wrap:break-word;max-width:100%}
 button .cap{min-width:0}
-/* Schalter: an = gefüllt in Akzentfarbe, aus = weiß. Eindeutig auch ohne Farbe durch den Rahmen. */
-button.hilfe .ik{width:1.95em;height:1.95em}
+/* Hilfen: Listenzeilen mit Schiebeschalter (Symbol, Name, Schalter rechts). An und aus zeigt der Schalter über Lage und Farbe. */
+.hilfen-liste,.bl-hilfen-gitter{display:grid;grid-template-columns:repeat(var(--sp,1),minmax(0,1fr));background:var(--flaeche);
+  border:1px solid var(--linie);border-radius:calc(var(--r)*1.2);overflow:hidden}
+button.hilfe{flex-direction:row;justify-content:flex-start;text-align:left;gap:.45em;padding:.1em .6em;width:100%;min-height:var(--h-btn);
+  border:0;border-radius:0;background:transparent;box-shadow:0 1px 0 var(--linie),1px 0 0 var(--linie)}
+button.hilfe:active{transform:none;background:var(--flaeche-2)}
+button.hilfe:focus-visible{outline-offset:-3px}
+button.hilfe .ik{width:1.5em;height:1.5em;color:var(--leise)}
+button.hilfe .cap{flex:1 1 auto;font-size:var(--fs-klein);line-height:1.1;hyphens:manual;overflow-wrap:normal}
+.sw{flex:none;position:relative;font-size:var(--fs-txt);width:2.5em;height:1.5em;border-radius:1em;background:var(--schalter-aus);transition:background-color .2s}
+.sw::after{content:"";position:absolute;left:.12em;top:.12em;width:1.26em;height:1.26em;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.35);transition:transform .2s}
+button.hilfe[aria-pressed="true"] .sw{background:var(--akzent)}
+button.hilfe[aria-pressed="true"] .sw::after{transform:translateX(1em)}
+/* Neben der Uhr eine Spalte mit etwas niedrigeren Zeilen (elf Hilfen passen ohne Scrollen); unten im Dock drei, im Einstellungsblatt vier */
+.spalte.schmal button.hilfe,#blatt-links.schmal button.hilfe{min-height:calc(var(--h-btn) - 4px)}
+#dock button.hilfe,#blatt-dock button.hilfe{min-height:calc(var(--h-btn) - 6px)}
+#app[data-profil="tafel"] .spalte button.hilfe,#app[data-profil="tafel"] #blatt-links button.hilfe{min-height:calc(var(--h-btn) - 10px)}
+#dock .hilfen-liste{--sp:3}
+#blatt-dock .bl-hilfen-gitter{--sp:4}
+#app.eng #dock .hilfen-liste,#blatt-dock.schmal .bl-hilfen-gitter{--sp:2}
+#dock button.hilfe,#blatt-dock button.hilfe{padding:.1em .45em;gap:.3em}
+#dock button.hilfe .ik,#blatt-dock button.hilfe .ik{width:1.3em;height:1.3em}
 button.ikon .ik{width:1.85em;height:1.85em}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation-duration:.01ms!important}}

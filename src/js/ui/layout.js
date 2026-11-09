@@ -22,7 +22,7 @@ const SLOTS={
     quer:{links:{oben:['digital','b-worte','b-sprechweise','b-legende','b-seit'],unten:['b-aktionen','b-transport']},
           rechts:{oben:['b-stufe','b-hilfen'],unten:[]}},
     hoch:[{titel:'Uhrzeit',ids:['digital','b-worte']},{titel:'Sprechweise',ids:['b-sprechweise']},{titel:'',ids:['b-legende','b-seit']},
-          {titel:'Bedienen',ids:['b-aktionen','b-transport']},{ids:['b-stufe']},{ids:['b-hilfen']}]
+          {titel:'Bedienen',ids:['b-aktionen','b-transport']},{klasse:'klappzeile',ids:['b-stufe','b-hilfen']}]
   },
   quiz:{
     kopf:{links:['b-bereiche'],mitte:['digital']},
@@ -159,7 +159,7 @@ LU.platziere=function(){
   else{
     if(slot.neben)spalte('links',slot.neben);
     for(const reihe of slot.hoch){
-      const z=document.createElement('div');z.className='zeile';
+      const z=document.createElement('div');z.className='zeile'+(reihe.klasse?' '+reihe.klasse:'');
       if(reihe.titel!=null){z.classList.add('mit-titel');const t=document.createElement('span');t.className='zeilen-titel';t.textContent=reihe.titel;z.appendChild(t);}
       for(const id of reihe.ids)z.appendChild($(id));dock.appendChild(z);
     }

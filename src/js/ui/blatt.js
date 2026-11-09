@@ -49,7 +49,7 @@ function quizHilfen(){
   const g=document.createElement('div');g.className='bl-hilfen-gitter';g.setAttribute('role','group');g.setAttribute('aria-label','Hilfen im Quiz');
   for(const [k,ik,name] of QUIZHILFEN){
     const b=document.createElement('button');b.type='button';b.className='hilfe';b.dataset.quizhilfe=k;b.setAttribute('aria-pressed',String(LU.quizHilfeAn(k)));
-    b.innerHTML=`<svg class="ik"><use href="#${ik}"/></svg><span class="cap">${name}</span>`;
+    b.innerHTML=`<svg class="ik"><use href="#${ik}"/></svg><span class="cap">${name}</span><span class="sw" aria-hidden="true"></span>`;
     LU.tippen(b,()=>{LU.schalteQuizHilfe(k);blatt.zeichne();LU.neu();});g.appendChild(b);
   }
   box.appendChild(g);return box;
