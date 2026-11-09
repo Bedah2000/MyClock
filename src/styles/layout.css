@@ -117,8 +117,10 @@ button.klapp[aria-expanded="true"] .ik{transform:rotate(90deg)}
 .leg-zeile{display:flex;align-items:center;gap:.5em;font-size:var(--fs-txt);line-height:1.2}
 .leg-zeiger{width:3.8em;height:1em;flex:none;overflow:visible}
 .spalte .b-legende{background:var(--flaeche);border:var(--rand) solid var(--linie);border-radius:calc(var(--r)*1.4);padding:.5em .7em}
-.spalte.schmal .b-fakten dl>div{flex-wrap:wrap;column-gap:.4em;row-gap:0;padding:.3em 0;line-height:1.15}
-.spalte.schmal .b-fakten dd{margin-left:auto}
+/* schmal: Bezeichnung klein über dem Wert, beides linksbündig */
+.spalte.schmal .b-fakten dl>div{flex-direction:column;align-items:flex-start;gap:.1em;padding:.35em 0}
+.spalte.schmal .b-fakten dt{font-size:var(--fs-klein);line-height:1.1}
+.spalte.schmal .b-fakten dd{text-align:left;line-height:1.15}
 .spalte.schmal .karte .mini{width:calc(var(--fs-txt)*2)}
 
 /* ---- Quiz ---- */
@@ -154,7 +156,7 @@ button.klapp[aria-expanded="true"] .ik{transform:rotate(90deg)}
 .antwort.richtig{background:var(--akzent-hell);border-color:var(--akzent);border-width:3px}
 .b-eingabe{display:flex;align-items:stretch;gap:var(--gap)}
 .feld{flex:1 1 0;flex-direction:column;gap:0;min-height:var(--h-ans);padding:.1em .2em}
-.feld small{font-size:var(--fs-txt);color:var(--leise);line-height:1.1}
+.feld small{font-size:var(--fs-klein);color:var(--leise);line-height:1.2}
 .feld span{font-size:var(--fs-ans);min-height:1.1em;font-variant-numeric:tabular-nums;line-height:1.1}
 .feld.aktiv{border-color:var(--akzent);border-width:3px;background:var(--akzent-hell)}
 .feld-trenner{align-self:center;font-size:var(--fs-ans)}
@@ -200,7 +202,7 @@ button.klapp[aria-expanded="true"] .ik{transform:rotate(90deg)}
 .b-fakten dl{margin:0;display:flex;flex-direction:column}
 .b-fakten dl>div{display:flex;justify-content:space-between;align-items:baseline;gap:.5em;padding:.35em 0;border-bottom:1px solid var(--linie);line-height:1.2}
 .b-fakten dl>div:last-child{border-bottom:0}
-.b-fakten dt{font-size:var(--fs-txt);color:var(--leise)}
+.b-fakten dt{font-size:var(--fs-klein);color:var(--leise)}
 .b-fakten dd{margin:0;font-size:calc(var(--fs-txt)*1.12);text-align:right;font-variant-numeric:tabular-nums}
 .b-fakten dd small{font-size:var(--fs-txt);color:var(--leise)}
 #dock .b-fakten dl{display:grid;grid-template-columns:1fr 1fr;column-gap:calc(var(--gap)*3)}
@@ -219,7 +221,7 @@ button.klapp[aria-expanded="true"] .ik{transform:rotate(90deg)}
 .karte p.l{color:var(--leise)}
 #jahr{display:block;width:100%;touch-action:none;margin-top:calc(var(--gap)/2)}
 .b-jahr{display:flex;flex-direction:column}
-.b-vgl button{gap:.5em;line-height:1.15}
-.b-vgl .ik{width:1.5em;height:1.5em}
+/* Sommer und Winter vergleichen: ein Schalter in einer eigenen Listenzeile */
+.b-vgl button.hilfe{min-height:var(--h-btn);padding-top:.25em;padding-bottom:.25em}
 #dock .zeile>.b-tagspiel{flex:0 0 auto}
 #dock .b-jahr .titel{display:none}
