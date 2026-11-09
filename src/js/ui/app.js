@@ -118,6 +118,8 @@ LU.zeichne=function(){
 /* ---------- Start ---------- */
 function start(){
   LU.laden();LU.voreinstellung();
+  // Lernuhr startet wie eine Wanduhr: echte Uhrzeit, läuft mit Sekundenzeiger, bis jemand einen Zeiger zieht oder eine Zeit wählt
+  if(LU.s.bereich==='zeigen'){LU.s.instant=Date.now();LU.liveStart();}
   document.documentElement.dataset.schema=LU.einst.schema;
   LU.uhr.aufbauen();LU.uhr.binden();
   LU.zeigen.binden();LU.quiz.binden();LU.sonne.binden();LU.blatt.binden();

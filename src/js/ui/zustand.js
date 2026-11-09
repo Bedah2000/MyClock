@@ -20,7 +20,7 @@ LU.STUFEN_KNOPF=Object.assign({},LU.STUFEN,{quarter:'Viertel\u00adstunden'});
 LU.ZONEN=[['Europe/Berlin','Deutschland'],['Europe/London','London'],['America/New_York','New York'],['Asia/Tokyo','Tokio'],['Australia/Sydney','Sydney'],['UTC','UTC']];
 
 /* Hilfen auf der Uhr: gelten für alle Stufen. Beim ersten Start nur die Stundenzahlen und beide Zeiger;
-   alles andere blendet die Lehrkraft bei Bedarf ein. Die Auswahl merkt sich das Gerät. */
+   alles andere blendet die Lehrkraft bei Bedarf ein. Die Auswahl gilt bis zum Schließen der Seite. */
 LU.HILFEN_UHR=['stunden','minuten','alleMinuten','bereich','hervorheben','stundenzeiger','minutenzeiger','einrasten','erklaerung'];
 LU.HILFEN_STANDARD={digital:false,worte:false,stunden:true,minuten:false,alleMinuten:false,bereich:false,hervorheben:false,
   stundenzeiger:true,minutenzeiger:true,einrasten:true,erklaerung:false};
@@ -36,7 +36,7 @@ const heute=Z.parts(Date.now(),'Europe/Berlin').ymd;
 LU.s={
   bereich:'zeigen',
   place:Object.assign({},Z.places.herrieden),
-  instant:Z.wallToInstant(heute,900,'Europe/Berlin'), // erster Start: 15 Uhr, beide Zeiger gut getrennt
+  instant:Z.wallToInstant(heute,900,'Europe/Berlin'), // Ausgangswert; die Lernuhr startet mit der echten Uhrzeit (app.js)
   hilfen:Object.assign({},LU.HILFEN_STANDARD),
   form:'sued', live:false, start:null,
   quiz:null, sonne:{vergleich:false}, blatt:null, autoHilfe:null, anim:null
@@ -48,18 +48,16 @@ LU.laden=function(){
     const raw=window.localStorage&&localStorage.getItem(GERAET_KEY);
     if(raw){const v=JSON.parse(raw);for(const k of ['layout','schema','ton','lob'])if(k in v)LU.einst[k]=v[k];}
   }catch(e){/* Speicher gesperrt: Voreinstellungen gelten */}
-  // Hilfen (flach); ältere Speicherstände je Stufe haben keine flachen Werte und werden übergangen
-  try{
-    const raw=window.localStorage&&localStorage.getItem(HILFEN_KEY);
-    if(raw){const v=JSON.parse(raw);for(const k in LU.HILFEN_STANDARD)if(typeof v[k]==='boolean')LU.s.hilfen[k]=v[k];}
-  }catch(e){}
+  // Die Hilfen der Lernuhr werden nicht geladen: jeder Start beginnt mit der schlichten Wanduhr. Alten Speicherstand entfernen.
+  try{window.localStorage&&localStorage.removeItem(HILFEN_KEY);}catch(e){}
   try{
     const raw=window.localStorage&&localStorage.getItem(QUIZ_KEY);
     if(raw){const v=JSON.parse(raw);for(const k of LU.HILFEN_QUIZ)if(typeof v[k]==='boolean')LU.quizHilfen[k]=v[k];}
   }catch(e){}
   for(const h of [LU.s.hilfen,LU.quizHilfen]){if(h.minuten&&h.alleMinuten)h.minuten=false;if(!h.stundenzeiger&&!h.minutenzeiger)h.stundenzeiger=h.minutenzeiger=true;}
 };
-LU.hilfenSpeichern=function(){try{localStorage.setItem(HILFEN_KEY,JSON.stringify(LU.s.hilfen));}catch(e){}};
+/* Hilfen der Lernuhr gelten nur bis zum Schließen der Seite. */
+LU.hilfenSpeichern=function(){};
 /* Stufe wählen: gilt für Zeigen (Zufall, Einrasten) und Quiz (Lernstufe). Die Hilfen bleiben, wie sie sind. */
 LU.setzeStufe=function(st){
   if(!A.STEP[st])return;
