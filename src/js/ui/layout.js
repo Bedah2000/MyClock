@@ -13,16 +13,16 @@ const TYP={
 LU.TYP=TYP;
 
 /* Blöcke je Bereich, in beiden Lagen in derselben Reihenfolge:
-   Bereichswahl oben links in der Kopfzeile, die Uhr mit Digital- und Wortanzeige, die Aktionen, zuletzt Lernstufe und Hilfen.
+   Bereichswahl oben links in der Kopfzeile, die Uhr mit Digital- und Wortanzeige, die Aktionen, zuletzt Lernstufe und Hilfen (beide eingeklappt, sie öffnen sich auf Tipp).
    quer: Kopfzeile (links / Mitte) und Spalten (oben / unten); hoch: Kopfzeile und Zeilen des Docks (mit Zeilentitel).
    Sonne hoch: Spalte „links“ steht neben der kleinen Uhr; Ort und Datum stehen in beiden Lagen oben links im Himmel. */
 const SLOTS={
   zeigen:{
     kopf:{links:['b-bereiche'],mitte:[]},
     quer:{links:{oben:['digital','b-worte','b-sprechweise','b-legende','b-seit'],unten:['b-aktionen','b-transport']},
-          rechts:{oben:['b-stufe'],unten:['b-hilfen']}},
+          rechts:{oben:['b-stufe','b-hilfen'],unten:[]}},
     hoch:[{titel:'Uhrzeit',ids:['digital','b-worte']},{titel:'Sprechweise',ids:['b-sprechweise']},{titel:'',ids:['b-legende','b-seit']},
-          {titel:'Bedienen',ids:['b-aktionen','b-transport']},{titel:'Lernstufe',ids:['b-stufe']},{titel:'Hilfen',ids:['b-hilfen']}]
+          {titel:'Bedienen',ids:['b-aktionen','b-transport']},{ids:['b-stufe']},{ids:['b-hilfen']}]
   },
   quiz:{
     kopf:{links:['b-bereiche'],mitte:['digital']},

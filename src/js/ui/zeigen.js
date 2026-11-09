@@ -5,6 +5,8 @@
 const LU=window.LU,$=LU.$,Z=LU.Z,W=LU.W,A=LU.A;
 const zeigen={};LU.zeigen=zeigen;
 const TEMPO={1:1,2:15}; // Minuten pro Sekunde: ▶ und ▶▶
+/* Lernstufe und Hilfen sind beim Start eingeklappt, damit neben der Uhr wenig steht; der Knopf nennt den Stand. */
+const auf={stufe:false,hilfen:false};
 
 zeigen.worte=function(form){
   const m=Math.floor(LU.wandMinuten()+1e-6);
@@ -44,6 +46,8 @@ zeigen.binden=function(){
   for(const b of LU.qa('[data-stufe]'))LU.tippen(b,()=>{LU.setzeStufe(b.dataset.stufe);LU.neu();});
   for(const b of LU.qa('#b-sprechweise [data-form]'))LU.tippen(b,()=>{LU.s.form=b.dataset.form;LU.neu();});
   LU.tippen($('vorlesen'),zeigen.vorlesen);
+  LU.tippen($('stufe-auf'),()=>{auf.stufe=!auf.stufe;LU.neu();});
+  LU.tippen($('hilfen-auf'),()=>{auf.hilfen=!auf.hilfen;LU.neu();});
 };
 
 zeigen.zeichne=function(){
@@ -56,6 +60,10 @@ zeigen.zeichne=function(){
   for(const b of LU.qa('[data-stufe]'))b.setAttribute('aria-pressed',String(b.dataset.stufe===LU.einst.stufe));
   for(const b of LU.qa('#b-sprechweise [data-form]'))b.setAttribute('aria-pressed',String(b.dataset.form===s.form));
   $('b-sprechweise').hidden=!h.worte;
+  $('stufe-auf').setAttribute('aria-expanded',String(auf.stufe));$('stufen').hidden=!auf.stufe;
+  $('hilfen-auf').setAttribute('aria-expanded',String(auf.hilfen));$('hilfen-liste').hidden=!auf.hilfen;
+  $('stufe-wert').textContent=LU.STUFEN[LU.einst.stufe]||'';
+  $('hilfen-wert').textContent=LU.qa('#b-hilfen [data-hilfe]').filter(b=>h[b.dataset.hilfe]).length+' an';
   // Worte
   const bw=$('b-worte');bw.hidden=!h.worte;
   if(h.worte){

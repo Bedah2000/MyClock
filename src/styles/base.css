@@ -1,7 +1,7 @@
 /* Grundlagen: Farben, Schrift, Bedienelemente. Größen kommen als Variablen aus layout.js. */
 :root{
   --bg:#F2F5F4; --flaeche:#FFFFFF; --flaeche-2:#E4EAE8; --tinte:#1D2B28; --leise:#4E605A; --linie:#C3D0CC;
-  --akzent:#13756B; --akzent-hell:#DCEFEA; --akzent-text:#0E5F57; --auf-akzent:#FFFFFF;
+  --akzent:#13756B; --akzent-hell:#DCEFEA; --akzent-text:#0E5F57; --auf-akzent:#FFFFFF; --knopf-rand:#80918C;
   --stunde:#B03A48; --minute:#1E5EA6; --sekunde:#3C4A46; --stunde-hell:rgba(226,140,152,.26); --minute-hell:rgba(122,168,220,.28);
   --falsch-bg:#E6EBE9; --falsch-text:#6B7874; --zifferblatt:#FFFFFF; --fenster-neutral:#E7EDEB;
   /* Uhr in Pastell: Minutenring dunkler (Himmelblau), Zifferblatt heller (Elfenbein) */
@@ -10,7 +10,7 @@
   --fs-ans:22px; --fs-txt:18px; --fs-kopf:20px; --fs-dig:34px; --fs-worte:20px; --fs-klein:15px; --fs-cap:12.5px; --h-ans:52px; --h-btn:44px; --gap:8px; --r:12px;
 }
 html[data-schema="kontrast"]{
-  --bg:#FFFFFF; --flaeche:#FFFFFF; --flaeche-2:#FFFFFF; --tinte:#000000; --leise:#1A1A1A; --linie:#000000;
+  --bg:#FFFFFF; --flaeche:#FFFFFF; --flaeche-2:#FFFFFF; --tinte:#000000; --leise:#1A1A1A; --linie:#000000; --knopf-rand:#000000;
   --akzent:#00564D; --akzent-hell:#D7F0EA; --akzent-text:#00463F; --stunde:#9A0010; --minute:#00379A;
   --falsch-bg:#EDEDED; --falsch-text:#4A4A4A; --fenster-neutral:#F2F2F2; --ring:#FFFFFF; --ring-hell:#FFFFFF; --ring-rand:#000000; --blatt:#FFFFFF; --blatt-hell:#FFFFFF; --blatt-rand:#000000; --stunde-zahl:#8E0012; --stunde-leuchten:#C8001A; --minute-leuchten:#0050D0; --zahl-matt:#6E6E6E; --stunde-kontur:#000000; --rand:2.5px; --schatten:rgba(0,0,0,.25);
 }
@@ -24,7 +24,7 @@ img.symbol{height:1.15em;width:auto;vertical-align:-.22em;margin-right:.3em;back
 .unsichtbar{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 
 button{font:inherit;font-size:var(--fs-txt);line-height:1.15;color:var(--tinte);background:var(--flaeche);
-  border:var(--rand) solid var(--linie);border-radius:var(--r);min-height:var(--h-btn);padding:.2em .55em;
+  border:var(--rand) solid var(--knopf-rand);border-radius:var(--r);min-height:var(--h-btn);padding:.2em .55em;
   display:flex;align-items:center;justify-content:center;gap:.35em;text-align:center;cursor:pointer;
   transition:background-color .15s,border-color .15s,color .15s,transform .1s}
 button:active{transform:scale(.98)}
@@ -52,9 +52,7 @@ button.ikon,button.hilfe{flex-direction:column;gap:.1em;padding:.15em .2em;line-
 button.ikon .cap,button.hilfe .cap{font-size:var(--fs-cap);hyphens:manual;overflow-wrap:break-word;max-width:100%}
 button .cap{min-width:0}
 /* Schalter: an = gefüllt in Akzentfarbe, aus = weiß. Eindeutig auch ohne Farbe durch den Rahmen. */
-button.hilfe[aria-pressed="true"]{background:var(--akzent-hell);border-color:var(--akzent);border-width:2px;color:var(--akzent-text)}
 button.hilfe .ik{width:1.95em;height:1.95em}
 button.ikon .ik{width:1.85em;height:1.85em}
-button.hilfe[aria-pressed="false"]{background:var(--flaeche)}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation-duration:.01ms!important}}

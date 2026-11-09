@@ -22,7 +22,7 @@
 #app.eng #dock .zeile.mit-titel{flex-wrap:wrap}
 #app.eng #dock .zeilen-titel{flex:0 0 100%}
 #app.eng #dock .zeile>.b-aktionen,#app.eng #dock .zeile>.b-transport{flex:1 1 100%}
-#app.eng #dock .b-hilfen{grid-template-columns:repeat(4,minmax(0,1fr))}
+#app.eng #dock .hilfen-liste{grid-template-columns:repeat(4,minmax(0,1fr))}
 /* Zeigen quer: Digitalzeit groß links oben, darunter die Uhrzeit in Worten als Karte. Ausgeblendet nimmt sie keinen Platz ein. */
 .spalte #digital.aus,#dock #digital.aus{display:none}
 .spalte #digital{display:flex;justify-content:center;align-items:center;padding:.15em 0}
@@ -95,14 +95,24 @@
 .b-stufe{display:flex;flex-direction:column;gap:calc(var(--gap)/2)}
 .stufen{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,6.2em),1fr));gap:calc(var(--gap)/2);font-size:var(--fs-klein)}
 .stufen>button{font-size:inherit;padding:.1em .25em;line-height:1.1;hyphens:manual}
-/* Hilfen: Symbol links, Beschriftung rechts (darf umbrechen); an/aus nur über die Helligkeit der Fläche */
-.b-hilfen{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:calc(var(--gap)/2)}
-.b-hilfen>.titel{grid-column:1/-1}
+/* Hilfen: Symbol links, Beschriftung rechts (darf umbrechen); an = gefüllt wie alle gewählten Knöpfe */
+.b-hilfen{display:flex;flex-direction:column;gap:calc(var(--gap)/2)}
+.hilfen-liste{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:calc(var(--gap)/2)}
+/* Aufklappknopf für Lernstufe und Hilfen: Name links, Stand rechts, Pfeil dreht sich beim Öffnen */
+button.klapp{justify-content:flex-start;text-align:left;gap:.45em;padding:.2em .7em}
+button.klapp .wert{margin-left:auto;min-width:0;font-size:var(--fs-klein);color:var(--leise);text-align:right}
+button.klapp .ik{width:.75em;height:.75em;transition:transform .15s}
+button.klapp[aria-expanded="true"] .ik{transform:rotate(90deg)}
+/* Dock: offen steht der Knopf schmal links neben seinen Schaltern, so wird das Dock nicht höher als bisher */
+#dock .b-stufe,#dock .b-hilfen{flex-direction:row;align-items:stretch}
+#dock .stufen,#dock .hilfen-liste{flex:1 1 0;min-width:0}
+#dock button.klapp[aria-expanded="true"]{flex:0 0 6.4em;width:auto;flex-direction:column;justify-content:center;text-align:center;gap:.15em;padding:.2em .3em}
+#dock button.klapp[aria-expanded="true"] .wert{display:none}
 .b-hilfen .hilfe{flex-direction:row;justify-content:flex-start;text-align:left;gap:.35em;padding:.1em .4em}
 .b-hilfen .hilfe .ik{width:1.6em;height:1.6em}
 .spalte.schmal .b-hilfen .hilfe{padding:.1em .3em}
 .spalte.schmal .b-hilfen .hilfe .ik{width:1.4em;height:1.4em}
-#dock .b-hilfen{grid-template-columns:repeat(6,minmax(0,1fr))}
+#dock .hilfen-liste{grid-template-columns:repeat(6,minmax(0,1fr))}
 #dock .b-hilfen .hilfe{flex-direction:column;justify-content:center;text-align:center;gap:.1em;padding:.15em .2em}
 #dock button.ikon .ik,#dock .b-hilfen .hilfe .ik{width:1.35em;height:1.35em}
 #dock button.ikon .cap,#dock .b-hilfen .cap{line-height:1}

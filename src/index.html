@@ -162,13 +162,14 @@
     <button type="button" data-form="sued"><span class="name">Süddeutsch</span><span class="bsp">„Viertel drei“</span></button><button type="button" data-form="hoch"><span class="name">Hochdeutsch</span><span class="bsp">„Viertel nach zwei“</span></button><button type="button" data-form="beide"><span class="name">Beide</span></button>
   </div>
   <div class="block b-stufe" id="b-stufe" data-teil="zeigen" data-lehrkraft>
-    <p class="titel klein">Lernstufe</p>
-    <div class="stufen" role="group" aria-label="Lernstufe">
+    <button type="button" class="klapp" id="stufe-auf" aria-expanded="false" aria-controls="stufen"><span class="name">Lernstufe</span><span class="wert" id="stufe-wert"></span><svg class="ik"><use href="#i-vor"/></svg></button>
+    <div class="stufen" id="stufen" role="group" aria-label="Lernstufe" hidden>
       <button type="button" data-stufe="full">Volle Stunden</button><button type="button" data-stufe="half">Halbe Stunden</button><button type="button" data-stufe="quarter">Viertel&shy;stunden</button><button type="button" data-stufe="five">5 Minuten</button><button type="button" data-stufe="any">Alle Minuten</button>
     </div>
   </div>
   <div class="block b-hilfen" id="b-hilfen" data-teil="zeigen" role="group" aria-label="Hilfen">
-    <p class="titel klein">Hilfen</p>
+    <button type="button" class="klapp" id="hilfen-auf" aria-expanded="false" aria-controls="hilfen-liste"><span class="name">Hilfen</span><span class="wert" id="hilfen-wert"></span><svg class="ik"><use href="#i-vor"/></svg></button>
+    <div class="hilfen-liste" id="hilfen-liste" hidden>
     <button type="button" class="hilfe" data-hilfe="digital" aria-pressed="false"><svg class="ik"><use href="#i-digital"/></svg><span class="cap">Digital&shy;zeit</span></button>
     <button type="button" class="hilfe" data-hilfe="worte" aria-pressed="false"><svg class="ik"><use href="#i-worte"/></svg><span class="cap">In Worten</span></button>
     <button type="button" class="hilfe" data-hilfe="stunden" aria-pressed="false"><svg class="ik"><use href="#i-stundenzahlen"/></svg><span class="cap">Stunden&shy;zahlen</span></button>
@@ -180,6 +181,7 @@
     <button type="button" class="hilfe" data-hilfe="minutenzeiger" aria-pressed="false"><svg class="ik"><use href="#i-minutenzeiger"/></svg><span class="cap">Minuten&shy;zeiger</span></button>
     <button type="button" class="hilfe" data-hilfe="einrasten" aria-pressed="false"><svg class="ik"><use href="#i-einrasten"/></svg><span class="cap">Ein&shy;rasten</span></button>
     <button type="button" class="hilfe" data-hilfe="erklaerung" aria-pressed="false"><svg class="ik"><use href="#i-erklaerung"/></svg><span class="cap">Zeiger erklären</span></button>
+    </div>
   </div>
   <!-- Legende zu den Zeigern (Hilfe „Zeiger erklären“), in Zeigen und Quiz -->
   <div class="block b-legende" id="b-legende" data-teil="zeigen quiz">
